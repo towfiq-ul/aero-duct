@@ -1,0 +1,23 @@
+{
+  "name": "aeroduct",
+  "private": true,
+  "packageManager": "pnpm@12.4.2",
+  "scripts": {
+    "build": "turbo build",
+    "dev": "turbo dev",
+    "lint": "turbo lint",
+    "format": "turbo format",
+    "type-check": "turbo type-check",
+    "test": "turbo test",
+    "clean": "turbo clean && find . -name 'node_modules' -type d -prune -exec rm -rf '{}' +"
+  },
+  "devDependencies": {
+    "turbo": "^2.5.4",
+    "prettier": "^3.5.3",
+    "@prettier/plugin-xml": "^3.4.1"
+  },
+  "engines": {
+    "node": ">=22",
+    "pnpm": ">=12"
+  }
+}

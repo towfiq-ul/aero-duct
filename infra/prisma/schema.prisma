@@ -1,0 +1,242 @@
+// AeroDuct — Database Schema
+// Managed via Prisma for migrations; Go reads via raw SQL + SQLC
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ── Enums ─────────────────────────────────────────────────
+
+enum Market {
+  chicago
+  india
+}
+
+enum Currency {
+  USD
+  INR
+}
+
+enum ServiceCategory {
+  residential_duct
+  dryer_vent
+  commercial_kitchen
+  hospital_hvac
+  corporate_hvac
+  robotic_duct
+}
+
+enum ServiceTier {
+  basic
+  standard
+  premium
+  enterprise
+}
+
+enum BookingStatus {
+  pending
+  confirmed
+  dispatched
+  in_progress
+  completed
+  cancelled
+}
+
+enum TechnicianStatus {
+  available
+  dispatched
+  on_job
+  off_duty
+}
+
+enum ComplianceCertType {
+  fssai
+  fire_safety
+  nadca
+}
+
+enum AmcContractStatus {
+  active
+  pending_renewal
+  expired
+  cancelled
+}
+
+// ── Models ────────────────────────────────────────────────
+
+model Customer {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  firstName String
+  lastName  String
+  phone     String
+  market    Market
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  addresses Address[]
+  bookings  Booking[]
+
+  @@map("customers")
+}
+
+model Address {
+  id            String  @id @default(uuid())
+  customerId    String
+  line1         String
+  line2         String?
+  city          String
+  state         String?
+  postalCode    String
+  country       String
+  squareFootage Float?
+  furnaceCount  Int?
+  ventCount     Int?
+
+  customer Customer @relation(fields: [customerId], references: [id], onDelete: Cascade)
+  bookings Booking[]
+
+  @@map("addresses")
+}
+
+model Booking {
+  id              String        @id @default(uuid())
+  status          BookingStatus @default(pending)
+  customerId      String
+  addressId       String
+  timeSlotId      String        @unique
+  serviceCategory ServiceCategory
+  tier            ServiceTier
+  totalPrice      Decimal       @db.Decimal(10, 2)
+  currency        Currency
+  technicianId    String?
+  notes           String?
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+
+  customer       Customer        @relation(fields: [customerId], references: [id])
+  address        Address         @relation(fields: [addressId], references: [id])
+  timeSlot       TimeSlot        @relation(fields: [timeSlotId], references: [id])
+  technician     Technician?     @relation(fields: [technicianId], references: [id])
+  passport       DuctPassport?
+  complianceCerts ComplianceCert[]
+
+  @@map("bookings")
+}
+
+model TimeSlot {
+  id        String   @id @default(uuid())
+  date      DateTime @db.Date
+  startTime String   // HH:mm
+  endTime   String   // HH:mm (2-hour window)
+  available Boolean  @default(true)
+  market    Market
+  createdAt DateTime @default(now())
+
+  booking Booking?
+
+  @@unique([date, startTime, market])
+  @@map("time_slots")
+}
+
+model Technician {
+  id        String           @id @default(uuid())
+  firstName String
+  lastName  String
+  phone     String           @unique
+  market    Market
+  status    TechnicianStatus @default(available)
+  createdAt DateTime         @default(now())
+  updatedAt DateTime         @updatedAt
+
+  bookings Booking[]
+
+  @@map("technicians")
+}
+
+model DuctPassport {
+  id               String   @id @default(uuid())
+  bookingId        String   @unique
+  cleanlinessRating Int     // 1-5
+  beforeVideoUrl   String?
+  afterVideoUrl    String?
+  thumbnailUrl     String?
+  inspectionNotes  String
+  passportUrl      String   @unique // permanent public link slug
+  createdAt        DateTime @default(now())
+
+  booking Booking @relation(fields: [bookingId], references: [id])
+
+  @@map("duct_passports")
+}
+
+model ComplianceCert {
+  id         String             @id @default(uuid())
+  bookingId  String
+  type       ComplianceCertType
+  issuedAt   DateTime           @default(now())
+  validUntil DateTime
+  downloadUrl String
+
+  booking Booking @relation(fields: [bookingId], references: [id])
+
+  @@map("compliance_certs")
+}
+
+model Enterprise {
+  id         String  @id @default(uuid())
+  name       String
+  gstNumber  String?
+  email      String  @unique
+  phone      String
+  market     Market  @default(india)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  locations AmcLocation[]
+  contracts AmcContract[]
+
+  @@map("enterprises")
+}
+
+model AmcContract {
+  id                   String            @id @default(uuid())
+  enterpriseId         String
+  startDate            DateTime
+  endDate              DateTime
+  status               AmcContractStatus @default(active)
+  totalAnnualValueInr  Decimal           @db.Decimal(12, 2)
+  createdAt            DateTime          @default(now())
+  updatedAt            DateTime          @updatedAt
+
+  enterprise Enterprise    @relation(fields: [enterpriseId], references: [id])
+  locations  AmcLocation[]
+
+  @@map("amc_contracts")
+}
+
+model AmcLocation {
+  id              String    @id @default(uuid())
+  enterpriseId    String
+  contractId      String?
+  name            String
+  addressLine1    String
+  addressLine2    String?
+  city            String
+  state           String?
+  postalCode      String
+  country         String
+  hvacUnits       Int
+  lastServiceDate DateTime?
+  nextServiceDate DateTime?
+
+  enterprise Enterprise   @relation(fields: [enterpriseId], references: [id])
+  contract   AmcContract? @relation(fields: [contractId], references: [id])
+
+  @@map("amc_locations")
+}

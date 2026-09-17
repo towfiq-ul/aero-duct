@@ -1,0 +1,56 @@
+# Dependencies
+node_modules/
+.pnpm-store/
+
+# Build outputs
+dist/
+build/
+.next/
+out/
+
+# Turbo cache
+.turbo/
+
+# Go binaries
+apps/api/bin/
+apps/api/tmp/
+
+# Environment files
+.env
+.env.local
+.env.production
+.env.development
+**/.env
+**/.env.local
+**/.env.*.local
+!**/.env.example
+
+# OS
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+
+# IDE
+.idea/
+.vscode/
+*.code-workspace
+
+# Logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
+
+# Test coverage
+coverage/
+*.lcov
+
+# Docker volumes
+infra/docker/volumes/
+
+# Prisma
+infra/prisma/migrations/.migration_lock.toml
+
+# Temp files
+tmp/
+*.tmp
