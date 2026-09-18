@@ -11,7 +11,7 @@
 - **Root Makefile** – 50+ targets: `setup`, `dev`, `build`, `db-*`, `test`, `lint`, `docker-*`, etc.
 - **API Makefile** – `dev` (air hot-reload), `build`, `build-local`, `test`, `lint`, `swagger`, `loc`
 - **`.air.toml`** – Hot-reload config for the Go API
-- **Docker Compose** – Postgres container + optional pgAdmin (`infra/docker/docker-compose.yml`)
+- **Docker Compose** – Postgres container + optional pgAdmin (`docker-compose.yml`)
 - **Shared TS config** – `packages/config` (tsconfig, ESLint, Prettier variants)
 - **Domain Types** – `packages/types/src/index.ts` with all business models
 - **UI utility** – `packages/ui/src/lib/cn.ts` (class-name merger)
@@ -28,7 +28,7 @@
 
 ### Database
 - **Prisma schema** – Full data model: 10+ tables, enums, relations
-- **Prisma workspace** – `infra/prisma/package.json` + seed script (slots, technicians, demo customer)
+- **Prisma workspace** – `backend/prisma/package.json` + seed script (slots, technicians, demo customer)
 
 ### Frontend (Next.js)
 - **Root layout** – `app/layout.tsx` with Inter font, metadata, smooth scroll, antialiasing
@@ -98,8 +98,8 @@
 - **Frontend tests** – No `vitest`/`jest` config; no `*.test.tsx` files; no Playwright E2E setup
 
 ### DevOps / CI-CD
-- **`apps/api/Dockerfile`** – Referenced in `make docker-build` but file does not exist
-- **`apps/web/Dockerfile`** – Referenced in `make docker-build` but file does not exist
+- **`backend/Dockerfile`** – Referenced in `make docker-build` but file does not exist
+- **`frontend/Dockerfile`** – Referenced in `make docker-build` but file does not exist
 - **GitHub Actions** – No `.github/workflows/` directory; no CI pipeline
 - **E2E CI** – No Playwright test runner configured
 - **Release tagging** – No automated `git tag` on merge

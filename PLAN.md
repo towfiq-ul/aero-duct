@@ -70,7 +70,7 @@
 ### Phase B1 — Database Layer
 - [ ] `internal/database/db.go` — pgx connection pool, `Open()`, `Close()`, health ping
 - [ ] `internal/model/` — Go structs mirroring every Prisma table (Booking, Slot, Customer, Technician, Passport, etc.)
-- [ ] `golang-migrate` integration — run migrations from `infra/prisma/migrations/`
+- [ ] `golang-migrate` integration — run migrations from `backend/prisma/migrations/`
 - [ ] Repository pattern — `internal/repository/` with typed query methods per domain
 
 ### Phase B2 — Wire Existing Handlers
@@ -132,13 +132,13 @@
 ## DevOps
 
 ### Phase D1 — Dockerfiles
-- [ ] `apps/api/Dockerfile` — multi-stage: `golang:1.23-alpine` builder → `scratch` / `alpine` runner
-- [ ] `apps/web/Dockerfile` — multi-stage: `node:22-alpine` builder → standalone Next.js output
+- [ ] `backend/Dockerfile` — multi-stage: `golang:1.23-alpine` builder → `scratch` / `alpine` runner
+- [ ] `frontend/Dockerfile` — multi-stage: `node:22-alpine` builder → standalone Next.js output
 - [ ] Verify `make docker-build` produces working images
 - [ ] Add `.dockerignore` for both apps
 
 ### Phase D2 — Docker Compose (full stack)
-- [ ] Add `api` and `web` services to `infra/docker/docker-compose.yml`
+- [ ] Add `api` and `web` services to `docker-compose.yml`
 - [ ] Wire environment variables from `.env` into containers
 - [ ] Add `depends_on: postgres` with health-check condition for the API service
 - [ ] `make dev` brings up all three services (postgres + api + web)
