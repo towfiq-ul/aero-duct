@@ -6,7 +6,7 @@ export default function Footer() {
       {/* Pre-footer trust highlights */}
       <div className="border-b border-slate-800/80 bg-slate-900/60 py-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
             <div className="flex flex-col items-center">
               <span className="text-2xl mb-1">🛡️</span>
               <span className="text-white font-bold text-sm">NADCA Certified</span>
@@ -18,11 +18,6 @@ export default function Footer() {
               <span className="text-xs text-slate-500">Guaranteed or $50 Credit</span>
             </div>
             <div className="flex flex-col items-center">
-              <span className="text-2xl mb-1">📱</span>
-              <span className="text-white font-bold text-sm">Digital Passport™</span>
-              <span className="text-xs text-slate-500">Borescope Video &amp; Lab Data</span>
-            </div>
-            <div className="flex flex-col items-center">
               <span className="text-2xl mb-1">💵</span>
               <span className="text-white font-bold text-sm">Flat-Rate Guarantee</span>
               <span className="text-xs text-slate-500">Zero Hidden Surcharges</span>
@@ -32,7 +27,7 @@ export default function Footer() {
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <div className="grid grid-cols-1 md:grid-cols-5 gap-10">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-10">
           {/* Brand & Mission */}
           <div className="md:col-span-2 space-y-4">
             <Link to="/" className="flex items-center gap-2.5">
@@ -49,17 +44,17 @@ export default function Footer() {
             </Link>
             <p className="text-sm text-slate-400 leading-relaxed max-w-sm">
               Hospital-grade indoor air quality restoration and HVAC ventilation decontamination.
-              Serving residential Chicago single-family homes and commercial industrial spaces across India.
+              Serving residential Chicago single-family homes.
             </p>
             <div className="pt-2 flex flex-col gap-1 text-sm">
               <p className="text-slate-300">
                 <strong className="text-white">Emergency &amp; Dispatch Line:</strong>{" "}
-                <a href="tel:3128473828" className="text-blue-400 hover:text-blue-300 font-semibold">
-                  (312) 847-DUCT
+                <a href={`tel:${import.meta.env.VITE_CONTACT_PHONE}`} className="text-blue-400 hover:text-blue-300 font-semibold">
+                  {import.meta.env.VITE_CONTACT_PHONE_FORMATTED}
                 </a>
               </p>
               <p className="text-xs text-slate-400 mt-1">
-                <span className="text-slate-300 font-medium">Midwest Operations HQ:</span> 7-33 N Roselle Rd, Schaumburg, IL 60194
+                <span className="text-slate-300 font-medium">Midwest Operations HQ:</span> {import.meta.env.VITE_CONTACT_ADDRESS}
               </p>
               <p className="text-xs text-slate-500">7 Days a Week: 7:00 AM – 8:00 PM CST</p>
             </div>
@@ -84,28 +79,6 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* India Commercial */}
-          <div>
-            <h3 className="text-xs font-bold text-white uppercase tracking-wider mb-4">
-              India Commercial
-            </h3>
-            <ul className="space-y-2.5 text-sm">
-              <li className="text-slate-300 font-semibold text-xs uppercase tracking-wider text-amber-400">
-                Major Hubs
-              </li>
-              {["Delhi NCR / Gurugram", "Mumbai & Navi Mumbai", "Bengaluru Tech Parks", "Hyderabad HITEC City"].map((hub) => (
-                <li key={hub}>
-                  <Link to="/pricing" className="hover:text-white transition-colors">
-                    {hub}
-                  </Link>
-                </li>
-              ))}
-              <li className="pt-2">
-                <span className="text-xs text-slate-500 block">FSSAI &amp; Fire Safety Audits</span>
-              </li>
-            </ul>
-          </div>
-
           {/* Platform Links */}
           <div>
             <h3 className="text-xs font-bold text-white uppercase tracking-wider mb-4">
@@ -118,14 +91,9 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
-                <Link to="/book" className="hover:text-white transition-colors">
-                  Book Service (90s)
-                </Link>
-              </li>
-              <li>
-                <Link to="/passport/PASS-2026-0842" className="hover:text-white transition-colors">
-                  Digital Health Passport™
-                </Link>
+                <a href={`tel:${import.meta.env.VITE_CONTACT_PHONE}`} className="hover:text-white transition-colors">
+                  Call to Schedule
+                </a>
               </li>
               <li>
                 <Link to="/#how-it-works" className="hover:text-white transition-colors">
@@ -148,8 +116,6 @@ export default function Footer() {
             <span>Illinois HVAC License #058-2941</span>
             <span>·</span>
             <span>EPA Registration #92841-IL</span>
-            <span>·</span>
-            <span>ISHRAE Compliant</span>
           </div>
         </div>
       </div>

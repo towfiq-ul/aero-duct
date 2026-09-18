@@ -1,11 +1,11 @@
-.PHONY: help setup dev dev/backend dev/frontend db-migrate db-seed db-studio clean
+.PHONY: help setup dev backend frontend db-migrate db-seed db-studio clean
 
 help:
 	@echo "Available commands:"
 	@echo "  make setup        - Install dependencies and setup project (SQLite)"
 	@echo "  make dev          - Run both backend and frontend"
-	@echo "  make dev/backend  - Run backend (Go API) with hot-reload"
-	@echo "  make dev/frontend - Run frontend (Next.js)"
+	@echo "  make backend      - Run backend (Go API) with hot-reload"
+	@echo "  make frontend     - Run frontend (React/Vite)"
 	@echo "  make db-migrate   - Run Prisma migrations (creates SQLite DB)"
 	@echo "  make db-seed      - Seed the SQLite database"
 	@echo "  make db-studio    - Open Prisma Studio to view database"
@@ -15,12 +15,12 @@ setup: db-migrate db-seed
 	cd backend && go mod tidy
 
 dev:
-	make -j2 dev/backend dev/frontend
+	make -j2 backend frontend
 
-dev/backend:
+backend:
 	cd backend && air -c .air.toml
 
-dev/frontend:
+frontend:
 	cd frontend && pnpm dev
 
 db-migrate:

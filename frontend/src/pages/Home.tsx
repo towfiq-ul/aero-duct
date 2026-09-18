@@ -43,7 +43,7 @@ function TrustBar() {
             <span className="flex items-center justify-center w-5 h-5 rounded-full bg-indigo-100 text-indigo-700 font-bold text-xs">
               📱
             </span>
-            <span>Permanent Digital Health Passport™</span>
+            
           </div>
         </div>
       </div>
@@ -133,13 +133,13 @@ export default function HomePage() {
 
             {/* Subheading */}
             <p className="mt-6 text-lg sm:text-xl text-slate-600 leading-relaxed max-w-2xl mx-auto">
-              Upfront flat-rate pricing with zero hidden per-vent fees. Our NADCA-certified technicians arrive in a 2-hour window and deliver a permanent <strong>Digital Health Passport™</strong> with before/after borescope video.
+              Upfront flat-rate pricing with zero hidden per-vent fees. Our NADCA-certified technicians arrive in a 2-hour window.
             </p>
 
             {/* Hero CTAs */}
             <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-3.5">
-              <Button href="/book" variant="gradient" size="xl">
-                Book in 90 Seconds →
+              <Button href={`tel:${import.meta.env.VITE_CONTACT_PHONE}`} variant="gradient" size="xl">
+                Call Service Now →
               </Button>
               <Button href="/pricing" variant="secondary" size="xl">
                 Calculate Exact Price
@@ -160,7 +160,7 @@ export default function HomePage() {
                   <div>
                     <div className="flex items-center gap-2 mb-1">
                       <span className="px-2.5 py-0.5 rounded-full text-[11px] font-bold uppercase tracking-wider bg-blue-100 text-blue-700">
-                        Digital Duct Health Passport™
+                        Before & After Documentation
                       </span>
                       <span className="text-xs text-slate-400">Live Telemetry &amp; Inspection</span>
                     </div>
@@ -169,10 +169,10 @@ export default function HomePage() {
                     </h3>
                   </div>
                   <Link
-                    to="/passport/PASS-2026-0842"
+                    to={`tel:${import.meta.env.VITE_CONTACT_PHONE}`}
                     className="inline-flex items-center justify-center px-4 py-2 text-xs font-semibold text-blue-600 bg-blue-50 hover:bg-blue-100 rounded-xl transition-colors"
                   >
-                    Open Live Demo Passport ↗
+                    Call Service Now ↗
                   </Link>
                 </div>
 
@@ -264,7 +264,7 @@ export default function HomePage() {
             number="02"
             icon="📅"
             title="Pick a 2-Hour Slot"
-            description="Choose a guaranteed 2-hour arrival window. We text you real-time GPS tracking 30 minutes before arrival."
+            description="Choose a guaranteed 2-hour arrival window. "
           />
           <StepCard
             number="03"
@@ -275,7 +275,7 @@ export default function HomePage() {
           <StepCard
             number="04"
             icon="📱"
-            title="Digital Health Passport™"
+            title="Before & After Documentation"
             description="Receive your before/after video report, airflow CFM stats, and official compliance certificate."
           />
         </div>
@@ -326,7 +326,7 @@ export default function HomePage() {
               Proprietary Feature
             </span>
             <h2 className="mt-4 text-3xl sm:text-4xl font-extrabold text-slate-900 leading-tight">
-              The Digital Duct Health Passport™
+              The Before & After Documentation
             </h2>
             <p className="mt-4 text-base text-slate-600 leading-relaxed">
               Don't take anyone's word for it. Every AeroDuct appointment generates an unalterable digital audit report of your ductwork with real borescope camera footage and laboratory particulate analysis.
@@ -360,10 +360,10 @@ export default function HomePage() {
             </div>
 
             <div className="mt-8 flex items-center gap-4">
-              <Button href="/passport/PASS-2026-0842" variant="gradient" size="lg">
-                View Sample Passport →
+              <Button href={`tel:${import.meta.env.VITE_CONTACT_PHONE}`} variant="gradient" size="lg">
+                Call To Schedule →
               </Button>
-              <Button href="/book" variant="secondary" size="lg">
+              <Button href={`tel:${import.meta.env.VITE_CONTACT_PHONE}`} variant="secondary" size="lg">
                 Schedule Service
               </Button>
             </div>
@@ -427,7 +427,7 @@ export default function HomePage() {
               Trusted by 600+ Homes &amp; Commercial Facilities
             </h2>
             <p className="mt-3 text-base text-slate-500">
-              Read how homeowners in Chicago and facility managers in India experienced AeroDuct.
+              Read how homeowners in Chicago experienced AeroDuct.
             </p>
           </div>
 
@@ -525,8 +525,8 @@ export default function HomePage() {
             Reserve your appointment in 90 seconds. Licensed technicians, exact flat-rate pricing, and guaranteed 2-hour arrival windows.
           </p>
           <div className="pt-2 flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Button href="/book" variant="secondary" size="xl" className="shadow-lg">
-              Book Your Service in 90s →
+            <Button href={`tel:${import.meta.env.VITE_CONTACT_PHONE}`} variant="secondary" size="xl" className="shadow-lg">
+              Call To Schedule →
             </Button>
             <Button href="/pricing" variant="outline" size="xl" className="text-white border-white/40 hover:bg-white/10 hover:border-white">
               View All Pricing Tiers

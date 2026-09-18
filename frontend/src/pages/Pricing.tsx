@@ -3,14 +3,13 @@ import { useState } from "react";
 import NavBar from "@/components/NavBar";
 import Footer from "@/components/Footer";
 import { TierCard } from "@/components/TierCard";
-import { MarketSelector } from "@/components/MarketSelector";
 import { PriceBreakdown } from "@/components/PriceBreakdown";
 import { Button } from "@/components/Button";
 import { SERVICE_TIERS, FAQ } from "@/lib/mockData";
 import { getMarket, calculatePrice } from "@/lib/api";
 
 export default function PricingPage() {
-  const [marketId, setMarketId] = useState("chicago");
+  const marketId = "chicago";
   const [selectedTierId, setSelectedTierId] = useState("premium");
   const [faqOpen, setFaqOpen] = useState<number | null>(null);
 
@@ -39,13 +38,6 @@ export default function PricingPage() {
           </p>
 
           <div className="mt-8 flex justify-center">
-            <MarketSelector
-              value={marketId}
-              onChange={(id) => {
-                setMarketId(id);
-                setSelectedTierId("premium");
-              }}
-            />
           </div>
         </div>
       </section>
@@ -84,7 +76,7 @@ export default function PricingPage() {
 
             <div className="mt-5 text-center">
               <Button
-                href={`/book?tier=${selectedTierId}&market=${marketId}`}
+                href={`tel:${import.meta.env.VITE_CONTACT_PHONE}`}
                 variant="gradient"
                 size="xl"
                 className="w-full justify-center shadow-md"

@@ -1,4 +1,3 @@
-
 import { Link } from "react-router-dom";
 import { useState } from "react";
 
@@ -14,13 +13,13 @@ export default function NavBar() {
           Live Dispatch
         </span>
         <span className="text-slate-500">|</span>
-        <span>Guaranteed 2-Hour Arrival Windows in Chicago, IL &amp; Delhi NCR / Mumbai</span>
+        <span>Guaranteed 2-Hour Arrival Windows in Chicago, IL</span>
         <span className="hidden md:inline text-slate-500">|</span>
         <a
-          href="tel:3128473828"
+          href={`tel:${import.meta.env.VITE_CONTACT_PHONE}`}
           className="hidden md:inline-flex items-center gap-1 text-white hover:text-blue-300 font-semibold transition-colors"
         >
-          📞 (312) 847-DUCT
+          📞 {import.meta.env.VITE_CONTACT_PHONE_FORMATTED}
         </a>
       </div>
 
@@ -60,13 +59,6 @@ export default function NavBar() {
               How It Works
             </Link>
             <Link
-              to="/passport/PASS-2026-0842"
-              className="px-3.5 py-2 text-sm font-medium text-slate-600 hover:text-blue-600 rounded-lg hover:bg-slate-50 transition-colors flex items-center gap-1.5"
-            >
-              <span>Health Passport™</span>
-              <span className="bg-blue-100 text-blue-700 text-[10px] font-bold px-1.5 py-0.5 rounded-full">Demo</span>
-            </Link>
-            <Link
               to="/#faq"
               className="px-3.5 py-2 text-sm font-medium text-slate-600 hover:text-blue-600 rounded-lg hover:bg-slate-50 transition-colors"
             >
@@ -77,28 +69,28 @@ export default function NavBar() {
           {/* Action buttons */}
           <div className="hidden sm:flex items-center gap-3">
             <a
-              href="tel:3128473828"
+              href={`tel:${import.meta.env.VITE_CONTACT_PHONE}`}
               className="px-3 py-2 text-xs font-semibold text-slate-700 hover:text-blue-600 transition-colors hidden lg:inline-flex items-center gap-1.5"
             >
               <span>Questions?</span>
-              <span className="text-blue-600 font-bold">(312) 847-DUCT</span>
+              <span className="text-blue-600 font-bold">{import.meta.env.VITE_CONTACT_PHONE_FORMATTED}</span>
             </a>
-            <Link
-              to="/book"
+            <a
+              href={`tel:${import.meta.env.VITE_CONTACT_PHONE}`}
               className="relative inline-flex items-center justify-center px-5 py-2.5 text-sm font-semibold text-white bg-gradient-to-r from-blue-600 to-indigo-600 rounded-xl shadow-sm hover:shadow-glow-blue hover:from-blue-700 hover:to-indigo-700 transition-all duration-200 active:scale-95"
             >
-              <span>Book in 90s →</span>
-            </Link>
+              <span>Call Now →</span>
+            </a>
           </div>
 
           {/* Mobile menu trigger */}
           <div className="flex sm:hidden items-center gap-2">
-            <Link
-              to="/book"
+            <a
+              href={`tel:${import.meta.env.VITE_CONTACT_PHONE}`}
               className="px-3.5 py-1.5 text-xs font-semibold text-white bg-blue-600 rounded-lg shadow-sm"
             >
-              Book Now
-            </Link>
+              Call Now
+            </a>
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               className="p-2 text-slate-600 hover:text-slate-900 rounded-lg border border-slate-200"
@@ -134,13 +126,6 @@ export default function NavBar() {
             How It Works
           </Link>
           <Link
-            to="/passport/PASS-2026-0842"
-            onClick={() => setMobileMenuOpen(false)}
-            className="block px-3 py-2 text-base font-medium text-slate-800 rounded-lg hover:bg-slate-50"
-          >
-            Digital Health Passport™ (Demo)
-          </Link>
-          <Link
             to="/#faq"
             onClick={() => setMobileMenuOpen(false)}
             className="block px-3 py-2 text-base font-medium text-slate-800 rounded-lg hover:bg-slate-50"
@@ -148,13 +133,13 @@ export default function NavBar() {
             FAQ
           </Link>
           <div className="pt-2">
-            <Link
-              to="/book"
+            <a
+              href={`tel:${import.meta.env.VITE_CONTACT_PHONE}`}
               onClick={() => setMobileMenuOpen(false)}
               className="w-full inline-flex items-center justify-center px-4 py-2.5 text-sm font-semibold text-white bg-blue-600 rounded-xl"
             >
-              Book Service Now
-            </Link>
+              Call Service Now
+            </a>
           </div>
         </div>
       )}

@@ -5,17 +5,11 @@
 import {
   MARKETS,
   SERVICE_TIERS,
-  SLOTS,
-  MOCK_PASSPORT,
-  MOCK_BOOKINGS,
   type Market,
   type Tier,
-  type Slot,
-  type Passport,
-  type Booking,
 } from "./mockData";
 
-export type { Market, Tier, Slot, Passport, Booking };
+export type { Market, Tier };
 
 export type PriceBreakdownResult = {
   subtotal: number;
@@ -25,16 +19,6 @@ export type PriceBreakdownResult = {
   total: number;
   currency: string;
   locale: string;
-};
-
-export type BookingInput = {
-  marketId: string;
-  tierId: string;
-  slotId: string;
-  customerName: string;
-  email: string;
-  phone: string;
-  address: string;
 };
 
 // ── Markets ───────────────────────────────────────────────────────
@@ -65,46 +49,16 @@ export function getTier(marketId: string, tierId: string): Tier {
   return tier;
 }
 
-// ── Slots ─────────────────────────────────────────────────────────
-
-export function getSlots(marketId: string, date?: string): Slot[] {
-  // TODO: replace with real API call to Go backend
-  void marketId;
-  if (date) return SLOTS.filter((s) => s.date === date);
-  return SLOTS;
-}
-
 // ── Pricing ───────────────────────────────────────────────────────
 
 export function calculatePrice(marketId: string, tierId: string): PriceBreakdownResult {
   // TODO: replace with real API call to Go backend at POST /api/v1/pricing/calculate
   const market = getMarket(marketId);
   const tier = getTier(marketId, tierId);
-  const taxRate = marketId === "india" ? 0.18 : 0.08;
-  const taxLabel = marketId === "india" ? "GST (18%)" : "Sales Tax (8%)";
+  const taxRate = 0.08;
+  const taxLabel = "Sales Tax (8%)";
   const subtotal = tier.price;
   const tax = parseFloat((subtotal * taxRate).toFixed(2));
   const total = parseFloat((subtotal + tax).toFixed(2));
   return { subtotal, taxRate, taxLabel, tax, total, currency: market.currency, locale: market.locale };
-}
-
-// ── Passport ──────────────────────────────────────────────────────
-
-export function getPassport(id: string): Passport {
-  // TODO: replace with real API call to Go backend at GET /api/v1/passport/:id
-  void id;
-  return MOCK_PASSPORT;
-}
-
-// ── Bookings ──────────────────────────────────────────────────────
-
-export function getBooking(id: string): Booking {
-  // TODO: replace with real API call to Go backend at GET /api/v1/bookings/:id
-  void id;
-  return (MOCK_BOOKINGS.find((b) => b.id === id) ?? MOCK_BOOKINGS[0])!;
-}
-
-export function createBooking(_input: BookingInput): Booking {
-  // TODO: replace with real API call to Go backend at POST /api/v1/bookings
-  return MOCK_BOOKINGS[0]!;
 }
