@@ -1,70 +1,13 @@
 // AeroDuct — Database Schema
-// Managed via Prisma for migrations; Go reads via raw SQL + SQLC
+// Managed via Prisma for migrations
 
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "sqlite"
   url      = env("DATABASE_URL")
-}
-
-// ── Enums ─────────────────────────────────────────────────
-
-enum Market {
-  chicago
-  india
-}
-
-enum Currency {
-  USD
-  INR
-}
-
-enum ServiceCategory {
-  residential_duct
-  dryer_vent
-  commercial_kitchen
-  hospital_hvac
-  corporate_hvac
-  robotic_duct
-}
-
-enum ServiceTier {
-  basic
-  standard
-  premium
-  enterprise
-}
-
-enum BookingStatus {
-  pending
-  confirmed
-  dispatched
-  in_progress
-  completed
-  cancelled
-}
-
-enum TechnicianStatus {
-  available
-  dispatched
-  on_job
-  off_duty
-}
-
-enum ComplianceCertType {
-  fssai
-  fire_safety
-  nadca
-}
-
-enum AmcContractStatus {
-  active
-  pending_renewal
-  expired
-  cancelled
 }
 
 // ── Models ────────────────────────────────────────────────
@@ -75,7 +18,7 @@ model Customer {
   firstName String
   lastName  String
   phone     String
-  market    Market
+  market    String   // 'chicago' or 'india'
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -106,14 +49,14 @@ model Address {
 
 model Booking {
   id              String        @id @default(uuid())
-  status          BookingStatus @default(pending)
+  status          String        @default("pending") // pending, confirmed, dispatched, in_progress, completed, cancelled
   customerId      String
   addressId       String
   timeSlotId      String        @unique
-  serviceCategory ServiceCategory
-  tier            ServiceTier
-  totalPrice      Decimal       @db.Decimal(10, 2)
-  currency        Currency
+  serviceCategory String        // residential_duct, dryer_vent, etc.
+  tier            String        // basic, standard, premium, enterprise
+  totalPrice      Float
+  currency        String        // USD, INR
   technicianId    String?
   notes           String?
   createdAt       DateTime      @default(now())
@@ -131,11 +74,11 @@ model Booking {
 
 model TimeSlot {
   id        String   @id @default(uuid())
-  date      DateTime @db.Date
+  date      DateTime
   startTime String   // HH:mm
   endTime   String   // HH:mm (2-hour window)
   available Boolean  @default(true)
-  market    Market
+  market    String   // chicago, india
   createdAt DateTime @default(now())
 
   booking Booking?
@@ -145,14 +88,14 @@ model TimeSlot {
 }
 
 model Technician {
-  id        String           @id @default(uuid())
+  id        String   @id @default(uuid())
   firstName String
   lastName  String
-  phone     String           @unique
-  market    Market
-  status    TechnicianStatus @default(available)
-  createdAt DateTime         @default(now())
-  updatedAt DateTime         @updatedAt
+  phone     String   @unique
+  market    String   // chicago, india
+  status    String   @default("available") // available, dispatched, on_job, off_duty
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   bookings Booking[]
 
@@ -176,10 +119,10 @@ model DuctPassport {
 }
 
 model ComplianceCert {
-  id         String             @id @default(uuid())
+  id         String   @id @default(uuid())
   bookingId  String
-  type       ComplianceCertType
-  issuedAt   DateTime           @default(now())
+  type       String   // fssai, fire_safety, nadca
+  issuedAt   DateTime @default(now())
   validUntil DateTime
   downloadUrl String
 
@@ -189,12 +132,12 @@ model ComplianceCert {
 }
 
 model Enterprise {
-  id         String  @id @default(uuid())
+  id         String   @id @default(uuid())
   name       String
   gstNumber  String?
-  email      String  @unique
+  email      String   @unique
   phone      String
-  market     Market  @default(india)
+  market     String   @default("india")
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
 
@@ -205,14 +148,14 @@ model Enterprise {
 }
 
 model AmcContract {
-  id                   String            @id @default(uuid())
+  id                   String   @id @default(uuid())
   enterpriseId         String
   startDate            DateTime
   endDate              DateTime
-  status               AmcContractStatus @default(active)
-  totalAnnualValueInr  Decimal           @db.Decimal(12, 2)
-  createdAt            DateTime          @default(now())
-  updatedAt            DateTime          @updatedAt
+  status               String   @default("active") // active, pending_renewal, expired, cancelled
+  totalAnnualValueInr  Float
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime @updatedAt
 
   enterprise Enterprise    @relation(fields: [enterpriseId], references: [id])
   locations  AmcLocation[]

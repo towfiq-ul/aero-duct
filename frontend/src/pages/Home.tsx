@@ -1,7 +1,6 @@
-"use client";
 
 import { useState } from "react";
-import Link from "next/link";
+import { Link } from "react-router-dom";
 import NavBar from "@/components/NavBar";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/Button";
@@ -170,7 +169,7 @@ export default function HomePage() {
                     </h3>
                   </div>
                   <Link
-                    href="/passport/PASS-2026-0842"
+                    to="/passport/PASS-2026-0842"
                     className="inline-flex items-center justify-center px-4 py-2 text-xs font-semibold text-blue-600 bg-blue-50 hover:bg-blue-100 rounded-xl transition-colors"
                   >
                     Open Live Demo Passport ↗

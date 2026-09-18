@@ -1,4 +1,3 @@
-"use client";
 
 import { MARKETS } from "@/lib/mockData";
 

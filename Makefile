@@ -1,18 +1,16 @@
-.PHONY: help setup dev dev/backend dev/frontend db-up db-migrate db-seed clean
-
-COMPOSE_FILE := docker-compose.yml
+.PHONY: help setup dev dev/backend dev/frontend db-migrate db-seed db-studio clean
 
 help:
 	@echo "Available commands:"
-	@echo "  make setup        - Install dependencies and setup project"
+	@echo "  make setup        - Install dependencies and setup project (SQLite)"
 	@echo "  make dev          - Run both backend and frontend"
 	@echo "  make dev/backend  - Run backend (Go API) with hot-reload"
 	@echo "  make dev/frontend - Run frontend (Next.js)"
-	@echo "  make db-up        - Start Postgres container"
-	@echo "  make db-migrate   - Run Prisma migrations"
-	@echo "  make db-seed      - Seed the database"
+	@echo "  make db-migrate   - Run Prisma migrations (creates SQLite DB)"
+	@echo "  make db-seed      - Seed the SQLite database"
+	@echo "  make db-studio    - Open Prisma Studio to view database"
 
-setup: db-up db-migrate db-seed
+setup: db-migrate db-seed
 	cd frontend && pnpm install
 	cd backend && go mod tidy
 
@@ -25,18 +23,14 @@ dev/backend:
 dev/frontend:
 	cd frontend && pnpm dev
 
-db-up:
-	docker-compose -f $(COMPOSE_FILE) up -d postgres
-	@until docker-compose -f $(COMPOSE_FILE) exec -T postgres pg_isready -U aeroduct -d aeroduct_dev > /dev/null 2>&1; do sleep 1; done
+db-migrate:
+	cd backend/prisma && DATABASE_URL="file:./dev.db" pnpm migrate:dev --name init
 
-db-migrate: db-up
-	cd backend/prisma && DATABASE_URL=$$(grep DATABASE_URL ../.env | cut -d= -f2-) pnpm migrate:dev
-
-db-seed: db-up
-	cd backend/prisma && DATABASE_URL=$$(grep DATABASE_URL ../.env | cut -d= -f2-) pnpm seed
+db-seed:
+	cd backend/prisma && DATABASE_URL="file:./dev.db" pnpm seed
 
 db-studio:
-	cd backend/prisma && pnpm studio
+	cd backend/prisma && DATABASE_URL="file:./dev.db" pnpm studio
 
 clean:
 	rm -rf backend/bin backend/tmp

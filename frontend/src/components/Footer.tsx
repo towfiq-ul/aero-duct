@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { Link } from "react-router-dom";
 
 export default function Footer() {
   return (
@@ -35,7 +35,7 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-5 gap-10">
           {/* Brand & Mission */}
           <div className="md:col-span-2 space-y-4">
-            <Link href="/" className="flex items-center gap-2.5">
+            <Link to="/" className="flex items-center gap-2.5">
               <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-white font-bold shadow-md shadow-blue-500/20">
                 <svg className="w-5 h-5 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M17.7 7.7a2.5 2.5 0 1 1 1.8 4.3H2" />
@@ -76,7 +76,7 @@ export default function Footer() {
               </li>
               {["Chicago City", "Naperville", "Evanston", "Schaumburg", "Oak Park", "Arlington Heights"].map((city) => (
                 <li key={city}>
-                  <Link href="/pricing" className="hover:text-white transition-colors">
+                  <Link to="/pricing" className="hover:text-white transition-colors">
                     {city}
                   </Link>
                 </li>
@@ -95,7 +95,7 @@ export default function Footer() {
               </li>
               {["Delhi NCR / Gurugram", "Mumbai & Navi Mumbai", "Bengaluru Tech Parks", "Hyderabad HITEC City"].map((hub) => (
                 <li key={hub}>
-                  <Link href="/pricing" className="hover:text-white transition-colors">
+                  <Link to="/pricing" className="hover:text-white transition-colors">
                     {hub}
                   </Link>
                 </li>
@@ -113,27 +113,27 @@ export default function Footer() {
             </h3>
             <ul className="space-y-2.5 text-sm">
               <li>
-                <Link href="/pricing" className="hover:text-white transition-colors">
+                <Link to="/pricing" className="hover:text-white transition-colors">
                   Flat-Rate Calculator
                 </Link>
               </li>
               <li>
-                <Link href="/book" className="hover:text-white transition-colors">
+                <Link to="/book" className="hover:text-white transition-colors">
                   Book Service (90s)
                 </Link>
               </li>
               <li>
-                <Link href="/passport/PASS-2026-0842" className="hover:text-white transition-colors">
+                <Link to="/passport/PASS-2026-0842" className="hover:text-white transition-colors">
                   Digital Health Passport™
                 </Link>
               </li>
               <li>
-                <Link href="/#how-it-works" className="hover:text-white transition-colors">
+                <Link to="/#how-it-works" className="hover:text-white transition-colors">
                   NADCA 4-Step Process
                 </Link>
               </li>
               <li>
-                <Link href="/#faq" className="hover:text-white transition-colors">
+                <Link to="/#faq" className="hover:text-white transition-colors">
                   Customer FAQ
                 </Link>
               </li>

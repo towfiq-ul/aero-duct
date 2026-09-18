@@ -1,13 +1,13 @@
-import { PrismaClient, Market, ServiceCategory, ServiceTier, TechnicianStatus } from "@prisma/client";
+import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
 async function main() {
-  console.log("🌱 Seeding AeroDuct database...");
+  console.log("🌱 Seeding AeroDuct database (SQLite)...");
 
-  // ── Time Slots — Chicago ────────────────────────────────
+  // ── Time Slots — Chicago & India ────────────────────────────────
   const today = new Date();
-  const slots: { date: Date; startTime: string; endTime: string; market: Market }[] = [];
+  const slots: { date: Date; startTime: string; endTime: string; market: string }[] = [];
 
   for (let d = 0; d < 14; d++) {
     const date = new Date(today);
@@ -47,17 +47,17 @@ async function main() {
 
   // ── Technicians ───────────────────────────────────────
   const technicians = [
-    { firstName: "Marcus", lastName: "Johnson", phone: "+13125550101", market: "chicago" as Market },
-    { firstName: "Derek", lastName: "Wilson", phone: "+13125550102", market: "chicago" as Market },
-    { firstName: "Rahul", lastName: "Sharma", phone: "+919876543210", market: "india" as Market },
-    { firstName: "Arjun", lastName: "Nair", phone: "+919876543211", market: "india" as Market },
+    { firstName: "Marcus", lastName: "Johnson", phone: "+13125550101", market: "chicago" },
+    { firstName: "Derek", lastName: "Wilson", phone: "+13125550102", market: "chicago" },
+    { firstName: "Rahul", lastName: "Sharma", phone: "+919876543210", market: "india" },
+    { firstName: "Arjun", lastName: "Nair", phone: "+919876543211", market: "india" },
   ];
 
   for (const tech of technicians) {
     await prisma.technician.upsert({
       where: { phone: tech.phone },
       update: {},
-      create: { ...tech, status: "available" as TechnicianStatus },
+      create: { ...tech, status: "available" },
     });
   }
   console.log(`  ✅ ${technicians.length} technicians seeded`);

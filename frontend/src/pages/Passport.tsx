@@ -46,9 +46,11 @@ function ScoreCard({
   );
 }
 
-export default async function PassportPage({ params }: { params: Promise<{ id: string }> }) {
-  const { id } = await params;
-  const passport = getPassport(id);
+import { useParams } from "react-router-dom";
+
+export default function PassportPage() {
+  const { id } = useParams<{ id: string }>();
+  const passport = getPassport(id || "");
 
   const completedDate = new Date(passport.completedAt).toLocaleDateString("en-US", {
     weekday: "long",

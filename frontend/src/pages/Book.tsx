@@ -1,7 +1,6 @@
-"use client";
 
 import { useState, Suspense } from "react";
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, useNavigate } from "react-router-dom";
 import NavBar from "@/components/NavBar";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/Button";
@@ -346,7 +345,7 @@ function SuccessState({ confirmationCode }: { confirmationCode: string }) {
 
 // ── Main content (uses searchParams) ─────────────────────────────
 function BookContent() {
-  const searchParams = useSearchParams();
+  const [searchParams] = useSearchParams();
   const initialMarket = searchParams.get("market") ?? "chicago";
   const initialTier = searchParams.get("tier") ?? "premium";
 

@@ -1,6 +1,5 @@
-"use client";
 
-import Link from "next/link";
+import { Link } from "react-router-dom";
 import { useState } from "react";
 
 export default function NavBar() {
@@ -28,7 +27,7 @@ export default function NavBar() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo with airflow icon */}
-          <Link href="/" className="flex items-center gap-2.5 group">
+          <Link to="/" className="flex items-center gap-2.5 group">
             <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-600 via-blue-700 to-indigo-800 flex items-center justify-center text-white shadow-md shadow-blue-500/20 group-hover:scale-105 transition-transform duration-200">
               <svg className="w-5 h-5 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M17.7 7.7a2.5 2.5 0 1 1 1.8 4.3H2" />
@@ -49,26 +48,26 @@ export default function NavBar() {
           {/* Desktop Nav links */}
           <nav className="hidden md:flex items-center gap-1 lg:gap-2">
             <Link
-              href="/pricing"
+              to="/pricing"
               className="px-3.5 py-2 text-sm font-medium text-slate-600 hover:text-blue-600 rounded-lg hover:bg-slate-50 transition-colors"
             >
               Plans &amp; Pricing
             </Link>
             <Link
-              href="/#how-it-works"
+              to="/#how-it-works"
               className="px-3.5 py-2 text-sm font-medium text-slate-600 hover:text-blue-600 rounded-lg hover:bg-slate-50 transition-colors"
             >
               How It Works
             </Link>
             <Link
-              href="/passport/PASS-2026-0842"
+              to="/passport/PASS-2026-0842"
               className="px-3.5 py-2 text-sm font-medium text-slate-600 hover:text-blue-600 rounded-lg hover:bg-slate-50 transition-colors flex items-center gap-1.5"
             >
               <span>Health Passport™</span>
               <span className="bg-blue-100 text-blue-700 text-[10px] font-bold px-1.5 py-0.5 rounded-full">Demo</span>
             </Link>
             <Link
-              href="/#faq"
+              to="/#faq"
               className="px-3.5 py-2 text-sm font-medium text-slate-600 hover:text-blue-600 rounded-lg hover:bg-slate-50 transition-colors"
             >
               FAQ
@@ -85,7 +84,7 @@ export default function NavBar() {
               <span className="text-blue-600 font-bold">(312) 847-DUCT</span>
             </a>
             <Link
-              href="/book"
+              to="/book"
               className="relative inline-flex items-center justify-center px-5 py-2.5 text-sm font-semibold text-white bg-gradient-to-r from-blue-600 to-indigo-600 rounded-xl shadow-sm hover:shadow-glow-blue hover:from-blue-700 hover:to-indigo-700 transition-all duration-200 active:scale-95"
             >
               <span>Book in 90s →</span>
@@ -95,7 +94,7 @@ export default function NavBar() {
           {/* Mobile menu trigger */}
           <div className="flex sm:hidden items-center gap-2">
             <Link
-              href="/book"
+              to="/book"
               className="px-3.5 py-1.5 text-xs font-semibold text-white bg-blue-600 rounded-lg shadow-sm"
             >
               Book Now
@@ -121,28 +120,28 @@ export default function NavBar() {
       {mobileMenuOpen && (
         <div className="sm:hidden border-b border-slate-200 bg-white px-4 pt-3 pb-5 space-y-2">
           <Link
-            href="/pricing"
+            to="/pricing"
             onClick={() => setMobileMenuOpen(false)}
             className="block px-3 py-2 text-base font-medium text-slate-800 rounded-lg hover:bg-slate-50"
           >
             Plans &amp; Pricing
           </Link>
           <Link
-            href="/#how-it-works"
+            to="/#how-it-works"
             onClick={() => setMobileMenuOpen(false)}
             className="block px-3 py-2 text-base font-medium text-slate-800 rounded-lg hover:bg-slate-50"
           >
             How It Works
           </Link>
           <Link
-            href="/passport/PASS-2026-0842"
+            to="/passport/PASS-2026-0842"
             onClick={() => setMobileMenuOpen(false)}
             className="block px-3 py-2 text-base font-medium text-slate-800 rounded-lg hover:bg-slate-50"
           >
             Digital Health Passport™ (Demo)
           </Link>
           <Link
-            href="/#faq"
+            to="/#faq"
             onClick={() => setMobileMenuOpen(false)}
             className="block px-3 py-2 text-base font-medium text-slate-800 rounded-lg hover:bg-slate-50"
           >
@@ -150,7 +149,7 @@ export default function NavBar() {
           </Link>
           <div className="pt-2">
             <Link
-              href="/book"
+              to="/book"
               onClick={() => setMobileMenuOpen(false)}
               className="w-full inline-flex items-center justify-center px-4 py-2.5 text-sm font-semibold text-white bg-blue-600 rounded-xl"
             >

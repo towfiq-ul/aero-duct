@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { Link } from "react-router-dom";
 import React from "react";
 
 type BaseProps = {
@@ -42,7 +42,7 @@ export function Button({ children, variant = "primary", size = "md", className =
   if ("href" in rest && rest.href !== undefined) {
     const { href, target, rel } = rest as AsLink;
     return (
-      <Link href={href} target={target} rel={rel} className={classes}>
+      <Link to={href} target={target} rel={rel} className={classes}>
         {children}
       </Link>
     );
