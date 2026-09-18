@@ -28,3 +28,19 @@
   --radius-lg: 0.75rem;
   --radius-xl: 1rem;
 }
+
+/* Base reset */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+}
