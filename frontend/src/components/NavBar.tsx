@@ -8,11 +8,6 @@ export default function NavBar() {
     <header className="sticky top-0 z-50 bg-white/85 backdrop-blur-md border-b border-slate-200/80 transition-all">
       {/* Top micro banner */}
       <div className="bg-slate-900 text-slate-300 text-xs py-1.5 px-4 text-center font-medium flex items-center justify-center gap-2">
-        <span className="inline-flex items-center gap-1.5 text-emerald-400 font-semibold">
-          <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-          Live Dispatch
-        </span>
-        <span className="text-slate-500">|</span>
         <span>Guaranteed 2-Hour Arrival Windows in Chicago, IL</span>
         <span className="hidden md:inline text-slate-500">|</span>
         <a
@@ -46,24 +41,30 @@ export default function NavBar() {
 
           {/* Desktop Nav links */}
           <nav className="hidden md:flex items-center gap-1 lg:gap-2">
-            <Link
-              to="/pricing"
+            <a
+              href="/#services"
               className="px-3.5 py-2 text-sm font-medium text-slate-600 hover:text-blue-600 rounded-lg hover:bg-slate-50 transition-colors"
             >
-              Plans &amp; Pricing
-            </Link>
-            <Link
-              to="/#how-it-works"
+              Services
+            </a>
+            <a
+              href="/#reviews"
               className="px-3.5 py-2 text-sm font-medium text-slate-600 hover:text-blue-600 rounded-lg hover:bg-slate-50 transition-colors"
             >
-              How It Works
-            </Link>
-            <Link
-              to="/#faq"
+              Reviews
+            </a>
+            <a
+              href="/#faq"
               className="px-3.5 py-2 text-sm font-medium text-slate-600 hover:text-blue-600 rounded-lg hover:bg-slate-50 transition-colors"
             >
               FAQ
-            </Link>
+            </a>
+            <a
+              href="/#contact"
+              className="px-3.5 py-2 text-sm font-medium text-slate-600 hover:text-blue-600 rounded-lg hover:bg-slate-50 transition-colors"
+            >
+              Contact
+            </a>
           </nav>
 
           {/* Action buttons */}
@@ -75,22 +76,22 @@ export default function NavBar() {
               <span>Questions?</span>
               <span className="text-blue-600 font-bold">{import.meta.env.VITE_CONTACT_PHONE_FORMATTED}</span>
             </a>
-            <a
-              href={`tel:${import.meta.env.VITE_CONTACT_PHONE}`}
+            <Link
+              to="/quote"
               className="relative inline-flex items-center justify-center px-5 py-2.5 text-sm font-semibold text-white bg-gradient-to-r from-blue-600 to-indigo-600 rounded-xl shadow-sm hover:shadow-glow-blue hover:from-blue-700 hover:to-indigo-700 transition-all duration-200 active:scale-95"
             >
-              <span>Call Now →</span>
-            </a>
+              <span>Request a Quote →</span>
+            </Link>
           </div>
 
           {/* Mobile menu trigger */}
           <div className="flex sm:hidden items-center gap-2">
-            <a
-              href={`tel:${import.meta.env.VITE_CONTACT_PHONE}`}
+            <Link
+              to="/quote"
               className="px-3.5 py-1.5 text-xs font-semibold text-white bg-blue-600 rounded-lg shadow-sm"
             >
-              Call Now
-            </a>
+              Get a Quote
+            </Link>
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               className="p-2 text-slate-600 hover:text-slate-900 rounded-lg border border-slate-200"
@@ -111,35 +112,42 @@ export default function NavBar() {
       {/* Mobile drawer */}
       {mobileMenuOpen && (
         <div className="sm:hidden border-b border-slate-200 bg-white px-4 pt-3 pb-5 space-y-2">
-          <Link
-            to="/pricing"
+          <a
+            href="/#services"
             onClick={() => setMobileMenuOpen(false)}
             className="block px-3 py-2 text-base font-medium text-slate-800 rounded-lg hover:bg-slate-50"
           >
-            Plans &amp; Pricing
-          </Link>
-          <Link
-            to="/#how-it-works"
+            Services
+          </a>
+          <a
+            href="/#reviews"
             onClick={() => setMobileMenuOpen(false)}
             className="block px-3 py-2 text-base font-medium text-slate-800 rounded-lg hover:bg-slate-50"
           >
-            How It Works
-          </Link>
-          <Link
-            to="/#faq"
+            Reviews
+          </a>
+          <a
+            href="/#faq"
             onClick={() => setMobileMenuOpen(false)}
             className="block px-3 py-2 text-base font-medium text-slate-800 rounded-lg hover:bg-slate-50"
           >
             FAQ
-          </Link>
+          </a>
+          <a
+            href="/#contact"
+            onClick={() => setMobileMenuOpen(false)}
+            className="block px-3 py-2 text-base font-medium text-slate-800 rounded-lg hover:bg-slate-50"
+          >
+            Contact
+          </a>
           <div className="pt-2">
-            <a
-              href={`tel:${import.meta.env.VITE_CONTACT_PHONE}`}
+            <Link
+              to="/quote"
               onClick={() => setMobileMenuOpen(false)}
               className="w-full inline-flex items-center justify-center px-4 py-2.5 text-sm font-semibold text-white bg-blue-600 rounded-xl"
             >
-              Call Service Now
-            </a>
+              Request a Quote
+            </Link>
           </div>
         </div>
       )}

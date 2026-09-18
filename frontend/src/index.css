@@ -1,6 +1,12 @@
 @import "tailwindcss";
 
 /* AeroDuct Design Tokens */
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
 @theme {
   /* Brand palette */
   --color-brand-50: #eff6ff;

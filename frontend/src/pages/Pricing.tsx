@@ -76,15 +76,15 @@ export default function PricingPage() {
 
             <div className="mt-5 text-center">
               <Button
-                href={`tel:${import.meta.env.VITE_CONTACT_PHONE}`}
+                href="/quote"
                 variant="gradient"
                 size="xl"
                 className="w-full justify-center shadow-md"
               >
-                Proceed with {selectedTier.name} Plan →
+                Request a Quote for {selectedTier.name} →
               </Button>
               <p className="text-xs text-slate-400 mt-2">
-                Pick your date and 2-hour arrival window on the next step
+                We'll contact you to confirm details and pick your 2-hour arrival window
               </p>
             </div>
           </div>

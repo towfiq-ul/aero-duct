@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
 import Pricing from "./pages/Pricing";
+import Quote from "./pages/Quote";
 import "./index.css";
 
 function App() {
@@ -10,6 +11,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/pricing" element={<Pricing />} />
+          <Route path="/quote" element={<Quote />} />
         </Routes>
       </BrowserRouter>
     </div>
