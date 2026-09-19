@@ -1,190 +1,247 @@
-
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import NavBar from "@/components/NavBar";
 import Footer from "@/components/Footer";
-import { TierCard } from "@/components/TierCard";
-import { PriceBreakdown } from "@/components/PriceBreakdown";
 import { Button } from "@/components/Button";
-import { SERVICE_TIERS, FAQ } from "@/lib/mockData";
-import { getMarket, calculatePrice } from "@/lib/api";
+import { PriceBreakdown } from "@/components/PriceBreakdown";
+import { SERVICE_AREAS, SERVICES, FAQ_LIST } from "@/lib/mockData";
 
-export default function PricingPage() {
-  const marketId = "chicago";
-  const [selectedTierId, setSelectedTierId] = useState("premium");
+export default function Pricing() {
+  const [activeArea, setActiveArea] = useState<string>("chicago");
+  const [selectedServices, setSelectedServices] = useState<Set<string>>(new Set(["res-air-duct"]));
   const [faqOpen, setFaqOpen] = useState<number | null>(null);
 
-  const market = getMarket(marketId);
-  const tiers = SERVICE_TIERS[marketId] ?? [];
-  const selectedTier = tiers.find((t) => t.id === selectedTierId) ?? tiers[1] ?? tiers[0];
-  const breakdown = selectedTier ? calculatePrice(marketId, selectedTier.id) : null;
+  const toggleService = (id: string) => {
+    const next = new Set(selectedServices);
+    if (next.has(id)) {
+      next.delete(id);
+    } else {
+      next.add(id);
+    }
+    setSelectedServices(next);
+  };
+
+  const selectedAreaObj = SERVICE_AREAS.find((a) => a.id === activeArea) || SERVICE_AREAS[0];
+
+  // Calculate pricing
+  const [subtotal, setSubtotal] = useState(0);
+  const [hasCustomQuote, setHasCustomQuote] = useState(false);
+
+  useEffect(() => {
+    let total = 0;
+    let custom = false;
+    selectedServices.forEach((id) => {
+      const svc = SERVICES.find((s) => s.id === id);
+      if (svc) {
+        // Extract number from price string (e.g. "$299" -> 299)
+        const match = svc.price.match(/\d+/);
+        if (match) {
+          total += parseInt(match[0], 10);
+        } else {
+          custom = true;
+        }
+      }
+    });
+    setSubtotal(total * selectedAreaObj.feeMultiplier);
+    setHasCustomQuote(custom);
+  }, [selectedServices, activeArea, selectedAreaObj]);
+
+  const tax = subtotal * 0.08; // Flat 8% tax for IL
+  const total = subtotal + tax;
+
+  const resServices = SERVICES.filter(s => s.category === 'residential');
+  const comServices = SERVICES.filter(s => s.category === 'commercial');
+  const packages = SERVICES.filter(s => s.category === 'package');
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 flex flex-col font-sans transition-colors duration-200">
       <NavBar />
 
-      {/* ── Header ── */}
-      <section className="relative overflow-hidden bg-gradient-to-b from-blue-50/60 via-slate-50/40 to-white pt-16 pb-12 text-center">
-        <div className="absolute inset-0 bg-grid-slate pointer-events-none opacity-40 [mask-image:radial-gradient(ellipse_at_center,black,transparent_75%)]" />
-        
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-blue-100 text-blue-800 mb-4">
-            Zero Hidden Fees · Upfront Guarantee
-          </span>
-          <h1 className="text-4xl sm:text-5xl font-extrabold text-slate-900 tracking-tight">
-            Simple, Transparent Flat-Rate Pricing
+      {/* Hero Section */}
+      <section className="bg-white dark:bg-slate-950 border-b border-slate-200/80 dark:border-slate-800/80 pt-20 pb-16 px-4 transition-colors duration-200">
+        <div className="max-w-4xl mx-auto text-center">
+          <h1 className="text-4xl sm:text-5xl font-extrabold text-slate-900 dark:text-white tracking-tight leading-tight">
+            Transparent, Flat-Rate Pricing
           </h1>
-          <p className="mt-4 text-lg text-slate-600 max-w-2xl mx-auto leading-relaxed">
-            Every home and facility gets the exact price quoted. No per-vent bait-and-switch, no trip surcharges, and no surprise add-ons.
+          <p className="mt-4 text-lg text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">
+            Build your custom cleaning package. Our interactive calculator adjusts pricing based on your service area. No hidden fees.
           </p>
-
-          <div className="mt-8 flex justify-center">
-          </div>
         </div>
       </section>
 
-      {/* ── Tier cards ── */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {tiers.map((tier) => (
-            <TierCard
-              key={tier.id}
-              tier={tier}
-              currencySymbol={market.currencySymbol}
-              locale={market.locale}
-              selected={tier.id === selectedTierId}
-              onSelect={() => setSelectedTierId(tier.id)}
-            />
-          ))}
-        </div>
-
-        {/* Selected Tier Action Box */}
-        {breakdown && selectedTier && (
-          <div className="mt-14 max-w-lg mx-auto p-6 rounded-2xl bg-gradient-to-br from-blue-50/70 via-white to-slate-50 border border-blue-200/80 shadow-lg shadow-blue-500/5">
-            <div className="text-center mb-4">
-              <span className="text-xs font-bold uppercase tracking-wider text-blue-600">Selected Option</span>
-              <h3 className="text-xl font-bold text-slate-900 mt-0.5">{selectedTier.name} Plan</h3>
-            </div>
-
-            <PriceBreakdown
-              subtotal={breakdown.subtotal}
-              tax={breakdown.tax}
-              total={breakdown.total}
-              taxLabel={breakdown.taxLabel}
-              currency={market.currency}
-              locale={market.locale}
-            />
-
-            <div className="mt-5 text-center">
-              <Button
-                href="/quote"
-                variant="gradient"
-                size="xl"
-                className="w-full justify-center shadow-md"
+      {/* Interactive Calculator */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 -mt-8 relative z-10">
+        <div className="flex flex-col lg:flex-row gap-8 items-start">
+          
+          {/* Services List */}
+          <div className="w-full lg:w-2/3 space-y-8">
+            <div className="glass-panel rounded-3xl p-6 sm:p-8">
+              <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-6">Select Service Area</h2>
+              <select 
+                value={activeArea}
+                onChange={(e) => setActiveArea(e.target.value)}
+                className="w-full sm:w-64 px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 focus:bg-white dark:focus:bg-slate-900 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all font-medium text-slate-700 dark:text-slate-200"
               >
-                Request a Quote for {selectedTier.name} →
-              </Button>
-              <p className="text-xs text-slate-400 mt-2">
-                We'll contact you to confirm details and pick your 2-hour arrival window
-              </p>
+                {SERVICE_AREAS.map(area => (
+                  <option key={area.id} value={area.id}>{area.name}</option>
+                ))}
+              </select>
             </div>
+
+            <div className="glass-panel rounded-3xl overflow-hidden">
+              <div className="p-6 sm:p-8 border-b border-slate-100 dark:border-slate-800">
+                <h2 className="text-2xl font-bold text-slate-900 dark:text-white">Residential Services</h2>
+              </div>
+              <div className="divide-y divide-slate-100 dark:divide-slate-800/60">
+                {resServices.map((svc) => (
+                  <label key={svc.id} className="flex items-start gap-4 p-6 sm:p-8 hover:bg-slate-50 dark:hover:bg-slate-800/30 cursor-pointer transition-colors group">
+                    <div className="pt-1">
+                      <div className={`w-6 h-6 rounded border flex items-center justify-center transition-colors ${selectedServices.has(svc.id) ? 'bg-blue-600 border-blue-600' : 'bg-white dark:bg-slate-800 border-slate-300 dark:border-slate-600 group-hover:border-blue-400 dark:group-hover:border-blue-400'}`}>
+                        {selectedServices.has(svc.id) && <svg className="w-4 h-4 text-white fill-current" viewBox="0 0 20 20"><path d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"/></svg>}
+                      </div>
+                      <input 
+                        type="checkbox" 
+                        className="sr-only" 
+                        checked={selectedServices.has(svc.id)}
+                        onChange={() => toggleService(svc.id)}
+                      />
+                    </div>
+                    <div className="flex-1">
+                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                        <h3 className="text-lg font-bold text-slate-900 dark:text-white">{svc.name}</h3>
+                        <span className="inline-flex items-center rounded-full bg-slate-100 dark:bg-slate-800 px-3 py-1 text-sm font-semibold text-slate-700 dark:text-slate-300">{svc.price}</span>
+                      </div>
+                      <p className="mt-2 text-sm text-slate-500 dark:text-slate-400 leading-relaxed">{svc.description}</p>
+                    </div>
+                  </label>
+                ))}
+              </div>
+            </div>
+            
+            <div className="glass-panel rounded-3xl overflow-hidden">
+              <div className="p-6 sm:p-8 border-b border-slate-100 dark:border-slate-800">
+                <h2 className="text-2xl font-bold text-slate-900 dark:text-white">Commercial Services</h2>
+              </div>
+              <div className="divide-y divide-slate-100 dark:divide-slate-800/60">
+                {comServices.map((svc) => (
+                  <label key={svc.id} className="flex items-start gap-4 p-6 sm:p-8 hover:bg-slate-50 dark:hover:bg-slate-800/30 cursor-pointer transition-colors group">
+                    <div className="pt-1">
+                      <div className={`w-6 h-6 rounded border flex items-center justify-center transition-colors ${selectedServices.has(svc.id) ? 'bg-blue-600 border-blue-600' : 'bg-white dark:bg-slate-800 border-slate-300 dark:border-slate-600 group-hover:border-blue-400 dark:group-hover:border-blue-400'}`}>
+                        {selectedServices.has(svc.id) && <svg className="w-4 h-4 text-white fill-current" viewBox="0 0 20 20"><path d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"/></svg>}
+                      </div>
+                      <input 
+                        type="checkbox" 
+                        className="sr-only" 
+                        checked={selectedServices.has(svc.id)}
+                        onChange={() => toggleService(svc.id)}
+                      />
+                    </div>
+                    <div className="flex-1">
+                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                        <h3 className="text-lg font-bold text-slate-900 dark:text-white">{svc.name}</h3>
+                        <span className="inline-flex items-center rounded-full bg-slate-100 dark:bg-slate-800 px-3 py-1 text-sm font-semibold text-slate-700 dark:text-slate-300">{svc.price}</span>
+                      </div>
+                      <p className="mt-2 text-sm text-slate-500 dark:text-slate-400 leading-relaxed">{svc.description}</p>
+                    </div>
+                  </label>
+                ))}
+              </div>
+            </div>
+            
+            <div className="glass-panel rounded-3xl overflow-hidden">
+              <div className="p-6 sm:p-8 border-b border-slate-100 dark:border-slate-800">
+                <h2 className="text-2xl font-bold text-slate-900 dark:text-white">Service Packages</h2>
+              </div>
+              <div className="divide-y divide-slate-100 dark:divide-slate-800/60">
+                {packages.map((svc) => (
+                  <label key={svc.id} className="flex items-start gap-4 p-6 sm:p-8 hover:bg-slate-50 dark:hover:bg-slate-800/30 cursor-pointer transition-colors group">
+                    <div className="pt-1">
+                      <div className={`w-6 h-6 rounded border flex items-center justify-center transition-colors ${selectedServices.has(svc.id) ? 'bg-amber-500 border-amber-500' : 'bg-white dark:bg-slate-800 border-slate-300 dark:border-slate-600 group-hover:border-amber-400 dark:group-hover:border-amber-400'}`}>
+                        {selectedServices.has(svc.id) && <svg className="w-4 h-4 text-white fill-current" viewBox="0 0 20 20"><path d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"/></svg>}
+                      </div>
+                      <input 
+                        type="checkbox" 
+                        className="sr-only" 
+                        checked={selectedServices.has(svc.id)}
+                        onChange={() => toggleService(svc.id)}
+                      />
+                    </div>
+                    <div className="flex-1">
+                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                        <h3 className="text-lg font-bold text-slate-900 dark:text-white">{svc.name}</h3>
+                        <span className="inline-flex items-center rounded-full bg-amber-100 dark:bg-amber-900/30 px-3 py-1 text-sm font-semibold text-amber-800 dark:text-amber-400">{svc.price}</span>
+                      </div>
+                      <p className="mt-2 text-sm text-slate-500 dark:text-slate-400 leading-relaxed">{svc.description}</p>
+                    </div>
+                  </label>
+                ))}
+              </div>
+            </div>
+
           </div>
-        )}
-      </section>
 
-      {/* ── Feature Comparison Matrix ── */}
-      <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <div className="text-center mb-10">
-          <span className="text-xs font-bold uppercase tracking-wider text-blue-600 bg-blue-50 px-3 py-1 rounded-full">
-            Detailed Comparison
-          </span>
-          <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 mt-2">
-            Plan Feature Breakdown
-          </h2>
-        </div>
-
-        <div className="overflow-x-auto rounded-2xl border border-slate-200 shadow-xs">
-          <table className="w-full text-left text-sm">
-            <thead className="bg-slate-50 text-slate-700 font-bold border-b border-slate-200">
-              <tr>
-                <th className="p-4 pl-6">Service Element</th>
-                <th className="p-4 text-center">Standard</th>
-                <th className="p-4 text-center bg-blue-50/50 text-blue-950">Premium (Recommended)</th>
-                <th className="p-4 text-center">Complete Deep Clean</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-slate-100 text-slate-600">
-              <tr>
-                <td className="p-4 pl-6 font-medium text-slate-900">All Supply &amp; Return Vents Cleaned</td>
-                <td className="p-4 text-center text-emerald-600 font-bold">✓ Included</td>
-                <td className="p-4 text-center bg-blue-50/30 text-emerald-600 font-bold">✓ Included</td>
-                <td className="p-4 text-center text-emerald-600 font-bold">✓ Included</td>
-              </tr>
-              <tr>
-                <td className="p-4 pl-6 font-medium text-slate-900">Main Duct Trunk Agitation &amp; Vacuum</td>
-                <td className="p-4 text-center text-emerald-600 font-bold">✓ Included</td>
-                <td className="p-4 text-center bg-blue-50/30 text-emerald-600 font-bold">✓ Included</td>
-                <td className="p-4 text-center text-emerald-600 font-bold">✓ Included</td>
-              </tr>
-              <tr>
-                <td className="p-4 pl-6 font-medium text-slate-900">Hospital-Grade Antimicrobial Sanitizer</td>
-                <td className="p-4 text-center text-slate-300">—</td>
-                <td className="p-4 text-center bg-blue-50/30 text-emerald-600 font-bold">✓ Botanical EPA-Reg</td>
-                <td className="p-4 text-center text-emerald-600 font-bold">✓ Hospital Grade</td>
-              </tr>
-              <tr>
-                <td className="p-4 pl-6 font-medium text-slate-900">Borescope Video &amp; Digital Passport™</td>
-                <td className="p-4 text-center text-slate-400">Basic Summary</td>
-                <td className="p-4 text-center bg-blue-50/30 text-blue-700 font-bold">✓ Full HD Video Link</td>
-                <td className="p-4 text-center text-blue-700 font-bold">✓ Full HD + Lab Report</td>
-              </tr>
-              <tr>
-                <td className="p-4 pl-6 font-medium text-slate-900">Dryer Vent Cleaning</td>
-                <td className="p-4 text-center text-slate-300">—</td>
-                <td className="p-4 text-center bg-blue-50/30 text-slate-300">—</td>
-                <td className="p-4 text-center text-emerald-600 font-bold">✓ Full Run &amp; Exterior Cap</td>
-              </tr>
-              <tr>
-                <td className="p-4 pl-6 font-medium text-slate-900">Furnace Blower Wheel &amp; AC Coil Cleaning</td>
-                <td className="p-4 text-center text-slate-300">—</td>
-                <td className="p-4 text-center bg-blue-50/30 text-slate-300">—</td>
-                <td className="p-4 text-center text-emerald-600 font-bold">✓ Deep Sanitized</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </section>
-
-      {/* ── Standard Inclusions Callout ── */}
-      <section className="bg-slate-50/90 border-y border-slate-200/80 py-16">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-2xl font-bold text-slate-900 mb-8 text-center">Every AeroDuct Service Includes</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-            {[
-              {
-                icon: "🛡️",
-                label: "Certified NADCA Crew",
-                sub: "Trained to ACR 2021 standards, background checked, and fully insured in Illinois.",
-              },
-              {
-                icon: "⏱️",
-                label: "2-Hour Arrival Guarantee",
-                sub: "Live GPS dispatch tracking sent straight to your phone 30 minutes before arrival.",
-              },
-              {
-                icon: "📱",
-                label: "Digital Health Passport™",
-                sub: "Permanent digital link with borescope photos, airflow velocity, and hygiene sign-off.",
-              },
-            ].map((item) => (
-              <div key={item.label} className="p-6 bg-white rounded-2xl border border-slate-200/80 shadow-xs flex flex-col gap-3">
-                <span className="text-3xl">{item.icon}</span>
-                <div>
-                  <h3 className="text-base font-bold text-slate-900">{item.label}</h3>
-                  <p className="text-xs sm:text-sm text-slate-500 mt-1 leading-relaxed">{item.sub}</p>
+          {/* Checkout Sticky Card */}
+          <div className="w-full lg:w-1/3 sticky top-24">
+            <div className="glass-panel rounded-3xl shadow-xl shadow-blue-900/5 dark:shadow-none overflow-hidden">
+              <div className="bg-slate-900 dark:bg-slate-950 p-6 text-center border-b border-slate-800">
+                <span className="text-sm font-bold tracking-widest uppercase text-emerald-400">Total Estimate</span>
+                <div className="text-white mt-1 font-medium">
+                  {selectedAreaObj.name}
                 </div>
               </div>
-            ))}
+              
+              <div className="p-6 sm:p-8">
+                {selectedServices.size === 0 ? (
+                  <div className="text-center py-8 text-slate-400 dark:text-slate-500 font-medium">
+                    Select a service to see pricing.
+                  </div>
+                ) : (
+                  <>
+                    <PriceBreakdown
+                      subtotal={subtotal}
+                      tax={tax}
+                      total={total}
+                      taxLabel="IL State Tax (8%)"
+                      currency="USD"
+                      locale="en-US"
+                    />
+                    
+                    {hasCustomQuote && (
+                      <div className="mt-4 p-4 rounded-xl bg-blue-50 dark:bg-blue-900/30 border border-blue-100 dark:border-blue-800">
+                        <p className="text-sm text-blue-800 dark:text-blue-300 font-medium text-center">
+                          One or more selected services require a custom quote. The total shown is a partial estimate.
+                        </p>
+                      </div>
+                    )}
+
+                    <div className="mt-6 border-t border-slate-200 dark:border-slate-800 pt-6">
+                      <p className="text-sm font-semibold text-slate-700 dark:text-slate-300 mb-3 text-center">Secure your appointment today</p>
+                      <div className="flex flex-col gap-3">
+                        <button className="w-full flex items-center justify-center gap-2 bg-[#635BFF] hover:bg-[#4B45D6] text-white font-semibold py-3 px-4 rounded-xl shadow-md transition-colors">
+                          <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M13.976 9.15c-2.172-.806-3.356-1.143-3.356-2.076 0-.839.92-1.4 2.382-1.4 1.508 0 2.92.513 4.14 1.34l.732-3.13C16.64 2.89 15.01 2.37 13.08 2.37c-3.79 0-6.19 1.95-6.19 4.75 0 3.32 3.84 4.3 6.38 5.17 2.45.83 3.1 1.48 3.1 2.41 0 1-.92 1.63-2.61 1.63-1.89 0-3.69-.73-5.2-1.92l-.76 3.23c1.58.98 3.5 1.5 5.56 1.5 4.02 0 6.46-1.96 6.46-4.94 0-3.1-3.65-4.22-5.84-5.05z" />
+                          </svg>
+                          Pay with Stripe
+                        </button>
+                        <button className="w-full flex items-center justify-center gap-2 bg-slate-900 hover:bg-slate-800 text-white font-semibold py-3 px-4 rounded-xl shadow-md transition-colors">
+                          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
+                          </svg>
+                          Direct Bank Transfer
+                        </button>
+                      </div>
+                    </div>
+
+                    <div className="mt-4">
+                      <Button href="/quote" variant="secondary" size="xl" className="w-full justify-center">
+                        Request Custom Quote Instead
+                      </Button>
+                    </div>
+                  </>
+                )}
+              </div>
+            </div>
           </div>
+
         </div>
       </section>
 
@@ -194,7 +251,7 @@ export default function PricingPage() {
           Pricing &amp; Service FAQ
         </h2>
         <div className="space-y-3.5">
-          {FAQ.map((item, index) => {
+          {FAQ_LIST.map((item, index) => {
             const isOpen = faqOpen === index;
             return (
               <div key={item.question} className="border border-slate-200/90 rounded-2xl bg-white overflow-hidden">

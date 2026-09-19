@@ -1,24 +1,153 @@
 // lib/mockData.ts
-// All mock data for frontend development.
-// TODO: replace each export with a real API call to the Go backend.
 
-export type Market = {
+export type ServiceArea = {
   id: string;
   name: string;
-  currency: string;
-  currencySymbol: string;
-  locale: string;
-  tagline: string;
+  feeMultiplier: number;
 };
 
-export type Tier = {
+export type Service = {
   id: string;
   name: string;
-  price: number;
+  price: string;
   description: string;
-  features: string[];
-  popular?: true;
+  isPackage?: boolean;
+  category: 'residential' | 'commercial' | 'package';
 };
+
+export const SERVICE_AREAS: ServiceArea[] = [
+  { id: "chicago", name: "Chicago, IL", feeMultiplier: 1.0 },
+  { id: "evanston", name: "Evanston, IL", feeMultiplier: 1.05 },
+  { id: "oak_park", name: "Oak Park, IL", feeMultiplier: 1.05 },
+  { id: "cicero", name: "Cicero, IL", feeMultiplier: 1.1 },
+  { id: "skokie", name: "Skokie, IL", feeMultiplier: 1.1 },
+  { id: "berwyn", name: "Berwyn, IL", feeMultiplier: 1.05 },
+];
+
+export const SERVICES: Service[] = [
+  {
+    id: "res-air-duct",
+    category: "residential",
+    name: "Air Duct Cleaning",
+    price: "$299",
+    description: "Removing dust, debris, and allergens from home ductwork systems to improve airflow and reduce indoor pollutants.",
+  },
+  {
+    id: "res-dryer-vent",
+    category: "residential",
+    name: "Dryer Vent Cleaning",
+    price: "$129",
+    description: "Clearing lint and blockages from dryer exhaust vent lines to prevent fire hazards and improve appliance efficiency.",
+  },
+  {
+    id: "res-chimney",
+    category: "residential",
+    name: "Chimney Sweep & Fireplace Cleaning",
+    price: "$189",
+    description: "Removing dangerous soot, creosote buildup, and physical blockages from residential chimneys.",
+  },
+  {
+    id: "res-uv-light",
+    category: "residential",
+    name: "UV Light & Air Purification",
+    price: "$449",
+    description: "Installation of UV air purifiers inside HVAC systems to neutralize airborne pathogens.",
+  },
+  {
+    id: "res-duct-sanitizing",
+    category: "residential",
+    name: "Duct Sanitizing & Odor Removal",
+    price: "$99",
+    description: "Eliminating mold, bacteria, and lingering odors with specialized fogging treatments.",
+  },
+  {
+    id: "res-duct-repair",
+    category: "residential",
+    name: "Duct Repair & Sealing",
+    price: "Custom Quote",
+    description: "Professional repair and sealing of leaky ducts to improve system efficiency and air quality.",
+  },
+  {
+    id: "res-hvac-inspection",
+    category: "residential",
+    name: "HVAC & Air Duct Inspection",
+    price: "$79",
+    description: "Comprehensive visual and camera-assisted inspection of your HVAC system and ductwork.",
+  },
+  {
+    id: "res-fireplace",
+    category: "residential",
+    name: "Fireplace Cleaning",
+    price: "$149",
+    description: "Scrubbing and maintaining the internal firebox and surrounding hearth area for safety and aesthetic upkeep.",
+  },
+  {
+    id: "res-carpet",
+    category: "residential",
+    name: "Carpet Cleaning",
+    price: "From $149",
+    description: "Deep extraction cleaning to lift embedded dirt, stains, and allergens from carpets.",
+  },
+  {
+    id: "res-upholstery",
+    category: "residential",
+    name: "Upholstery Cleaning",
+    price: "From $99",
+    description: "Specialized stain removal, deodorizing, and fabric refreshing for furniture.",
+  },
+  {
+    id: "res-pressure",
+    category: "residential",
+    name: "Pressure Washing",
+    price: "Custom Quote",
+    description: "High-pressure water cleaning for hard exterior surfaces like facades, driveways, and sidewalks.",
+  },
+  {
+    id: "res-iaq-testing",
+    category: "residential",
+    name: "Indoor Air Quality (IAQ) Testing",
+    price: "$199",
+    description: "Measuring airborne pollutants, mold spores, and particulate matter to establish a baseline for indoor air health.",
+  },
+  {
+    id: "com-air-duct",
+    category: "commercial",
+    name: "Commercial Air Duct Cleaning",
+    price: "Custom Quote",
+    description: "Large-scale vent and HVAC system cleaning designed to meet corporate compliance and handle multi-zone facilities.",
+  },
+  {
+    id: "com-dryer-vent",
+    category: "commercial",
+    name: "Commercial Dryer Vent Cleaning",
+    price: "Custom Quote",
+    description: "Heavy-duty lint removal for laundromats, hotels, and large commercial facilities.",
+  },
+  {
+    id: "pkg-pot-gold",
+    category: "package",
+    name: "Pot of Gold Maintenance Plan",
+    price: "Subscription",
+    description: "A recurring seasonal membership that provides regular tune-ups and priority scheduling for heating and cooling units.",
+    isPackage: true,
+  },
+  {
+    id: "pkg-asure",
+    category: "package",
+    name: "Asure Extended Service Plans",
+    price: "Custom Quote",
+    description: "Extended warranty packages for specific new HVAC installations that cover labor and replacement parts.",
+    isPackage: true,
+  },
+  {
+    id: "pkg-furnace",
+    category: "package",
+    name: "Furnace Package Units",
+    price: "From $249",
+    description: "Flat-rate, all-in-one maintenance and cleaning tiers specifically tailored for packaged HVAC systems.",
+    isPackage: true,
+  },
+];
 
 export type Testimonial = {
   name: string;
@@ -33,66 +162,6 @@ export type FAQ = {
   answer: string;
 };
 
-// ── Markets ───────────────────────────────────────────────────────
-export const MARKETS: Market[] = [
-  {
-    id: "chicago",
-    name: "Chicago",
-    currency: "USD",
-    currencySymbol: "$",
-    locale: "en-US",
-    tagline: "Chicago Residential",
-  },
-];
-
-// ── Service Tiers ─────────────────────────────────────────────────
-export const SERVICE_TIERS: Record<string, Tier[]> = {
-  chicago: [
-    {
-      id: "essential",
-      name: "Essential",
-      price: 149,
-      description: "Core duct cleaning for standard homes up to 1,800 sq ft.",
-      features: [
-        "Up to 12 supply & return vents",
-        "Main trunk line brushing",
-        "Debris extraction & bag-out",
-        "Before & after photos",
-        "30-day service guarantee",
-      ],
-    },
-    {
-      id: "premium",
-      name: "Premium",
-      popular: true,
-      price: 229,
-      description: "Full-system clean for most Chicago homes up to 3,000 sq ft.",
-      features: [
-        "Up to 20 supply & return vents",
-        "Main trunk line brushing",
-        "Furnace filter replacement (MERV-11 included)",
-        "Duct sanitisation fogging",
-        "60-day service guarantee",
-      ],
-    },
-    {
-      id: "elite",
-      name: "Elite",
-      price: 349,
-      description: "Hospital-grade decontamination for severe allergies & large properties.",
-      features: [
-        "Unlimited vents (up to 5,000 sq ft)",
-        "Blower motor & AC coil surface clean",
-        "Duct pressure testing",
-        "HEPA vacuuming of all branch lines",
-        "Antimicrobial fogging treatment",
-        "12-month AMC option available",
-      ],
-    },
-  ],
-};
-
-// ── Testimonials ──────────────────────────────────────────────────
 export const TESTIMONIALS: Testimonial[] = [
   {
     name: "Karen M.",
@@ -105,31 +174,26 @@ export const TESTIMONIALS: Testimonial[] = [
     name: "Tom B.",
     location: "Wicker Park, Chicago",
     rating: 5,
-    text: "Hired them for our new build after the construction crew left the place dusty. They cleaned 22 vents and the main trunk in about three hours. Pricing was exactly what the website quoted — no upsells, no surprises.",
+    text: "Hired them for our new build after the construction crew left the place dusty. Pricing was exactly what the website quoted — no upsells, no surprises.",
     date: "July 2026",
   },
 ];
 
-// ── FAQ ───────────────────────────────────────────────────────────
-export const FAQ: FAQ[] = [
+export const FAQ_LIST: FAQ[] = [
   {
     question: "How often should I have my ducts cleaned?",
-    answer:
-      "The EPA recommends duct cleaning every 3–5 years for most residential properties. If you have pets, recent construction, allergy sufferers, or visible mold near vents, we recommend annual service.",
+    answer: "The EPA recommends duct cleaning every 3–5 years for most residential properties.",
   },
   {
     question: "How long does the service take?",
-    answer:
-      "Most homes are completed within the 2-hour arrival window. Larger properties or heavily contaminated systems may require up to 4 hours. We'll always call ahead if we expect to run long.",
+    answer: "Most homes are completed within the 2-hour arrival window.",
   },
   {
     question: "Is the pricing really flat-rate? No add-ons?",
-    answer:
-      "Yes. The price you see on the pricing page is the price you pay. We don't charge per vent, and we don't add fees at the door. The only exception is if structural duct repairs are needed, which we'll discuss with you before starting.",
+    answer: "Yes. The price you see on the pricing page is the price you pay. We don't charge per vent.",
   },
   {
     question: "Are your technicians certified?",
-    answer:
-      "All AeroDuct technicians are NADCA-certified (National Air Duct Cleaners Association) and carry full general liability insurance.",
+    answer: "All AeroDuct technicians are NADCA-certified (National Air Duct Cleaners Association).",
   },
 ];

@@ -1,7 +1,7 @@
 # Project Instructions
 
-## "check for task"
-If the user says **"check for task"**, it means to execute the following sequence of actions:
+## "check requirement"
+If the user says **"check requirement"**, it means to execute the following sequence of actions:
 1. Check `PRD.txt` and update `PLAN.md` accordingly.
 2. Remove items from `PRD.txt` which are already added in `PLAN.md`.
 3. Create tasks from `PLAN.md` and add them into `TASK_LIST.md`.

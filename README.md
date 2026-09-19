@@ -1,6 +1,6 @@
 # AeroDuct — Duct Cleaning Service Platform
 
-A full-stack omnichannel service platform for residential HVAC duct cleaning (Chicago) and commercial ventilation sanitization (India).
+A full-stack omnichannel service platform for residential HVAC and commercial duct cleaning across Chicago, IL and surrounding areas (Evanston, Oak Park, Cicero, Skokie, Berwyn).
 
 ## Architecture
 
@@ -33,14 +33,14 @@ duct-cleaning-service/         # Turborepo monorepo root
 
 ## Key Features
 
-- 🏠 **Geo-intelligent routing** — auto-adapts UI/currency for Chicago (USD) vs India (INR)
-- 💰 **Transparent pricing calculator** — flat-rate tiers based on sq ft, furnace count, vents
-- 📅 **Real-time booking** — 2-hour confirmed arrival windows with dispatch sync
-- 📱 **Technician PWA** — mobile dispatch routes, checklists, media upload
-- 🎫 **Digital Duct Health Passport™** — permanent borescope video link per customer
-- 🏭 **Enterprise portal** — multi-site AMC management, GST invoices
-- 📄 **Compliance engine** — FSSAI & fire safety certificate generation
-- 🔍 **Programmatic SEO** — dynamic landing pages across suburbs/cities
+- 🎨 **Premium UI/UX** — Apple-inspired minimalist design, glassy effects, and a day/night (dark/bright) mode toggle.
+- 💰 **Service Area Dynamic Pricing** — interactive fee calculator that adjusts pricing based on the selected service area (Chicago, Evanston, etc.).
+- 📅 **Real-time booking** — 2-hour confirmed arrival windows with dispatch sync.
+- 📱 **Technician PWA** — mobile dispatch routes, checklists, media upload.
+- 🎫 **Digital Duct Health Passport™** — permanent borescope video link per customer.
+- 🏭 **Enterprise portal** — multi-site AMC management and invoicing.
+- 📄 **Compliance engine** — fire safety and health certificate generation.
+- 🔍 **Programmatic SEO** — dynamic landing pages across suburbs/cities.
 
 ## Getting Started
 
@@ -85,12 +85,18 @@ pnpm test         # Run all tests
 pnpm format       # Format with Prettier
 ```
 
-## Markets
+## Service Areas
 
-| Market | Region | Service Type | Currency |
-|---|---|---|---|
-| Chicago, IL | USA | Residential HVAC duct cleaning | USD |
-| India | IN | Commercial kitchen/hospital/corporate HVAC | INR |
+We provide comprehensive residential and commercial cleaning packages (Air Duct, Dryer Vent, Chimney/Fireplace, IAQ Solutions, etc.) across the following areas:
+
+| City | State | Country |
+|---|---|---|
+| Chicago | IL | USA |
+| Evanston | IL | USA |
+| Oak Park | IL | USA |
+| Cicero | IL | USA |
+| Skokie | IL | USA |
+| Berwyn | IL | USA |
 
 ## License
 

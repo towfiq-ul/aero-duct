@@ -17,27 +17,27 @@ function fmt(value: number, locale: string, currency: string): string {
 
 export function PriceBreakdown({ subtotal, tax, total, taxLabel, currency, locale }: PriceBreakdownProps) {
   return (
-    <div className="rounded-2xl border border-slate-200/90 bg-white p-5 shadow-sm space-y-3">
-      <div className="flex items-center justify-between pb-2 border-b border-slate-100">
-        <span className="text-xs font-bold uppercase tracking-wider text-slate-500">Transparent Total</span>
-        <span className="text-[11px] font-semibold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full">
+    <div className="rounded-2xl border border-slate-200/90 dark:border-slate-700 bg-white dark:bg-slate-900/50 p-5 shadow-sm space-y-3 transition-colors">
+      <div className="flex items-center justify-between pb-2 border-b border-slate-100 dark:border-slate-800">
+        <span className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Transparent Total</span>
+        <span className="text-[11px] font-semibold text-emerald-700 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-900/30 px-2 py-0.5 rounded-full">
           Guaranteed Price
         </span>
       </div>
-      <div className="flex justify-between text-sm text-slate-600">
+      <div className="flex justify-between text-sm text-slate-600 dark:text-slate-400">
         <span>Base Service Flat-Rate</span>
-        <span className="font-medium text-slate-900">{fmt(subtotal, locale, currency)}</span>
+        <span className="font-medium text-slate-900 dark:text-white">{fmt(subtotal, locale, currency)}</span>
       </div>
-      <div className="flex justify-between text-sm text-slate-600">
+      <div className="flex justify-between text-sm text-slate-600 dark:text-slate-400">
         <span>{taxLabel}</span>
-        <span className="font-medium text-slate-900">{fmt(tax, locale, currency)}</span>
+        <span className="font-medium text-slate-900 dark:text-white">{fmt(tax, locale, currency)}</span>
       </div>
-      <div className="border-t border-slate-200/80 pt-3 flex justify-between items-baseline">
+      <div className="border-t border-slate-200/80 dark:border-slate-800 pt-3 flex justify-between items-baseline">
         <div>
-          <span className="text-base font-bold text-slate-900 block">Total Due</span>
-          <span className="text-xs text-slate-500 font-normal">Collected upon completion</span>
+          <span className="text-base font-bold text-slate-900 dark:text-white block">Total Due</span>
+          <span className="text-xs text-slate-500 dark:text-slate-400 font-normal">Collected upon completion</span>
         </div>
-        <span className="text-2xl font-extrabold text-blue-600 tracking-tight">
+        <span className="text-2xl font-extrabold text-blue-600 dark:text-blue-400 tracking-tight">
           {fmt(total, locale, currency)}
         </span>
       </div>

@@ -3,13 +3,13 @@
 // TODO: replace each function body with a real fetch() call to the Go backend.
 
 import {
-  MARKETS,
-  SERVICE_TIERS,
-  type Market,
-  type Tier,
+  SERVICE_AREAS,
+  SERVICES,
+  type ServiceArea,
+  type Service,
 } from "./mockData";
 
-export type { Market, Tier };
+export type { ServiceArea, Service };
 
 export type PriceBreakdownResult = {
   subtotal: number;
@@ -21,44 +21,50 @@ export type PriceBreakdownResult = {
   locale: string;
 };
 
-// ── Markets ───────────────────────────────────────────────────────
+// ── Service Areas ───────────────────────────────────────────────────
 
-export function getMarket(id: string): Market {
+export function getServiceArea(id: string): ServiceArea {
   // TODO: replace with real API call to Go backend
-  const market = MARKETS.find((m) => m.id === id);
-  if (!market) throw new Error(`Unknown market: ${id}`);
-  return market;
+  const area = SERVICE_AREAS.find((a) => a.id === id);
+  if (!area) throw new Error(`Unknown area: ${id}`);
+  return area;
 }
 
-export function getAllMarkets(): Market[] {
+export function getAllServiceAreas(): ServiceArea[] {
   // TODO: replace with real API call to Go backend
-  return MARKETS;
+  return SERVICE_AREAS;
 }
 
-// ── Tiers ─────────────────────────────────────────────────────────
+// ── Services ────────────────────────────────────────────────────────
 
-export function getTiers(marketId: string): Tier[] {
+export function getServices(): Service[] {
   // TODO: replace with real API call to Go backend
-  return SERVICE_TIERS[marketId] ?? [];
+  return SERVICES;
 }
 
-export function getTier(marketId: string, tierId: string): Tier {
+export function getService(id: string): Service {
   // TODO: replace with real API call to Go backend
-  const tier = getTiers(marketId).find((t) => t.id === tierId);
-  if (!tier) throw new Error(`Unknown tier: ${tierId} for market ${marketId}`);
-  return tier;
+  const svc = SERVICES.find((s) => s.id === id);
+  if (!svc) throw new Error(`Unknown service: ${id}`);
+  return svc;
 }
 
 // ── Pricing ───────────────────────────────────────────────────────
 
-export function calculatePrice(marketId: string, tierId: string): PriceBreakdownResult {
+export function calculatePrice(areaId: string, serviceIds: string[]): PriceBreakdownResult {
   // TODO: replace with real API call to Go backend at POST /api/v1/pricing/calculate
-  const market = getMarket(marketId);
-  const tier = getTier(marketId, tierId);
+  const area = getServiceArea(areaId);
+  let subtotal = 0;
+  serviceIds.forEach(id => {
+      const svc = getService(id);
+      const match = svc.price.match(/\d+/);
+      if (match) subtotal += parseInt(match[0], 10);
+  });
+  subtotal *= area.feeMultiplier;
+  
   const taxRate = 0.08;
   const taxLabel = "Sales Tax (8%)";
-  const subtotal = tier.price;
   const tax = parseFloat((subtotal * taxRate).toFixed(2));
   const total = parseFloat((subtotal + tax).toFixed(2));
-  return { subtotal, taxRate, taxLabel, tax, total, currency: market.currency, locale: market.locale };
+  return { subtotal, taxRate, taxLabel, tax, total, currency: "USD", locale: "en-US" };
 }

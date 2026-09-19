@@ -1,11 +1,13 @@
 import { Link } from "react-router-dom";
 import { useState } from "react";
+import { useTheme } from "@/hooks/useTheme";
 
 export default function NavBar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const { theme, toggleTheme } = useTheme();
 
   return (
-    <header className="sticky top-0 z-50 bg-white/85 backdrop-blur-md border-b border-slate-200/80 transition-all">
+    <header className="sticky top-0 z-50 bg-white/85 dark:bg-slate-900/85 backdrop-blur-md border-b border-slate-200/80 dark:border-slate-800/80 transition-colors">
       {/* Top micro banner */}
       <div className="bg-slate-900 text-slate-300 text-xs py-1.5 px-4 text-center font-medium flex items-center justify-center gap-2">
         <span>Guaranteed 2-Hour Arrival Windows in Chicago, IL</span>
@@ -22,18 +24,16 @@ export default function NavBar() {
         <div className="flex items-center justify-between h-16">
           {/* Logo with airflow icon */}
           <Link to="/" className="flex items-center gap-2.5 group">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-600 via-blue-700 to-indigo-800 flex items-center justify-center text-white shadow-md shadow-blue-500/20 group-hover:scale-105 transition-transform duration-200">
-              <svg className="w-5 h-5 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M17.7 7.7a2.5 2.5 0 1 1 1.8 4.3H2" />
-                <path d="M9.6 4.6A2 2 0 1 1 11 8H2" />
-                <path d="M12.6 19.4A2 2 0 1 0 14 16H2" />
-              </svg>
-            </div>
+            <img 
+              src="/logo.jpg" 
+              alt="AeroDuct Icon" 
+              className="h-10 w-10 object-cover mix-blend-multiply rounded-xl shadow-sm border border-slate-100 group-hover:scale-105 transition-transform duration-200"
+            />
             <div className="flex flex-col">
-              <span className="text-xl font-bold tracking-tight text-slate-900 leading-none">
-                Aero<span className="text-blue-600">Duct</span>
+              <span className="text-xl font-bold tracking-tight text-slate-900 dark:text-white leading-none">
+                Aero<span className="text-blue-600 dark:text-blue-400">Duct</span>
               </span>
-              <span className="text-[10px] font-semibold uppercase tracking-wider text-slate-500 mt-0.5">
+              <span className="text-[10px] font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mt-0.5">
                 HVAC Sanitization
               </span>
             </div>
@@ -43,25 +43,25 @@ export default function NavBar() {
           <nav className="hidden md:flex items-center gap-1 lg:gap-2">
             <a
               href="/#services"
-              className="px-3.5 py-2 text-sm font-medium text-slate-600 hover:text-blue-600 rounded-lg hover:bg-slate-50 transition-colors"
+              className="px-3.5 py-2 text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors"
             >
               Services
             </a>
             <a
               href="/#reviews"
-              className="px-3.5 py-2 text-sm font-medium text-slate-600 hover:text-blue-600 rounded-lg hover:bg-slate-50 transition-colors"
+              className="px-3.5 py-2 text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors"
             >
               Reviews
             </a>
             <a
               href="/#faq"
-              className="px-3.5 py-2 text-sm font-medium text-slate-600 hover:text-blue-600 rounded-lg hover:bg-slate-50 transition-colors"
+              className="px-3.5 py-2 text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors"
             >
               FAQ
             </a>
             <a
               href="/#contact"
-              className="px-3.5 py-2 text-sm font-medium text-slate-600 hover:text-blue-600 rounded-lg hover:bg-slate-50 transition-colors"
+              className="px-3.5 py-2 text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors"
             >
               Contact
             </a>
@@ -69,12 +69,19 @@ export default function NavBar() {
 
           {/* Action buttons */}
           <div className="hidden sm:flex items-center gap-3">
+            <button 
+              onClick={toggleTheme} 
+              className="p-2 rounded-full text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+              aria-label="Toggle dark mode"
+            >
+              {theme === 'dark' ? '☀️' : '🌙'}
+            </button>
             <a
               href={`tel:${import.meta.env.VITE_CONTACT_PHONE}`}
-              className="px-3 py-2 text-xs font-semibold text-slate-700 hover:text-blue-600 transition-colors hidden lg:inline-flex items-center gap-1.5"
+              className="px-3 py-2 text-xs font-semibold text-slate-700 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors hidden lg:inline-flex items-center gap-1.5"
             >
               <span>Questions?</span>
-              <span className="text-blue-600 font-bold">{import.meta.env.VITE_CONTACT_PHONE_FORMATTED}</span>
+              <span className="text-blue-600 dark:text-blue-400 font-bold">{import.meta.env.VITE_CONTACT_PHONE_FORMATTED}</span>
             </a>
             <Link
               to="/quote"
@@ -86,6 +93,13 @@ export default function NavBar() {
 
           {/* Mobile menu trigger */}
           <div className="flex sm:hidden items-center gap-2">
+            <button 
+              onClick={toggleTheme} 
+              className="p-1.5 rounded-full text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+              aria-label="Toggle dark mode"
+            >
+              {theme === 'dark' ? '☀️' : '🌙'}
+            </button>
             <Link
               to="/quote"
               className="px-3.5 py-1.5 text-xs font-semibold text-white bg-blue-600 rounded-lg shadow-sm"
@@ -94,7 +108,7 @@ export default function NavBar() {
             </Link>
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="p-2 text-slate-600 hover:text-slate-900 rounded-lg border border-slate-200"
+              className="p-2 text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white rounded-lg border border-slate-200 dark:border-slate-700"
               aria-label="Toggle menu"
             >
               <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">

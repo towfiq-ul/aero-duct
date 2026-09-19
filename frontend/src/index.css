@@ -1,5 +1,7 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:is(.dark *));
+
 /* AeroDuct Design Tokens */
 @layer base {
   html {
@@ -79,18 +81,33 @@ p, blockquote, li {
     linear-gradient(to right, rgba(226, 232, 240, 0.6) 1px, transparent 1px),
     linear-gradient(to bottom, rgba(226, 232, 240, 0.6) 1px, transparent 1px);
 }
+.dark .bg-grid-slate {
+  background-image: 
+    linear-gradient(to right, rgba(51, 65, 85, 0.6) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(51, 65, 85, 0.6) 1px, transparent 1px);
+}
 
 .bg-dot-slate {
   background-size: 24px 24px;
   background-image: radial-gradient(rgba(203, 213, 225, 0.8) 1px, transparent 1px);
 }
+.dark .bg-dot-slate {
+  background-image: radial-gradient(rgba(51, 65, 85, 0.8) 1px, transparent 1px);
+}
 
 /* Glassmorphism utilities */
 .glass-panel {
-  background: rgba(255, 255, 255, 0.82);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.6);
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+.dark .glass-panel {
+  background: rgba(15, 23, 42, 0.7);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .glass-panel-dark {
@@ -103,6 +120,11 @@ p, blockquote, li {
 /* Modern Gradient Text */
 .text-gradient-brand {
   background: linear-gradient(135deg, #0284c7 0%, #2563eb 50%, #4f46e5 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.dark .text-gradient-brand {
+  background: linear-gradient(135deg, #38bdf8 0%, #60a5fa 50%, #818cf8 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
@@ -130,6 +152,9 @@ p, blockquote, li {
 .card-hover-lift:hover {
   transform: translateY(-4px);
   box-shadow: 0 20px 30px -10px rgba(0, 0, 0, 0.08), 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+.dark .card-hover-lift:hover {
+  box-shadow: 0 20px 30px -10px rgba(0, 0, 0, 0.4), 0 1px 3px rgba(0, 0, 0, 0.2);
 }
 
 /* Keyframe animations */
@@ -160,3 +185,4 @@ p, blockquote, li {
 .animate-pulse-subtle {
   animation: pulse-subtle 3s ease-in-out infinite;
 }
+

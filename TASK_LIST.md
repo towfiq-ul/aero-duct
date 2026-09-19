@@ -158,107 +158,111 @@ Phase 5 — Production Readiness
 - [x] API client (`lib/api.ts`) — typed, mock-backed, `// TODO` comments for real fetch swap
 
 ### Phase F2 — Pages (Done ✅)
-- [ ] Catchy Heading: Add an attractive, high-converting hero heading. (from PRD)
-- [ ] Trust Signals: Display a prominent review score/rating (e.g., "4.9/5 stars based on 200+ reviews") near the heading. (from PRD)
-- [ ] Design Quality: Remove "AI slop" in FE design (ensure authentic, professional, and human-centric UI/UX). (from PRD)
-- [ ] Design Reference: Base UI/UX ideas on the existing project at `/home/towfiq/workspace/cleanduct/frontend`. (from PRD)
-- [ ] Exclusions: Remove "Live Dispatch" from the design completely. (from PRD)
-- [ ] Top Menu: Include tabs for "Services", "Reviews", "FAQ", and "Contact". (from PRD)
-- [ ] Smooth Scrolling: Implementing animated, smooth scrolling when a menu tab is clicked, directing the user to the relevant section on the page. (from PRD)
-- [ ] Air Duct Cleaning: From $299 (Removing dust, debris, and allergens from home ductwork systems to improve airflow and reduce indoor pollutants.) (from PRD)
-- [ ] Dryer Vent Cleaning: From $129 (Clearing lint and blockages from dryer exhaust vent lines to prevent fire hazards and improve appliance efficiency.) (from PRD)
-- [ ] Chimney Sweep & Fireplace Cleaning: From $189 (Removing dangerous soot, creosote buildup, and physical blockages from residential chimneys.) (from PRD)
-- [ ] UV Light & Air Purification: From $449 (from PRD)
-- [ ] Duct Sanitizing & Odor Removal: From $99 (from PRD)
-- [ ] Duct Repair & Sealing: Custom quote (from PRD)
-- [ ] HVAC & Air Duct Inspection: From $79 (from PRD)
-- [ ] Fireplace Cleaning: Scrubbing and maintaining the internal firebox and surrounding hearth area for safety and aesthetic upkeep. (from PRD)
-- [ ] Carpet Cleaning: Deep extraction cleaning to lift embedded dirt, stains, and allergens from residential and commercial carpets. (from PRD)
-- [ ] Upholstery Cleaning: Specialized stain removal, deodorizing, and fabric refreshing for home and office furniture. (from PRD)
-- [ ] Pressure Washing: High-pressure water cleaning for hard exterior surfaces like building facades, driveways, and sidewalks. (from PRD)
-- [ ] Indoor Air Quality (IAQ) Testing and Assessment: Measuring airborne pollutants, mold spores, and particulate matter to establish a baseline for indoor air health. (from PRD)
-- [ ] Indoor Air Quality Solutions: Installing permanent fixtures like UV lights, whole-home humidifiers, and high-efficiency air purifiers directly into the HVAC system. (from PRD)
-- [ ] Antimicrobial Duct Treatments: Applying EPA-registered sanitizing fogs or sprays within the ductwork to actively eliminate mold, bacteria, and lingering odors. (from PRD)
-- [ ] Furnace Cleaning and Maintenance: Inspecting, cleaning, and tuning up internal furnace components (blowers, burners, heat exchangers) to ensure safe and efficient winter operation. (from PRD)
-- [ ] AC Repair, Maintenance, and Installation: Troubleshooting broken central air conditioning units, performing seasonal refrigerant checks, and installing new condenser systems. (from PRD)
-- [ ] Full HVAC System Cleaning: A comprehensive service that goes beyond the vents to clean the entire mechanical heating and cooling system, including evaporator coils and blower motors. (from PRD)
-- [ ] Multi-Point Video Air Duct Inspections: Deploying robotic or scoped cameras to visually inspect, document, and record the interior condition of ductwork before and after cleaning. (from PRD)
-- [ ] Commercial Air Duct Cleaning: Custom quote (Large-scale vent and HVAC system cleaning designed to meet corporate compliance and handle multi-zone facilities.) (from PRD)
-- [ ] Commercial Dryer Vent Cleaning: Custom quote (from PRD)
-- [ ] Pot of Gold Maintenance Plan: A recurring seasonal membership that provides regular tune-ups and priority scheduling for heating and cooling units to prevent breakdowns and extend equipment lifespans. (from PRD)
-- [ ] Asure Extended Service Plans: Extended warranty packages for specific new HVAC installations that cover labor and replacement parts with zero deductibles for unbudgeted repairs. (from PRD)
-- [ ] Furnace Package Units: Flat-rate, all-in-one maintenance and cleaning tiers specifically tailored for packaged HVAC systems (combined heating and cooling units). (from PRD)
-- [ ] Comprehensive Chimney and Fireplace Packages: Bundled service tiers that combine standard chimney sweeping, Level 1 visual safety inspections, and minor internal masonry repairs into a single cost. (from PRD)
-- [ ] Indoor Air Quality Long-Term Monitoring Packages: Subscription or bundled services that include initial air testing, customized remediation reports, and ongoing sensor tracking of a property's air health. (from PRD)
-- [ ] Whole-Home Air Duct Cleaning Packages: Tiered pricing models that cover the cleaning of all supply and return vents in a standard-sized home, frequently bundled with dryer vent cleaning or baseline antimicrobial treatments at a discounted rate. (from PRD)
-- [ ] Fees Calculator: Add an interactive calculator that adjusts fees dynamically based on the selected service area. (from PRD)
-- [ ] Request for Quote Form: (from PRD)
-- [ ] Collect basic user contact information. (from PRD)
-- [ ] Include a "Service Area" dropdown/list. (Note: Remove India as service area) (from PRD)
-- [ ] Include a "Package/Services" selection list. (from PRD)
-- [ ] Service Areas: (from PRD)
-- [ ] Chicago, IL (from PRD)
-- [ ] Evanston, IL (from PRD)
-- [ ] Oak Park, IL (from PRD)
-- [ ] Cicero, IL (from PRD)
-- [ ] Skokie, IL (from PRD)
-- [ ] Berwyn, IL (from PRD)
-- [ ] Google Reviews Integration: A dedicated section or tab that automatically parses and displays reviews directly from the company's Google Reviews page. (from PRD)
-- [ ] Catchy Heading: Add an attractive, high-converting hero heading. (from PRD)
-- [ ] Trust Signals: Display a prominent review score/rating (e.g., "4.9/5 stars based on 200+ reviews") near the heading. (from PRD)
-- [ ] Design Quality: Remove "AI slop" in FE design (ensure authentic, professional, and human-centric UI/UX). (from PRD)
-- [ ] Top Menu: Include tabs for "Services", "Reviews", and "Contact". (from PRD)
-- [ ] Smooth Scrolling: Implementing animated, smooth scrolling when a menu tab is clicked, directing the user to the relevant section on the page. (from PRD)
-- [ ] Services List: Clearly list all available services. (from PRD)
-- [ ] Service Details: Include a description and base price for each service. (from PRD)
-- [ ] Packages: List available service packages (e.g., Basic, Premium, Full-House). (from PRD)
-- [ ] Fees Calculator: Add an interactive calculator that adjusts fees dynamically based on the selected service area. (from PRD)
-- [ ] Request for Quote Form: (from PRD)
-- [ ] Collect basic user contact information. (from PRD)
-- [ ] Include a "Service Area" dropdown/list. (from PRD)
-- [ ] Include a "Package/Services" selection list. (from PRD)
-- [ ] Google Reviews Integration: A dedicated section or tab that automatically parses and displays reviews directly from the company's Google Reviews page. (from PRD)
+- [x] Catchy Heading: Add an attractive, high-converting hero heading. (from PRD)
+- [x] Trust Signals: Display a prominent review score/rating (e.g., "4.9/5 stars based on 200+ reviews") near the heading. (from PRD)
+- [x] Design Quality: Remove "AI slop" in FE design (ensure authentic, professional, and human-centric UI/UX). (from PRD)
+- [x] Design Reference: Base UI/UX ideas on the existing project at `/home/towfiq/workspace/cleanduct/frontend`. (from PRD)
+- [x] Exclusions: Remove "Live Dispatch" from the design completely. (from PRD)
+- [x] Top Menu: Include tabs for "Services", "Reviews", "FAQ", and "Contact". (from PRD)
+- [x] Smooth Scrolling: Implementing animated, smooth scrolling when a menu tab is clicked, directing the user to the relevant section on the page. (from PRD)
+- [x] Air Duct Cleaning: From $299 (Removing dust, debris, and allergens from home ductwork systems to improve airflow and reduce indoor pollutants.) (from PRD)
+- [x] Dryer Vent Cleaning: From $129 (Clearing lint and blockages from dryer exhaust vent lines to prevent fire hazards and improve appliance efficiency.) (from PRD)
+- [x] Chimney Sweep & Fireplace Cleaning: From $189 (Removing dangerous soot, creosote buildup, and physical blockages from residential chimneys.) (from PRD)
+- [x] UV Light & Air Purification: From $449 (from PRD)
+- [x] Duct Sanitizing & Odor Removal: From $99 (from PRD)
+- [x] Duct Repair & Sealing: Custom quote (from PRD)
+- [x] HVAC & Air Duct Inspection: From $79 (from PRD)
+- [x] Fireplace Cleaning: Scrubbing and maintaining the internal firebox and surrounding hearth area for safety and aesthetic upkeep. (from PRD)
+- [x] Carpet Cleaning: Deep extraction cleaning to lift embedded dirt, stains, and allergens from residential and commercial carpets. (from PRD)
+- [x] Upholstery Cleaning: Specialized stain removal, deodorizing, and fabric refreshing for home and office furniture. (from PRD)
+- [x] Pressure Washing: High-pressure water cleaning for hard exterior surfaces like building facades, driveways, and sidewalks. (from PRD)
+- [x] Indoor Air Quality (IAQ) Testing and Assessment: Measuring airborne pollutants, mold spores, and particulate matter to establish a baseline for indoor air health. (from PRD)
+- [x] Indoor Air Quality Solutions: Installing permanent fixtures like UV lights, whole-home humidifiers, and high-efficiency air purifiers directly into the HVAC system. (from PRD)
+- [x] Antimicrobial Duct Treatments: Applying EPA-registered sanitizing fogs or sprays within the ductwork to actively eliminate mold, bacteria, and lingering odors. (from PRD)
+- [x] Furnace Cleaning and Maintenance: Inspecting, cleaning, and tuning up internal furnace components (blowers, burners, heat exchangers) to ensure safe and efficient winter operation. (from PRD)
+- [x] AC Repair, Maintenance, and Installation: Troubleshooting broken central air conditioning units, performing seasonal refrigerant checks, and installing new condenser systems. (from PRD)
+- [x] Full HVAC System Cleaning: A comprehensive service that goes beyond the vents to clean the entire mechanical heating and cooling system, including evaporator coils and blower motors. (from PRD)
+- [x] Multi-Point Video Air Duct Inspections: Deploying robotic or scoped cameras to visually inspect, document, and record the interior condition of ductwork before and after cleaning. (from PRD)
+- [x] Commercial Air Duct Cleaning: Custom quote (Large-scale vent and HVAC system cleaning designed to meet corporate compliance and handle multi-zone facilities.) (from PRD)
+- [x] Commercial Dryer Vent Cleaning: Custom quote (from PRD)
+- [x] Pot of Gold Maintenance Plan: A recurring seasonal membership that provides regular tune-ups and priority scheduling for heating and cooling units to prevent breakdowns and extend equipment lifespans. (from PRD)
+- [x] Asure Extended Service Plans: Extended warranty packages for specific new HVAC installations that cover labor and replacement parts with zero deductibles for unbudgeted repairs. (from PRD)
+- [x] Furnace Package Units: Flat-rate, all-in-one maintenance and cleaning tiers specifically tailored for packaged HVAC systems (combined heating and cooling units). (from PRD)
+- [x] Comprehensive Chimney and Fireplace Packages: Bundled service tiers that combine standard chimney sweeping, Level 1 visual safety inspections, and minor internal masonry repairs into a single cost. (from PRD)
+- [x] Indoor Air Quality Long-Term Monitoring Packages: Subscription or bundled services that include initial air testing, customized remediation reports, and ongoing sensor tracking of a property's air health. (from PRD)
+- [x] Whole-Home Air Duct Cleaning Packages: Tiered pricing models that cover the cleaning of all supply and return vents in a standard-sized home, frequently bundled with dryer vent cleaning or baseline antimicrobial treatments at a discounted rate. (from PRD)
+- [x] Fees Calculator: Add an interactive calculator that adjusts fees dynamically based on the selected service area. (from PRD)
+- [x] Request for Quote Form: (from PRD)
+- [x] Collect basic user contact information. (from PRD)
+- [x] Include a "Service Area" dropdown/list. (Note: Remove India as service area) (from PRD)
+- [x] Include a "Package/Services" selection list. (from PRD)
+- [x] Service Areas: (from PRD)
+- [x] Chicago, IL (from PRD)
+- [x] Evanston, IL (from PRD)
+- [x] Oak Park, IL (from PRD)
+- [x] Cicero, IL (from PRD)
+- [x] Skokie, IL (from PRD)
+- [x] Berwyn, IL (from PRD)
+- [x] Google Reviews Integration: A dedicated section or tab that automatically parses and displays reviews directly from the company's Google Reviews page. (from PRD)
+- [x] Catchy Heading: Add an attractive, high-converting hero heading. (from PRD)
+- [x] Trust Signals: Display a prominent review score/rating (e.g., "4.9/5 stars based on 200+ reviews") near the heading. (from PRD)
+- [x] Design Quality: Remove "AI slop" in FE design (ensure authentic, professional, and human-centric UI/UX). (from PRD)
+- [x] Top Menu: Include tabs for "Services", "Reviews", and "Contact". (from PRD)
+- [x] Smooth Scrolling: Implementing animated, smooth scrolling when a menu tab is clicked, directing the user to the relevant section on the page. (from PRD)
+- [x] Services List: Clearly list all available services. (from PRD)
+- [x] Service Details: Include a description and base price for each service. (from PRD)
+- [x] Packages: List available service packages (e.g., Basic, Premium, Full-House). (from PRD)
+- [x] Fees Calculator: Add an interactive calculator that adjusts fees dynamically based on the selected service area. (from PRD)
+- [x] Request for Quote Form: (from PRD)
+- [x] Collect basic user contact information. (from PRD)
+- [x] Include a "Service Area" dropdown/list. (from PRD)
+- [x] Include a "Package/Services" selection list. (from PRD)
+- [x] Google Reviews Integration: A dedicated section or tab that automatically parses and displays reviews directly from the company's Google Reviews page. (from PRD)
 - [x] `/` — Hero, trust bar, How It Works (4 steps), pricing preview, testimonials, FAQ, CTA
 - [x] `/pricing` — Market toggle, selectable tier cards, live price breakdown, FAQ
 - [x] `/book` — 3-step flow: contact info → slot picker → review/confirm → success screen
 - [x] `/passport/[id]` — Score cards, findings table, technician info, video placeholder
+- [x] Add glassy effect/design to UI elements. (from PRD)
+- [x] Follow Apple website design strategy (minimalist, large typography, high-quality imagery). (from PRD)
+- [x] Ensure a simple, user-friendly design. (from PRD)
+- [x] Add day/night (dark/bright) mode toggler. (from PRD)
 
 ### Phase F3 — Auth Pages
-- [ ] `/login` — Email + password form, "Forgot password?" link
-- [ ] `/signup` — Name, email, password, market selection
-- [ ] `/forgot-password` — Email input, confirmation message
-- [ ] `/reset-password/[token]` — New password form
+- [x] `/login` — Email + password form, "Forgot password?" link
+- [x] `/signup` — Name, email, password, market selection
+- [x] `/forgot-password` — Email input, confirmation message
+- [x] `/reset-password/[token]` — New password form
 
 ### Phase F4 — Swap Mock → Real API
-- [ ] Replace all `lib/api.ts` stubs with real `fetch()` calls to Go backend
-- [ ] Add loading skeletons on tier cards, slot picker, passport page
-- [ ] Add error boundary / error.tsx per route segment
-- [ ] Handle 4xx / 5xx responses gracefully on all forms
+- [x] Replace all `lib/api.ts` stubs with real `fetch()` calls to Go backend
+- [x] Add loading skeletons on tier cards, slot picker, passport page
+- [x] Add error boundary / error.tsx per route segment
+- [x] Handle 4xx / 5xx responses gracefully on all forms
 
 ### Phase F5 — Enterprise Portal
-- [ ] `/enterprise` — Landing page for AMC / annual maintenance contract enquiries
-- [ ] `/enterprise/dashboard` — Contract list, invoice download, renewal status
-- [ ] `/enterprise/new` — AMC onboarding form (property details, contact, tier selection)
+- [x] `/enterprise` — Landing page for AMC / annual maintenance contract enquiries
+- [x] `/enterprise/dashboard` — Contract list, invoice download, renewal status
+- [x] `/enterprise/new` — AMC onboarding form (property details, contact, tier selection)
 
 ### Phase F6 — Technician PWA
-- [ ] `/dashboard` — Today's dispatch list (job cards with address, tier, slot)
-- [ ] `/dashboard/job/[id]` — Job detail: customer info, checklist form, photo upload
-- [ ] `/dashboard/checklist/[bookingId]` — Submit service checklist
-- [ ] `public/manifest.json` — PWA manifest (name, icons, theme colour, start URL)
-- [ ] Service worker — Offline caching for dispatch list and checklist form
-- [ ] Push notifications — "New job assigned" alerts
+- [x] `/dashboard` — Today's dispatch list (job cards with address, tier, slot)
+- [x] `/dashboard/job/[id]` — Job detail: customer info, checklist form, photo upload
+- [x] `/dashboard/checklist/[bookingId]` — Submit service checklist
+- [x] `public/manifest.json` — PWA manifest (name, icons, theme colour, start URL)
+- [x] Service worker — Offline caching for dispatch list and checklist form
+- [x] Push notifications — "New job assigned" alerts
 
 ### Phase F7 — Programmatic SEO
-- [ ] `app/[city]/duct-cleaning/page.tsx` — City landing pages (Chicago neighbourhoods, Indian cities)
-- [ ] `app/sitemap.ts` — Dynamic sitemap generation
-- [ ] `app/robots.ts` — Robots.txt
-- [ ] JSON-LD structured data on home, pricing, and city pages
+- [x] `app/[city]/duct-cleaning/page.tsx` — City landing pages (Chicago neighbourhoods, Indian cities)
+- [x] `app/sitemap.ts` — Dynamic sitemap generation
+- [x] `app/robots.ts` — Robots.txt
+- [x] JSON-LD structured data on home, pricing, and city pages
 
 ### Phase F8 — Testing
-- [ ] Configure `vitest` + `@testing-library/react`
-- [ ] Unit tests for `Button`, `Badge`, `TierCard`, `PriceBreakdown`, `SlotPicker`
-- [ ] Unit tests for `lib/mockData.ts` and `lib/api.ts`
-- [ ] `Playwright` E2E: full booking flow, pricing page market switch, passport view
+- [x] Configure `vitest` + `@testing-library/react`
+- [x] Unit tests for `Button`, `Badge`, `TierCard`, `PriceBreakdown`, `SlotPicker`
+- [x] Unit tests for `lib/mockData.ts` and `lib/api.ts`
+- [x] `Playwright` E2E: full booking flow, pricing page market switch, passport view
 
 ### Phase B1 — Database Layer
 - [ ] `internal/database/db.go` — pgx connection pool, `Open()`, `Close()`, health ping
@@ -359,3 +363,15 @@ Phase 5 — Production Readiness
 - [ ] Health check endpoint extended: DB ping, version, uptime
 - [ ] Error tracking integration (Sentry for both API and Web)
 - [ ] Uptime monitoring (Better Uptime or similar)
+
+### Phase F9 — UI Overhaul & Dark Mode
+- [x] Add glassy effect/design to UI elements.
+- [x] Follow Apple website design strategy (minimalist, large typography, high-quality imagery).
+- [x] Ensure a simple, user-friendly design.
+- [x] Add day/night (dark/bright) mode toggler.
+
+### Phase F10 — Payment Integration (Frontend)
+- [x] add payment gateway for stripe and bank
+
+### Phase B10 — Payment Integration (Backend)
+- [ ] Backend integration: add payment gateway for stripe and bank
