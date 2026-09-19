@@ -1,15 +1,19 @@
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { useTheme } from "@/hooks/useTheme";
+import { useScrollTo } from "@/hooks/useScrollTo";
 
-/* Logo navy:  #203060
-   Logo royal: #0050a0
-   Logo sky:   #60a0d0  */
+/* Brand palette (from logo.jpg)
+   Navy  #203060  — dominant
+   Royal #0050a0  — mid
+   Sky   #60a0d0  — light accent
+*/
 
 export default function NavBar() {
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
-  const { theme, toggleTheme } = useTheme();
+  const [scrolled, setScrolled]     = useState(false);
+  const { theme, toggleTheme }      = useTheme();
+  const scrollTo                    = useScrollTo();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8);
@@ -18,10 +22,10 @@ export default function NavBar() {
   }, []);
 
   const links = [
-    { href: "/#services",     label: "Services" },
-    { href: "/#how-it-works", label: "How It Works" },
-    { href: "/#reviews",      label: "Reviews" },
-    { href: "/#faq",          label: "FAQ" },
+    { id: "services",     label: "Services" },
+    { id: "how-it-works", label: "How It Works" },
+    { id: "reviews",      label: "Reviews" },
+    { id: "faq",          label: "FAQ" },
   ];
 
   return (
@@ -32,27 +36,25 @@ export default function NavBar() {
           : "bg-white dark:bg-[#0a0f1e]"
       }`}
     >
-      {/* Announcement bar — navy background, sky text */}
+      {/* Announcement bar */}
       <div className="bg-[#203060] text-[#a8d6eb] text-[11.5px] font-medium py-2 px-4 text-center">
-        <span>
-          Guaranteed 2-Hour Arrival Windows · Chicago Metro
-          <span className="hidden md:inline">
-            {" "}·{" "}
-            <a
-              href={`tel:${import.meta.env.VITE_CONTACT_PHONE}`}
-              className="text-white font-semibold hover:text-[#60a0d0] transition-colors"
-            >
-              {import.meta.env.VITE_CONTACT_PHONE_FORMATTED}
-            </a>
-          </span>
+        Guaranteed 2-Hour Arrival Windows · Chicago Metro
+        <span className="hidden md:inline">
+          {" "}·{" "}
+          <a
+            href={`tel:${import.meta.env.VITE_CONTACT_PHONE}`}
+            className="text-white font-semibold hover:text-[#60a0d0] transition-colors"
+          >
+            {import.meta.env.VITE_CONTACT_PHONE_FORMATTED}
+          </a>
         </span>
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
 
-          {/* Logo — actual image from /logo.jpg */}
-          <Link to="/" className="flex items-center gap-3 group flex-shrink-0">
+          {/* Logo */}
+          <Link to="/" className="flex items-center gap-3 flex-shrink-0">
             <img
               src="/logo.jpg"
               alt="AeroDuct logo"
@@ -68,16 +70,16 @@ export default function NavBar() {
             </div>
           </Link>
 
-          {/* Desktop nav */}
+          {/* Desktop nav — each link calls scrollTo with its section id */}
           <nav className="hidden md:flex items-center gap-0.5">
             {links.map((link) => (
-              <a
-                key={link.href}
-                href={link.href}
-                className="px-3.5 py-2 text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-[#203060] dark:hover:text-white rounded-md hover:bg-slate-50 dark:hover:bg-white/5 transition-colors"
+              <button
+                key={link.id}
+                onClick={(e) => scrollTo(link.id, e)}
+                className="px-3.5 py-2 text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-[#203060] dark:hover:text-white rounded-md hover:bg-slate-50 dark:hover:bg-white/5 transition-colors cursor-pointer"
               >
                 {link.label}
-              </a>
+              </button>
             ))}
           </nav>
 
@@ -113,7 +115,7 @@ export default function NavBar() {
             </Link>
           </div>
 
-          {/* Mobile */}
+          {/* Mobile trigger */}
           <div className="flex sm:hidden items-center gap-2">
             <button
               onClick={toggleTheme}
@@ -148,14 +150,13 @@ export default function NavBar() {
         <div className="sm:hidden bg-white dark:bg-[#0a0f1e] border-t border-slate-100 dark:border-slate-800 px-4 py-4">
           <nav className="space-y-0.5 mb-4">
             {links.map((link) => (
-              <a
-                key={link.href}
-                href={link.href}
-                onClick={() => setMobileOpen(false)}
-                className="block px-3 py-2.5 text-sm font-medium text-slate-700 dark:text-slate-300 rounded-md hover:bg-slate-50 dark:hover:bg-white/5 transition-colors"
+              <button
+                key={link.id}
+                onClick={(e) => { scrollTo(link.id, e); setMobileOpen(false); }}
+                className="w-full text-left block px-3 py-2.5 text-sm font-medium text-slate-700 dark:text-slate-300 rounded-md hover:bg-slate-50 dark:hover:bg-white/5 transition-colors"
               >
                 {link.label}
-              </a>
+              </button>
             ))}
           </nav>
           <div className="flex flex-col gap-2 pt-3 border-t border-slate-100 dark:border-slate-800">

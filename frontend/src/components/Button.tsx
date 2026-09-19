@@ -9,32 +9,35 @@ type BaseProps = {
 };
 
 type AsButton = BaseProps & React.ButtonHTMLAttributes<HTMLButtonElement> & { href?: never };
-type AsLink = BaseProps & { href: string; target?: string; rel?: string };
+type AsLink   = BaseProps & { href: string; target?: string; rel?: string };
 
 export type ButtonProps = AsButton | AsLink;
 
+/* All variants mapped to brand palette:
+   Navy  #203060 | Royal #0050a0 | Sky #60a0d0 */
 const variantClasses: Record<NonNullable<BaseProps["variant"]>, string> = {
   primary:
-    "bg-blue-600 text-white shadow-sm hover:bg-blue-700 hover:shadow-glow-blue border border-blue-600 focus-visible:ring-blue-500",
+    "bg-[#203060] text-white hover:bg-[#0050a0] border border-[#203060] focus-visible:ring-[#203060]/50 shadow-sm",
+  // gradient alias → same as primary (no real gradient needed)
   gradient:
-    "bg-gradient-to-r from-blue-600 via-blue-700 to-indigo-700 text-white shadow-md hover:shadow-glow-blue hover:from-blue-700 hover:to-indigo-800 border-0 focus-visible:ring-blue-500",
+    "bg-[#203060] text-white hover:bg-[#0050a0] border border-[#203060] focus-visible:ring-[#203060]/50 shadow-sm",
   secondary:
-    "bg-white text-slate-800 border border-slate-200 hover:bg-slate-50 hover:border-slate-300 shadow-xs focus-visible:ring-slate-400",
+    "bg-white dark:bg-transparent text-[#203060] dark:text-slate-200 border border-[#203060]/25 dark:border-slate-700 hover:border-[#203060]/50 dark:hover:border-slate-500 hover:bg-slate-50 dark:hover:bg-white/5 focus-visible:ring-[#203060]/30",
   outline:
-    "bg-transparent text-blue-600 border border-blue-200 hover:bg-blue-50 hover:border-blue-300 focus-visible:ring-blue-400",
+    "bg-transparent text-[#0050a0] dark:text-[#60a0d0] border border-[#0050a0]/40 dark:border-[#60a0d0]/30 hover:bg-[#0050a0]/5 dark:hover:bg-[#60a0d0]/5 hover:border-[#0050a0]/70 focus-visible:ring-[#0050a0]/30",
   ghost:
-    "bg-transparent text-slate-700 border border-transparent hover:bg-slate-100 hover:text-slate-900 focus-visible:ring-slate-300",
+    "bg-transparent text-slate-600 dark:text-slate-400 border border-transparent hover:bg-slate-100 dark:hover:bg-white/5 hover:text-slate-900 dark:hover:text-white focus-visible:ring-slate-300",
 };
 
 const sizeClasses: Record<NonNullable<BaseProps["size"]>, string> = {
-  sm: "px-3 py-1.5 text-xs font-semibold rounded-lg gap-1.5",
-  md: "px-4.5 py-2.5 text-sm font-semibold rounded-xl gap-2",
-  lg: "px-6 py-3.5 text-base font-semibold rounded-xl gap-2.5 shadow-sm",
-  xl: "px-8 py-4 text-lg font-bold rounded-2xl gap-3 shadow-md",
+  sm:  "px-3 py-1.5 text-xs font-semibold rounded-md gap-1.5",
+  md:  "px-4 py-2 text-sm font-semibold rounded-md gap-2",
+  lg:  "px-5 py-2.5 text-sm font-semibold rounded-md gap-2",
+  xl:  "px-6 py-3 text-sm font-semibold rounded-md gap-2.5",
 };
 
 const base =
-  "inline-flex items-center justify-center font-medium transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none active:scale-[0.98] cursor-pointer";
+  "inline-flex items-center justify-center font-medium transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none active:scale-[0.98] cursor-pointer";
 
 export function Button({ children, variant = "primary", size = "md", className = "", ...rest }: ButtonProps) {
   const classes = `${base} ${variantClasses[variant]} ${sizeClasses[size]} ${className}`;

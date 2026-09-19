@@ -28,7 +28,7 @@ export default function QuotePage() {
             </p>
           </div>
 
-          <div className="glass-panel rounded-3xl p-8 shadow-xl shadow-blue-900/5 dark:shadow-none border border-slate-200/60 dark:border-slate-800">
+          <div className="bg-white dark:bg-[#0d1225] rounded-lg border border-slate-200 dark:border-slate-800 shadow-sm p-8">
             {submitted ? (
               <div className="text-center py-12">
                 <div className="w-16 h-16 bg-emerald-100 dark:bg-emerald-900/40 text-emerald-600 dark:text-emerald-400 rounded-full flex items-center justify-center text-3xl mx-auto mb-6">
@@ -49,7 +49,7 @@ export default function QuotePage() {
                       type="text"
                       id="firstName"
                       required
-                      className="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/50 focus:bg-white dark:focus:bg-slate-900 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all dark:text-white placeholder-slate-400 dark:placeholder-slate-500"
+                      className="w-full px-4 py-3 rounded-md border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/50 focus:bg-white dark:focus:bg-slate-900 focus:ring-2 focus:ring-[#203060] focus:border-transparent outline-none transition-all dark:text-white placeholder-slate-400 dark:placeholder-slate-500"
                       placeholder="John"
                     />
                   </div>
@@ -59,7 +59,7 @@ export default function QuotePage() {
                       type="text"
                       id="lastName"
                       required
-                      className="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/50 focus:bg-white dark:focus:bg-slate-900 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all dark:text-white placeholder-slate-400 dark:placeholder-slate-500"
+                      className="w-full px-4 py-3 rounded-md border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/50 focus:bg-white dark:focus:bg-slate-900 focus:ring-2 focus:ring-[#203060] focus:border-transparent outline-none transition-all dark:text-white placeholder-slate-400 dark:placeholder-slate-500"
                       placeholder="Doe"
                     />
                   </div>
@@ -71,7 +71,7 @@ export default function QuotePage() {
                     type="email"
                     id="email"
                     required
-                    className="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/50 focus:bg-white dark:focus:bg-slate-900 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all dark:text-white placeholder-slate-400 dark:placeholder-slate-500"
+                    className="w-full px-4 py-3 rounded-md border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/50 focus:bg-white dark:focus:bg-slate-900 focus:ring-2 focus:ring-[#203060] focus:border-transparent outline-none transition-all dark:text-white placeholder-slate-400 dark:placeholder-slate-500"
                     placeholder="john@example.com"
                   />
                 </div>
@@ -82,7 +82,7 @@ export default function QuotePage() {
                     type="tel"
                     id="phone"
                     required
-                    className="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/50 focus:bg-white dark:focus:bg-slate-900 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all dark:text-white placeholder-slate-400 dark:placeholder-slate-500"
+                    className="w-full px-4 py-3 rounded-md border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/50 focus:bg-white dark:focus:bg-slate-900 focus:ring-2 focus:ring-[#203060] focus:border-transparent outline-none transition-all dark:text-white placeholder-slate-400 dark:placeholder-slate-500"
                     placeholder="(555) 123-4567"
                   />
                 </div>
@@ -92,7 +92,7 @@ export default function QuotePage() {
                     <label htmlFor="serviceArea" className="block text-sm font-semibold text-slate-900 dark:text-slate-200">Service Area</label>
                     <select
                       id="serviceArea"
-                      className="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/50 focus:bg-white dark:focus:bg-slate-900 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all dark:text-white"
+                      className="w-full px-4 py-3 rounded-md border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/50 focus:bg-white dark:focus:bg-slate-900 focus:ring-2 focus:ring-[#203060] focus:border-transparent outline-none transition-all dark:text-white"
                     >
                       {SERVICE_AREAS.map(area => (
                         <option key={area.id} value={area.id}>{area.name}</option>
@@ -103,7 +103,7 @@ export default function QuotePage() {
                     <label htmlFor="package" className="block text-sm font-semibold text-slate-900 dark:text-slate-200">Package / Service</label>
                     <select
                       id="package"
-                      className="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/50 focus:bg-white dark:focus:bg-slate-900 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all dark:text-white"
+                      className="w-full px-4 py-3 rounded-md border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/50 focus:bg-white dark:focus:bg-slate-900 focus:ring-2 focus:ring-[#203060] focus:border-transparent outline-none transition-all dark:text-white"
                     >
                       <option value="">Select a service</option>
                       {SERVICES.map(svc => (
@@ -117,7 +117,7 @@ export default function QuotePage() {
                   <label htmlFor="propertyType" className="block text-sm font-semibold text-slate-900 dark:text-slate-200">Property Type</label>
                   <select
                     id="propertyType"
-                    className="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/50 focus:bg-white dark:focus:bg-slate-900 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all dark:text-white"
+                    className="w-full px-4 py-3 rounded-md border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/50 focus:bg-white dark:focus:bg-slate-900 focus:ring-2 focus:ring-[#203060] focus:border-transparent outline-none transition-all dark:text-white"
                   >
                     <option value="residential">Residential (Single Family)</option>
                     <option value="multi">Residential (Multi-Family/Condo)</option>
@@ -131,15 +131,18 @@ export default function QuotePage() {
                     id="message"
                     required
                     rows={4}
-                    className="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/50 focus:bg-white dark:focus:bg-slate-900 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all resize-none dark:text-white placeholder-slate-400 dark:placeholder-slate-500"
+                    className="w-full px-4 py-3 rounded-md border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/50 focus:bg-white dark:focus:bg-slate-900 focus:ring-2 focus:ring-[#203060] focus:border-transparent outline-none transition-all resize-none dark:text-white placeholder-slate-400 dark:placeholder-slate-500"
                     placeholder="Please describe what you need help with..."
                   />
                 </div>
 
                 <div className="pt-2">
-                  <Button type="submit" variant="gradient" size="xl" className="w-full justify-center shadow-lg">
+                  <button
+                    type="submit"
+                    className="w-full flex items-center justify-center px-6 py-3.5 text-sm font-semibold text-white bg-[#203060] hover:bg-[#0050a0] rounded-md transition-colors shadow-sm"
+                  >
                     Submit Request
-                  </Button>
+                  </button>
                 </div>
                 <p className="text-center text-xs text-slate-500 mt-4">
                   By submitting this form, you agree to our Terms of Service and Privacy Policy.

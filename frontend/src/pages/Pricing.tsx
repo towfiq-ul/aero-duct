@@ -74,12 +74,12 @@ export default function Pricing() {
           
           {/* Services List */}
           <div className="w-full lg:w-2/3 space-y-8">
-            <div className="glass-panel rounded-3xl p-6 sm:p-8">
+            <div className="bg-white dark:bg-[#0d1225] rounded-lg border border-slate-200 dark:border-slate-800 p-6 sm:p-8">
               <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-6">Select Service Area</h2>
               <select 
                 value={activeArea}
                 onChange={(e) => setActiveArea(e.target.value)}
-                className="w-full sm:w-64 px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 focus:bg-white dark:focus:bg-slate-900 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all font-medium text-slate-700 dark:text-slate-200"
+                className="w-full sm:w-64 px-4 py-3 rounded-md border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 focus:bg-white dark:focus:bg-slate-900 focus:ring-2 focus:ring-[#203060] focus:border-transparent outline-none transition-all font-medium text-slate-700 dark:text-slate-200"
               >
                 {SERVICE_AREAS.map(area => (
                   <option key={area.id} value={area.id}>{area.name}</option>
@@ -87,7 +87,7 @@ export default function Pricing() {
               </select>
             </div>
 
-            <div className="glass-panel rounded-3xl overflow-hidden">
+            <div className="bg-white dark:bg-[#0d1225] rounded-lg border border-slate-200 dark:border-slate-800 overflow-hidden">
               <div className="p-6 sm:p-8 border-b border-slate-100 dark:border-slate-800">
                 <h2 className="text-2xl font-bold text-slate-900 dark:text-white">Residential Services</h2>
               </div>
@@ -95,7 +95,7 @@ export default function Pricing() {
                 {resServices.map((svc) => (
                   <label key={svc.id} className="flex items-start gap-4 p-6 sm:p-8 hover:bg-slate-50 dark:hover:bg-slate-800/30 cursor-pointer transition-colors group">
                     <div className="pt-1">
-                      <div className={`w-6 h-6 rounded border flex items-center justify-center transition-colors ${selectedServices.has(svc.id) ? 'bg-blue-600 border-blue-600' : 'bg-white dark:bg-slate-800 border-slate-300 dark:border-slate-600 group-hover:border-blue-400 dark:group-hover:border-blue-400'}`}>
+                      <div className={`w-6 h-6 rounded border flex items-center justify-center transition-colors ${selectedServices.has(svc.id) ? 'bg-[#203060] border-[#203060]' : 'bg-white dark:bg-slate-800 border-slate-300 dark:border-slate-600 group-hover:border-[#0050a0] dark:group-hover:border-[#60a0d0]'}`}>
                         {selectedServices.has(svc.id) && <svg className="w-4 h-4 text-white fill-current" viewBox="0 0 20 20"><path d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"/></svg>}
                       </div>
                       <input 
@@ -117,7 +117,7 @@ export default function Pricing() {
               </div>
             </div>
             
-            <div className="glass-panel rounded-3xl overflow-hidden">
+            <div className="bg-white dark:bg-[#0d1225] rounded-lg border border-slate-200 dark:border-slate-800 overflow-hidden">
               <div className="p-6 sm:p-8 border-b border-slate-100 dark:border-slate-800">
                 <h2 className="text-2xl font-bold text-slate-900 dark:text-white">Commercial Services</h2>
               </div>
@@ -125,7 +125,7 @@ export default function Pricing() {
                 {comServices.map((svc) => (
                   <label key={svc.id} className="flex items-start gap-4 p-6 sm:p-8 hover:bg-slate-50 dark:hover:bg-slate-800/30 cursor-pointer transition-colors group">
                     <div className="pt-1">
-                      <div className={`w-6 h-6 rounded border flex items-center justify-center transition-colors ${selectedServices.has(svc.id) ? 'bg-blue-600 border-blue-600' : 'bg-white dark:bg-slate-800 border-slate-300 dark:border-slate-600 group-hover:border-blue-400 dark:group-hover:border-blue-400'}`}>
+                      <div className={`w-6 h-6 rounded border flex items-center justify-center transition-colors ${selectedServices.has(svc.id) ? 'bg-[#203060] border-[#203060]' : 'bg-white dark:bg-slate-800 border-slate-300 dark:border-slate-600 group-hover:border-[#0050a0] dark:group-hover:border-[#60a0d0]'}`}>
                         {selectedServices.has(svc.id) && <svg className="w-4 h-4 text-white fill-current" viewBox="0 0 20 20"><path d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"/></svg>}
                       </div>
                       <input 
@@ -147,7 +147,7 @@ export default function Pricing() {
               </div>
             </div>
             
-            <div className="glass-panel rounded-3xl overflow-hidden">
+            <div className="bg-white dark:bg-[#0d1225] rounded-lg border border-slate-200 dark:border-slate-800 overflow-hidden">
               <div className="p-6 sm:p-8 border-b border-slate-100 dark:border-slate-800">
                 <h2 className="text-2xl font-bold text-slate-900 dark:text-white">Service Packages</h2>
               </div>
@@ -181,8 +181,8 @@ export default function Pricing() {
 
           {/* Checkout Sticky Card */}
           <div className="w-full lg:w-1/3 sticky top-24">
-            <div className="glass-panel rounded-3xl shadow-xl shadow-blue-900/5 dark:shadow-none overflow-hidden">
-              <div className="bg-slate-900 dark:bg-slate-950 p-6 text-center border-b border-slate-800">
+            <div className="bg-white dark:bg-[#0d1225] rounded-lg border border-slate-200 dark:border-slate-800 shadow-xl shadow-blue-900/5 dark:shadow-none overflow-hidden">
+              <div className="bg-[#203060] p-6 text-center border-b border-[#0050a0]/30">
                 <span className="text-sm font-bold tracking-widest uppercase text-emerald-400">Total Estimate</span>
                 <div className="text-white mt-1 font-medium">
                   {selectedAreaObj.name}
@@ -206,7 +206,7 @@ export default function Pricing() {
                     />
                     
                     {hasCustomQuote && (
-                      <div className="mt-4 p-4 rounded-xl bg-blue-50 dark:bg-blue-900/30 border border-blue-100 dark:border-blue-800">
+                      <div className="mt-4 p-4 rounded-md bg-blue-50 dark:bg-blue-900/30 border border-blue-100 dark:border-blue-800">
                         <p className="text-sm text-blue-800 dark:text-blue-300 font-medium text-center">
                           One or more selected services require a custom quote. The total shown is a partial estimate.
                         </p>
@@ -216,13 +216,13 @@ export default function Pricing() {
                     <div className="mt-6 border-t border-slate-200 dark:border-slate-800 pt-6">
                       <p className="text-sm font-semibold text-slate-700 dark:text-slate-300 mb-3 text-center">Secure your appointment today</p>
                       <div className="flex flex-col gap-3">
-                        <button className="w-full flex items-center justify-center gap-2 bg-[#635BFF] hover:bg-[#4B45D6] text-white font-semibold py-3 px-4 rounded-xl shadow-md transition-colors">
+                        <button className="w-full flex items-center justify-center gap-2 bg-[#635BFF] hover:bg-[#4B45D6] text-white font-semibold py-3 px-4 rounded-md shadow-md transition-colors">
                           <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
                             <path d="M13.976 9.15c-2.172-.806-3.356-1.143-3.356-2.076 0-.839.92-1.4 2.382-1.4 1.508 0 2.92.513 4.14 1.34l.732-3.13C16.64 2.89 15.01 2.37 13.08 2.37c-3.79 0-6.19 1.95-6.19 4.75 0 3.32 3.84 4.3 6.38 5.17 2.45.83 3.1 1.48 3.1 2.41 0 1-.92 1.63-2.61 1.63-1.89 0-3.69-.73-5.2-1.92l-.76 3.23c1.58.98 3.5 1.5 5.56 1.5 4.02 0 6.46-1.96 6.46-4.94 0-3.1-3.65-4.22-5.84-5.05z" />
                           </svg>
                           Pay with Stripe
                         </button>
-                        <button className="w-full flex items-center justify-center gap-2 bg-slate-900 hover:bg-slate-800 text-white font-semibold py-3 px-4 rounded-xl shadow-md transition-colors">
+                        <button className="w-full flex items-center justify-center gap-2 bg-slate-900 hover:bg-slate-800 text-white font-semibold py-3 px-4 rounded-md shadow-md transition-colors">
                           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
                           </svg>
@@ -261,9 +261,7 @@ export default function Pricing() {
                   className="w-full text-left px-6 py-5 flex items-center justify-between gap-4 hover:bg-slate-50/50 cursor-pointer"
                 >
                   <span className="text-sm sm:text-base font-bold text-slate-900">{item.question}</span>
-                  <span className={`w-7 h-7 rounded-full bg-slate-100 text-slate-600 flex items-center justify-center text-sm font-bold flex-shrink-0 transition-transform ${isOpen ? "rotate-180 bg-blue-100 text-blue-600" : ""}`}>
-                    ↓
-                  </span>
+                  <span className={`w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0 transition-transform ${isOpen ? "rotate-180 bg-[#203060]/10 text-[#203060]" : "bg-slate-100 text-slate-500"}`}><svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" /></svg></span>
                 </button>
                 {isOpen && (
                   <div className="px-6 pb-6 pt-1 text-sm text-slate-600 leading-relaxed border-t border-slate-100">

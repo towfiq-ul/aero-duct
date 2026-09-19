@@ -1,7 +1,9 @@
 import { Link } from "react-router-dom";
+import { useScrollTo } from "@/hooks/useScrollTo";
 
 export default function Footer() {
-  const year = new Date().getFullYear();
+  const year    = new Date().getFullYear();
+  const scrollTo = useScrollTo();
 
   return (
     <footer className="bg-white dark:bg-[#0a0f1e] border-t border-slate-200 dark:border-slate-800">
@@ -87,22 +89,30 @@ export default function Footer() {
               Quick Links
             </h3>
             <ul className="space-y-2 mb-7">
+              <li>
+                <Link
+                  to="/pricing"
+                  className="text-[13px] text-slate-500 dark:text-slate-400 hover:text-[#203060] dark:hover:text-white transition-colors"
+                >
+                  Flat-Rate Calculator
+                </Link>
+              </li>
               {[
-                { to: "/pricing",       label: "Flat-Rate Calculator" },
-                { to: "/#how-it-works", label: "NADCA 4-Step Process" },
-                { to: "/#faq",          label: "Customer FAQ" },
-                { to: "/#reviews",      label: "Google Reviews" },
+                { id: "how-it-works", label: "NADCA 4-Step Process" },
+                { id: "faq",          label: "Customer FAQ" },
+                { id: "reviews",      label: "Google Reviews" },
               ].map((l) => (
-                <li key={l.label}>
-                  <Link
-                    to={l.to}
-                    className="text-[13px] text-slate-500 dark:text-slate-400 hover:text-[#203060] dark:hover:text-white transition-colors"
+                <li key={l.id}>
+                  <button
+                    onClick={(e) => scrollTo(l.id, e)}
+                    className="text-[13px] text-slate-500 dark:text-slate-400 hover:text-[#203060] dark:hover:text-white transition-colors cursor-pointer text-left"
                   >
                     {l.label}
-                  </Link>
+                  </button>
                 </li>
               ))}
             </ul>
+
 
             {/* Inline CTA */}
             <div className="border border-[#203060]/15 dark:border-[#60a0d0]/10 rounded-lg p-4 bg-slate-50 dark:bg-[#0d1225]">

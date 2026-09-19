@@ -7,6 +7,8 @@
 @layer base {
   html {
     scroll-behavior: smooth;
+    /* offset for sticky navbar: 32px announcement bar + 60px nav */
+    scroll-padding-top: 92px;
   }
 }
 
