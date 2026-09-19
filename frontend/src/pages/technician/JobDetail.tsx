@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 export default function JobDetail() {
   const { id } = useParams();
@@ -8,7 +8,7 @@ export default function JobDetail() {
       <div className="bg-slate-800 p-4 rounded-xl border border-slate-700">
         <p>Customer: John Doe</p>
         <p>Service: Premium Duct Clean</p>
-        <a href={`/technician/checklist/${id}`} className="mt-6 block text-center bg-emerald-600 py-3 rounded-lg font-bold hover:bg-emerald-500">Start Checklist</a>
+        <Link to={`/technician/checklist/${id}`} className="mt-6 block text-center bg-emerald-600 py-3 rounded-lg font-bold hover:bg-emerald-500">Start Checklist</Link>
       </div>
     </div>
   );

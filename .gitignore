@@ -24,6 +24,7 @@ apps/api/tmp/
 **/.env.local
 **/.env.*.local
 !**/.env.example
+!**/.env.sit
 
 # OS
 .DS_Store

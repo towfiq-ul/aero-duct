@@ -56,7 +56,7 @@ export default function NavBar() {
           {/* Logo */}
           <Link to="/" className="flex items-center gap-3 flex-shrink-0">
             <img
-              src="/logo.jpg"
+              src={`${import.meta.env.BASE_URL}logo.jpg`}
               alt="AeroDuct logo"
               className="h-9 w-9 object-contain"
             />

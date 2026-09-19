@@ -15,3 +15,18 @@ If the user says **"implement FE"** (or **"implement BE"** for backend), it mean
 3. After implementing one task, update `TASK_LIST.md` (e.g. mark it as completed).
 4. Complete all tasks until forced to stop.
 5. **Conditional limits**: If asked to implement up to a certain point (e.g., "implement FE up to Phase X") or a specific phase (e.g., "implement FE Phase Y"), strictly stop implementing after that point or only implement that specific phase.
+
+## "verify and feedback"
+If the user says **"verify and feedback"**, it means to execute the following sequence of actions:
+1. Read `TASK_LIST.md` in full.
+2. For every item marked `[x]` or listed under **✅ Implemented**, verify it actually exists in the codebase by checking file presence, route registration in `App.tsx`, and functional completeness (not just stubs).
+3. For every item found to be falsely marked done (file missing, route unregistered, or content is a stub with no real logic), move it from ✅ to ❌ in `TASK_LIST.md` with a note explaining what is missing.
+4. For items that are partially implemented (file exists but logic is stub/mock/placeholder), move them to 🟡 Partial with a description of what remains.
+5. Update the "Last updated" date in `TASK_LIST.md`.
+6. Write a `FEEDBACK.md` file (create if it doesn't exist, append if it does) with:
+   - **🔴 Critical** — false positives: items claimed done that don't exist
+   - **🟡 Medium** — incomplete implementations: stubs, missing logic, broken links
+   - **🔵 Design / UX** — visual issues, accessibility gaps, consistency problems
+   - **🟢 What's working well** — things verified as genuinely complete and functional
+7. The feedback should be specific: reference exact file paths, component names, and route strings.
+8. Do not modify any source code during this workflow — only update documentation files.

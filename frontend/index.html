@@ -7,6 +7,32 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
+    <!--
+      SPA path restore — counterpart to public/404.html.
+      Reads the ?p= param written by the 404 redirect and calls
+      history.replaceState so the browser URL looks correct before
+      React/BrowserRouter mounts.
+    -->
+    <script>
+      (function() {
+        var qs = window.location.search;
+        if (qs) {
+          var params = qs.slice(1).split('&').reduce(function(acc, s) {
+            var p = s.split('=');
+            acc[p[0]] = p.slice(1).join('=').replace(/~and~/g, '&');
+            return acc;
+          }, {});
+          if (params.p !== undefined) {
+            var path = decodeURIComponent(params.p);
+            var query = params.q ? ('?' + decodeURIComponent(params.q)) : '';
+            window.history.replaceState(
+              null, null,
+              window.location.pathname.slice(0, -1) + path + query + window.location.hash
+            );
+          }
+        }
+      })();
+    </script>
   </head>
   <body>
     <div id="root"></div>

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>AeroDuct</title>
+    <!--
+      GitHub Pages SPA redirect — single-page-apps-for-github-pages technique.
+
+      When GitHub Pages can't find a file (any path other than index.html or
+      static assets), it serves this 404.html. We immediately redirect the
+      browser to index.html, encoding the original path + query as a query
+      param so the index.html redirect script can restore it via history.replaceState.
+
+      Source: https://github.com/rafgraph/spa-github-pages
+    -->
+    <script>
+      var l = window.location;
+      // segmentCount = number of path segments to keep as the "repo root"
+      // For https://towfiq-ul.github.io/aero-duct  → 1 segment ("aero-duct")
+      var segmentCount = 1;
+      var path = l.pathname.slice(1).split('/').slice(segmentCount).join('/');
+      var query = l.search.slice(1);
+      var hash = l.hash;
+      l.replace(
+        l.protocol + '//' + l.host +
+        l.pathname.split('/').slice(0, 1 + segmentCount).join('/') +
+        '/?p=/' + encodeURIComponent(path) +
+        (query ? '&q=' + encodeURIComponent(query) : '') +
+        hash
+      );
+    </script>
+  </head>
+  <body></body>
+</html>

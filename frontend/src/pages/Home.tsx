@@ -335,7 +335,7 @@ export default function Home() {
                   </p>
                   <h3 className="text-lg font-bold text-white mt-1">Airflow & Hygiene Certified</h3>
                 </div>
-                <img src="/logo.jpg" alt="" className="w-10 h-10 object-contain brightness-0 invert opacity-60" />
+                <img src={`${import.meta.env.BASE_URL}logo.jpg`} alt="" className="w-10 h-10 object-contain brightness-0 invert opacity-60" />
               </div>
 
               <div className="space-y-2.5">

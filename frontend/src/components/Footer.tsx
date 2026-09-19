@@ -34,7 +34,7 @@ export default function Footer() {
           {/* Brand col */}
           <div className="md:col-span-5 space-y-4">
             <Link to="/" className="inline-flex items-center gap-3">
-              <img src="/logo.jpg" alt="AeroDuct" className="h-9 w-9 object-contain" />
+              <img src={`${import.meta.env.BASE_URL}logo.jpg`} alt="AeroDuct" className="h-9 w-9 object-contain" />
               <span className="text-[18px] font-bold tracking-tight text-[#203060] dark:text-white">
                 Aero<span className="text-[#0050a0] dark:text-[#60a0d0]">Duct</span>
               </span>

@@ -1,15 +1,16 @@
 {
   "name": "AeroDuct Technician",
   "short_name": "AeroDuct",
-  "start_url": "/technician",
+  "start_url": "/aero-duct/",
+  "scope": "/aero-duct/",
   "display": "standalone",
   "background_color": "#0f172a",
-  "theme_color": "#0f172a",
+  "theme_color": "#203060",
   "icons": [
     {
-      "src": "/vite.svg",
-      "sizes": "192x192",
-      "type": "image/svg+xml"
+      "src": "logo.jpg",
+      "sizes": "512x512",
+      "type": "image/jpeg"
     }
   ]
 }

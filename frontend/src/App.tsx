@@ -15,7 +15,7 @@ import "./index.css";
 function App() {
   return (
     <div className="antialiased text-gray-900 dark:text-slate-100 bg-white dark:bg-slate-900 font-inter min-h-screen transition-colors duration-200">
-      <BrowserRouter>
+      <BrowserRouter basename={import.meta.env.BASE_URL}>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/pricing" element={<Pricing />} />
