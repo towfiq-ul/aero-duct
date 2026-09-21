@@ -98,6 +98,7 @@ export default function Footer() {
                 </Link>
               </li>
               {[
+                { id: "about",        label: "About AeroDuct" },
                 { id: "how-it-works", label: "NADCA 4-Step Process" },
                 { id: "faq",          label: "Customer FAQ" },
                 { id: "reviews",      label: "Google Reviews" },

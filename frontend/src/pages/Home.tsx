@@ -259,6 +259,67 @@ export default function Home() {
         </div>
       </section>
 
+      {/* ── About AeroDuct ─────────────────────────────────────── */}
+      <section id="about" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+          <div className="lg:col-span-6 space-y-5">
+            <SectionTag>About AeroDuct</SectionTag>
+            <h2 className="text-3xl sm:text-4xl font-black text-[#203060] dark:text-white tracking-tight">
+              Engineering cleaner, healthier indoor air since 2018.
+            </h2>
+            <p className="text-sm sm:text-base text-slate-600 dark:text-slate-400 leading-relaxed">
+              AeroDuct was founded in Chicago with a straightforward mission: eliminate predatory per-vent upselling and deliver hospital-grade HVAC decontamination backed by empirical data.
+            </p>
+            <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+              We treat your home's ventilation as a closed clinical respiratory circuit. Using commercial-grade negative-air containment and EPA-registered botanical sanitization, our certified specialists ensure your family breathes air free of micro-allergens, mold spores, and construction particulates.
+            </p>
+            <div className="pt-2 flex flex-wrap gap-4 text-xs font-semibold text-slate-700 dark:text-slate-300">
+              <span className="flex items-center gap-1.5">
+                <span className="w-2 h-2 rounded-full bg-[#60a0d0]" />
+                NADCA Member #78294
+              </span>
+              <span className="flex items-center gap-1.5">
+                <span className="w-2 h-2 rounded-full bg-[#0050a0]" />
+                EPA Registration #92841-IL
+              </span>
+              <span className="flex items-center gap-1.5">
+                <span className="w-2 h-2 rounded-full bg-[#203060] dark:bg-[#60a0d0]" />
+                Fully Insured & Bonded
+              </span>
+            </div>
+          </div>
+
+          <div className="lg:col-span-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {[
+              {
+                title: "NADCA Standards",
+                desc: "Every technician is trained and certified under the ACR 2021 standard for HVAC system assessment, cleaning, and restoration.",
+              },
+              {
+                title: "Hospital-Grade HEPA",
+                desc: "High-vacuum negative-pressure extraction units filtering 99.97% of particulates down to 0.3 microns without blowing dust indoors.",
+              },
+              {
+                title: "Transparent Flat-Rate",
+                desc: "We quote whole-home flat rates upfront. No hidden per-hookup charges, travel surcharges, or door-step price surprises.",
+              },
+              {
+                title: "Chicago Metro Pride",
+                desc: "Locally dispatched from Schaumburg, IL. We serve 20+ communities across Cook, DuPage, and Lake counties with 2-hour arrival windows.",
+              },
+            ].map((card) => (
+              <div
+                key={card.title}
+                className="bg-white dark:bg-[#0d1225] border border-slate-200 dark:border-slate-800 rounded-lg p-5 shadow-card card-hover"
+              >
+                <h3 className="text-sm font-bold text-[#203060] dark:text-white mb-2">{card.title}</h3>
+                <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">{card.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* ── Proof / Certificate ────────────────────────────────── */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">

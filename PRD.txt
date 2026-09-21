@@ -1,3 +1,0 @@
-1. add a about menu item
-2. name the env for github pages .env.sit
-3. 

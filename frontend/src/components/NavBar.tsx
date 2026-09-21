@@ -24,6 +24,7 @@ export default function NavBar() {
   const links = [
     { id: "services",     label: "Services" },
     { id: "how-it-works", label: "How It Works" },
+    { id: "about",        label: "About" },
     { id: "reviews",      label: "Reviews" },
     { id: "faq",          label: "FAQ" },
   ];

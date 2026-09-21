@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://towfiq-ul.github.io/aero-duct/sitemap.xml

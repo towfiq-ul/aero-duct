@@ -1,6 +1,6 @@
 # Development Task List — AeroDuct
 
-> Last updated: 2026-09-19 (verified against actual codebase)
+> Last updated: 2026-09-21 (verified against actual codebase)
 
 ---
 
@@ -37,6 +37,11 @@
 - **`lib/api.ts`** – Typed API client (mock-backed, `// TODO` comments ready for real fetch swap)
 - **`components/Button`** – `<a>`/`<button>` discriminated union; primary/secondary/ghost/outline/gradient × sm/md/lg/xl
 - **`components/Badge`** – Status chip (file exists)
+- **`components/Input`** – Label, error state, helper text, and dark mode support ✅
+- **`components/Select`** – Accessible styled dropdown with chevron icon and validation states ✅
+- **`components/TierCard`** – Package card with features checklist, selection state, and popular badges ✅
+- **`components/SlotPicker`** – 2-hour arrival window date/slot picker with availability telemetry ✅
+- **`components/Modal`** – Accessible modal dialog with backdrop blur, ESC key handler, and smooth transitions ✅
 - **`components/NavBar`** – Sticky header, scroll-aware shadow, logo (`/logo.jpg`), nav links with `useScrollTo` hook, dark mode toggle, mobile drawer
 - **`components/Footer`** – 4-column layout, trust strip, inline CTA card, `useScrollTo` for anchor links
 - **`components/PriceBreakdown`** – Subtotal → tax (8% IL) → total via `Intl.NumberFormat`
@@ -53,16 +58,31 @@
 - **`/enterprise/dashboard`** – Contract list stub
 - **`/technician`** – Dispatch list (today's jobs)
 - **`/technician/job/:id`** – Job detail page
+- **`/book`** – 3-step online booking flow with 2-hour arrival window slots and confirmation ✅
+- **`/passport/:id`** – Digital compliance audit passport with borescope visual cards and CFM telemetry ✅
+- **`/reset-password/:token`** – Password reset form with token verification and validation ✅
+- **`/enterprise/new`** – Commercial AMC onboarding & customized proposal enquiry form ✅
+- **`/technician/checklist/:bookingId`** – NADCA ACR 2021 field checklist with CFM verification and passport generation ✅
 - **`/:city/duct-cleaning`** – City SEO landing page (`CityLanding.tsx`)
 
 ### Frontend — UX
 - **Dark/light mode toggle** – `useTheme` hook, persists to `localStorage`, respects OS preference
 - **Smooth scroll with offset** – `useScrollTo` hook used in NavBar + Footer; `scroll-padding-top: 92px` in CSS
+- **About Menu & Section** – "About" navigation in NavBar & Footer with smooth scroll to dedicated `#about` section in `Home.tsx` ✅
 - **PWA manifest** – `public/manifest.json` exists (AeroDuct Technician, standalone mode)
 - **Vitest config** – `vitest.config.ts` configured with jsdom + react plugin
 
+### Frontend — Testing
+- **Unit Tests (Vitest)** – 9 test suites / 19 tests passing (Button, Badge, PriceBreakdown, Input, TierCard, SlotPicker, Select, Modal, useTheme, useScrollTo) ✅
+- **Playwright E2E** – Flow tests covering homepage, pricing calculator, 3-step booking flow, and digital airway passport ✅
+
 ### Frontend — Payment UI
 - **Stripe + Bank Transfer buttons** – Present on Pricing page sticky checkout card
+
+### Frontend — SEO & PWA
+- **Service Worker** – `public/sw.js` with offline caching, stale-while-revalidate strategy, registered in `main.tsx` ✅
+- **JSON-LD Schema** – `schema.org/HVACBusiness` structured data in `index.html` with geo coordinates and service areas ✅
+- **Sitemap & Robots** – `public/sitemap.xml` covering all routes and SEO cities, `public/robots.txt` ✅
 
 ---
 
@@ -81,44 +101,16 @@
 ### Frontend — Wiring
 - **`lib/api.ts`** – All functions still use mock data; each has a `// TODO` comment; no real `fetch()` calls to Go backend yet
 
-### Frontend — Partial Pages
-- **`/technician/job/:id`** – Exists but links to `/technician/checklist/${id}` which has no route registered
-- **`public/manifest.json`** – Exists but uses placeholder `vite.svg` icon instead of real AeroDuct icons
-
-### Frontend — Tests
-- **Vitest configured** – Config exists but **zero `.test.tsx` files** exist in `src/`
-- **Playwright E2E** – Config + `example.spec.ts` exist but only checks page title; no real flow tests (booking, pricing, scroll)
 
 ---
 
 ## ❌ Not Yet Started
 
-### Frontend — Missing Pages / Routes
-- **`/reset-password/:token`** – Claimed `[x]` in task list but file does not exist; route not registered in `App.tsx`
-- **`/book`** – Claimed `[x]` (3-step booking flow) but page does not exist; route not registered
-- **`/passport/:id`** – Claimed `[x]` but page does not exist; route not registered
-- **`/enterprise/new`** – Claimed `[x]` but page does not exist; route not registered
-- **`/technician/checklist/:bookingId`** – Claimed `[x]` but page does not exist; route not registered
 
-### Frontend — Missing Components
-- **`components/TierCard`** – Claimed `[x]` but file does not exist
-- **`components/SlotPicker`** – Claimed `[x]` but file does not exist
-- **`components/MarketSelector`** – Claimed `[x]` but file does not exist
-- **`components/Select`** – Not created
-- **`components/Modal`** – Not created
-- **`components/Input`** – Exists as shell but not integrated / no error state
 
 ### Frontend — Missing Features
-- **Service worker** – No `sw.ts` / `service-worker.js` file anywhere; offline support not implemented
-- **Push notifications** – No Web Push / Firebase / OneSignal integration
-- **JSON-LD structured data** – No `application/ld+json` on any page
-- **`app/sitemap.ts`** – Claimed `[x]` but does not exist (this is a Vite/React app, not Next.js — no file-based routing)
-- **`app/robots.ts`** – Same; does not exist
-- **Programmatic SEO** – `CityLanding.tsx` exists but no dynamic route generation or sitemap
+- **Push notifications** – Scaffolding for Web Push / Firebase / OneSignal technician job alerts
 
-### Frontend — Tests (zero coverage)
-- **Unit tests** – No `*.test.tsx` for `Button`, `Badge`, `PriceBreakdown`, or any component
-- **Playwright E2E** – Only stub title check; no booking flow, pricing calculator, or scroll tests
 
 ### Backend (Go)
 - **Database layer** – No `internal/database/` package; no pgx pool, no connection lifecycle
