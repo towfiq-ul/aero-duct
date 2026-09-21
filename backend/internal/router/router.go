@@ -68,6 +68,25 @@ func New() *gin.Engine {
 			tech.GET("/dispatch/:technicianId", handler.GetDispatchRoute)
 			tech.POST("/checklist/:bookingId", handler.SubmitChecklist)
 		}
+
+		// Admin Panel APIs
+		adminGroup := v1.Group("/admin")
+		{
+			adminGroup.GET("/config", handler.GetAdminSettings)
+			adminGroup.PUT("/config", handler.UpdateAdminSettings)
+
+			adminGroup.GET("/service-areas", handler.GetAdminServiceAreas)
+			adminGroup.POST("/service-areas", handler.SaveAdminServiceArea)
+			adminGroup.DELETE("/service-areas/:id", handler.DeleteAdminServiceArea)
+
+			adminGroup.GET("/services", handler.GetAdminServices)
+			adminGroup.POST("/services", handler.SaveAdminService)
+			adminGroup.DELETE("/services/:id", handler.DeleteAdminService)
+
+			adminGroup.GET("/faqs", handler.GetAdminFAQs)
+			adminGroup.POST("/faqs", handler.SaveAdminFAQ)
+			adminGroup.DELETE("/faqs/:id", handler.DeleteAdminFAQ)
+		}
 	}
 
 	return r

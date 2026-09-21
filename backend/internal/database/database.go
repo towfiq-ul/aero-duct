@@ -157,6 +157,51 @@ func bootstrapSQLite(db *sql.DB) error {
 		created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
 		FOREIGN KEY (booking_id) REFERENCES bookings(id)
 	);
+
+	CREATE TABLE IF NOT EXISTS admin_settings (
+		id TEXT PRIMARY KEY,
+		contact_email TEXT NOT NULL,
+		contact_phone TEXT NOT NULL,
+		service_address TEXT NOT NULL,
+		office_hours TEXT NOT NULL,
+		google_places_api_key TEXT,
+		google_place_id TEXT,
+		google_reviews_min_rating REAL DEFAULT 4.5,
+		stripe_publishable_key TEXT,
+		stripe_secret_key TEXT,
+		stripe_webhook_secret TEXT,
+		stripe_enabled INTEGER DEFAULT 1,
+		bank_name TEXT,
+		bank_account_number TEXT,
+		bank_routing_number TEXT,
+		bank_wire_notes TEXT,
+		bank_transfer_enabled INTEGER DEFAULT 1,
+		updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
+	);
+
+	CREATE TABLE IF NOT EXISTS service_areas (
+		id TEXT PRIMARY KEY,
+		name TEXT NOT NULL,
+		fee_multiplier REAL NOT NULL DEFAULT 1.0,
+		active INTEGER NOT NULL DEFAULT 1
+	);
+
+	CREATE TABLE IF NOT EXISTS services (
+		id TEXT PRIMARY KEY,
+		name TEXT NOT NULL,
+		category TEXT NOT NULL,
+		price TEXT NOT NULL,
+		description TEXT NOT NULL,
+		is_package INTEGER NOT NULL DEFAULT 0,
+		active INTEGER NOT NULL DEFAULT 1
+	);
+
+	CREATE TABLE IF NOT EXISTS faqs (
+		id TEXT PRIMARY KEY,
+		question TEXT NOT NULL,
+		answer TEXT NOT NULL,
+		display_order INTEGER NOT NULL DEFAULT 0
+	);
 	`
 	_, err := db.Exec(schema)
 	if err != nil {
@@ -199,6 +244,85 @@ func seedInitialData(db *sql.DB) {
 				INSERT OR IGNORE INTO time_slots (id, date, start_time, end_time, available, market)
 				VALUES (?, ?, ?, ?, 1, 'chicago');
 			`, slotID, dateStr, s.start, s.end)
+		}
+	}
+
+	// Seed default admin settings
+	var settingsCount int
+	_ = db.QueryRow("SELECT COUNT(*) FROM admin_settings").Scan(&settingsCount)
+	if settingsCount == 0 {
+		_, _ = db.Exec(`
+			INSERT INTO admin_settings (
+				id, contact_email, contact_phone, service_address, office_hours,
+				google_places_api_key, google_place_id, google_reviews_min_rating,
+				stripe_publishable_key, stripe_secret_key, stripe_webhook_secret, stripe_enabled,
+				bank_name, bank_account_number, bank_routing_number, bank_wire_notes, bank_transfer_enabled, updated_at
+			) VALUES (
+				'default', 'support@aeroduct.com', '(312) 555-0199', '1420 N Michigan Ave, Suite 400, Chicago, IL 60611',
+				'Mon-Sat: 7:00 AM - 7:00 PM CST', '', 'ChIJ7cv00DwsDogRAMDACa2m4K8', 4.5,
+				'pk_test_sample_stripe_key', '', '', 1,
+				'JPMorgan Chase Bank, N.A.', '••••••••4819', '071000013', 'Include invoice reference on wire memo.', 1, CURRENT_TIMESTAMP
+			);
+		`)
+	}
+
+	// Seed service areas
+	var areasCount int
+	_ = db.QueryRow("SELECT COUNT(*) FROM service_areas").Scan(&areasCount)
+	if areasCount == 0 {
+		areas := []struct {
+			id         string
+			name       string
+			multiplier float64
+		}{
+			{"chicago", "Chicago, IL", 1.0},
+			{"evanston", "Evanston, IL", 1.05},
+			{"oak_park", "Oak Park, IL", 1.05},
+			{"cicero", "Cicero, IL", 1.10},
+			{"skokie", "Skokie, IL", 1.10},
+			{"berwyn", "Berwyn, IL", 1.05},
+		}
+		for _, a := range areas {
+			_, _ = db.Exec("INSERT OR IGNORE INTO service_areas (id, name, fee_multiplier, active) VALUES (?, ?, ?, 1)", a.id, a.name, a.multiplier)
+		}
+	}
+
+	// Seed services
+	var servicesCount int
+	_ = db.QueryRow("SELECT COUNT(*) FROM services").Scan(&servicesCount)
+	if servicesCount == 0 {
+		services := []struct {
+			id, name, cat, price, desc string
+			pkg                         int
+		}{
+			{"res-air-duct", "Air Duct Cleaning", "residential", "$299", "Removing dust, debris, and allergens from home ductwork systems to improve airflow.", 0},
+			{"res-dryer-vent", "Dryer Vent Cleaning", "residential", "$129", "Clearing lint and blockages from dryer exhaust vent lines to prevent fire hazards.", 0},
+			{"res-chimney", "Chimney Sweep & Fireplace Cleaning", "residential", "$189", "Removing dangerous soot, creosote buildup, and physical blockages from residential chimneys.", 0},
+			{"res-uv-light", "UV Light & Air Purification", "residential", "$449", "Installation of UV air purifiers inside HVAC systems to neutralize airborne pathogens.", 0},
+			{"res-duct-sanitizing", "Duct Sanitizing & Odor Removal", "residential", "$99", "Eliminating mold, bacteria, and lingering odors with specialized fogging treatments.", 0},
+			{"com-air-duct", "Commercial Air Duct Cleaning", "commercial", "Custom Quote", "Large-scale vent and HVAC system cleaning designed to meet corporate compliance.", 0},
+			{"pkg-furnace", "Furnace Package Units", "package", "From $249", "Flat-rate, all-in-one maintenance and cleaning tiers specifically tailored for packaged HVAC systems.", 1},
+		}
+		for _, s := range services {
+			_, _ = db.Exec("INSERT OR IGNORE INTO services (id, name, category, price, description, is_package, active) VALUES (?, ?, ?, ?, ?, ?, 1)", s.id, s.name, s.cat, s.price, s.desc, s.pkg)
+		}
+	}
+
+	// Seed FAQs
+	var faqsCount int
+	_ = db.QueryRow("SELECT COUNT(*) FROM faqs").Scan(&faqsCount)
+	if faqsCount == 0 {
+		faqs := []struct {
+			id, q, a string
+			order    int
+		}{
+			{"faq-1", "How often should I have my ducts cleaned?", "The EPA recommends duct cleaning every 3–5 years for most residential properties.", 1},
+			{"faq-2", "How long does the service take?", "Most homes are completed within our guaranteed 2-hour arrival window.", 2},
+			{"faq-3", "Is the pricing really flat-rate? No add-ons?", "Yes. The price you see on the pricing page is the price you pay. We don't charge per vent.", 3},
+			{"faq-4", "Are your technicians certified?", "All AeroDuct technicians are NADCA-certified (National Air Duct Cleaners Association).", 4},
+		}
+		for _, f := range faqs {
+			_, _ = db.Exec("INSERT OR IGNORE INTO faqs (id, question, answer, display_order) VALUES (?, ?, ?, ?)", f.id, f.q, f.a, f.order)
 		}
 	}
 }

@@ -212,3 +212,50 @@ type Claims struct {
 	Market string `json:"market"`
 	jwt.RegisteredClaims
 }
+
+// ── Admin Domain Models ─────────────────────────────────────
+
+type AdminSettings struct {
+	ID                     string    `json:"id"`
+	ContactEmail           string    `json:"contactEmail"`
+	ContactPhone           string    `json:"contactPhone"`
+	ServiceAddress         string    `json:"serviceAddress"`
+	OfficeHours            string    `json:"officeHours"`
+	GooglePlacesAPIKey     string    `json:"googlePlacesApiKey"`
+	GooglePlaceID          string    `json:"googlePlaceId"`
+	GoogleReviewsMinRating float64   `json:"googleReviewsMinRating"`
+	StripePublishableKey   string    `json:"stripePublishableKey"`
+	StripeSecretKey        string    `json:"stripeSecretKey"`
+	StripeWebhookSecret    string    `json:"stripeWebhookSecret"`
+	StripeEnabled          bool      `json:"stripeEnabled"`
+	BankName               string    `json:"bankName"`
+	BankAccountNumber      string    `json:"bankAccountNumber"`
+	BankRoutingNumber      string    `json:"bankRoutingNumber"`
+	BankWireNotes          string    `json:"bankWireNotes"`
+	BankTransferEnabled    bool      `json:"bankTransferEnabled"`
+	UpdatedAt              time.Time `json:"updatedAt"`
+}
+
+type ServiceAreaAdmin struct {
+	ID            string  `json:"id"`
+	Name          string  `json:"name"`
+	FeeMultiplier float64 `json:"feeMultiplier"`
+	Active        bool    `json:"active"`
+}
+
+type ServiceAdmin struct {
+	ID          string `json:"id"`
+	Name        string `json:"name"`
+	Category    string `json:"category"` // "residential", "commercial", "package"
+	Price       string `json:"price"`
+	Description string `json:"description"`
+	IsPackage   bool   `json:"isPackage"`
+	Active      bool   `json:"active"`
+}
+
+type FAQItem struct {
+	ID           string `json:"id"`
+	Question     string `json:"question"`
+	Answer       string `json:"answer"`
+	DisplayOrder int    `json:"displayOrder"`
+}

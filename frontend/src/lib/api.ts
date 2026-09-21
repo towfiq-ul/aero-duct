@@ -306,3 +306,246 @@ export async function submitChecklist(
     }
   );
 }
+
+// ── Admin Panel API Methods ─────────────────────────────────────────
+
+export interface AdminConfig {
+  id: string;
+  contactEmail: string;
+  contactPhone: string;
+  serviceAddress: string;
+  officeHours: string;
+  googlePlacesApiKey: string;
+  googlePlaceId: string;
+  googleReviewsMinRating: number;
+  stripePublishableKey: string;
+  stripeSecretKey: string;
+  stripeWebhookSecret: string;
+  stripeEnabled: boolean;
+  bankName: string;
+  bankAccountNumber: string;
+  bankRoutingNumber: string;
+  bankWireNotes: string;
+  bankTransferEnabled: boolean;
+}
+
+export interface AdminFAQ {
+  id: string;
+  question: string;
+  answer: string;
+  displayOrder?: number;
+}
+
+const DEFAULT_ADMIN_CONFIG: AdminConfig = {
+  id: "default",
+  contactEmail: "support@aeroduct.com",
+  contactPhone: "(312) 555-0199",
+  serviceAddress: "1420 N Michigan Ave, Suite 400, Chicago, IL 60611",
+  officeHours: "Mon-Sat: 7:00 AM - 7:00 PM CST",
+  googlePlacesApiKey: "AIzaSyDummyKeySampleForReviews12345",
+  googlePlaceId: "ChIJ7cv00DwsDogRAMDACa2m4K8",
+  googleReviewsMinRating: 4.5,
+  stripePublishableKey: "pk_test_51MzSampleAeroDuctStripeKey",
+  stripeSecretKey: "sk_test_SampleSecretKeyAeroDuct",
+  stripeWebhookSecret: "whsec_sampleWebhookSecret",
+  stripeEnabled: true,
+  bankName: "JPMorgan Chase Bank, N.A.",
+  bankAccountNumber: "••••••••4819",
+  bankRoutingNumber: "071000013",
+  bankWireNotes: "Please reference your booking invoice number on ACH / Wire memo.",
+  bankTransferEnabled: true,
+};
+
+export async function fetchAdminConfig(): Promise<AdminConfig> {
+  return apiRequest<AdminConfig>("/admin/config", { method: "GET" }, () => {
+    try {
+      const stored = localStorage.getItem("aeroduct_admin_config");
+      if (stored) return JSON.parse(stored);
+    } catch (_) {}
+    return DEFAULT_ADMIN_CONFIG;
+  });
+}
+
+export async function updateAdminConfig(config: AdminConfig): Promise<boolean> {
+  return apiRequest<{ success: boolean }>(
+    "/admin/config",
+    {
+      method: "PUT",
+      body: JSON.stringify(config),
+    },
+    () => {
+      try {
+        localStorage.setItem("aeroduct_admin_config", JSON.stringify(config));
+      } catch (_) {}
+      return { success: true };
+    }
+  ).then(() => true);
+}
+
+export async function fetchAdminServiceAreas(): Promise<ServiceArea[]> {
+  return apiRequest<{ serviceAreas: ServiceArea[] }>(
+    "/admin/service-areas",
+    { method: "GET" },
+    () => {
+      try {
+        const stored = localStorage.getItem("aeroduct_admin_areas");
+        if (stored) return { serviceAreas: JSON.parse(stored) };
+      } catch (_) {}
+      return { serviceAreas: SERVICE_AREAS };
+    }
+  ).then((res) => res.serviceAreas || SERVICE_AREAS);
+}
+
+export async function saveAdminServiceArea(area: ServiceArea): Promise<boolean> {
+  return apiRequest<{ success: boolean }>(
+    "/admin/service-areas",
+    {
+      method: "POST",
+      body: JSON.stringify(area),
+    },
+    async () => {
+      try {
+        const areas = await fetchAdminServiceAreas();
+        const existingIdx = areas.findIndex((a) => a.id === area.id);
+        if (existingIdx >= 0) {
+          areas[existingIdx] = area;
+        } else {
+          areas.push(area);
+        }
+        localStorage.setItem("aeroduct_admin_areas", JSON.stringify(areas));
+      } catch (_) {}
+      return { success: true };
+    }
+  ).then(() => true);
+}
+
+export async function deleteAdminServiceArea(id: string): Promise<boolean> {
+  return apiRequest<{ success: boolean }>(
+    `/admin/service-areas/${id}`,
+    { method: "DELETE" },
+    async () => {
+      try {
+        const areas = (await fetchAdminServiceAreas()).filter((a) => a.id !== id);
+        localStorage.setItem("aeroduct_admin_areas", JSON.stringify(areas));
+      } catch (_) {}
+      return { success: true };
+    }
+  ).then(() => true);
+}
+
+export async function fetchAdminServices(): Promise<Service[]> {
+  return apiRequest<{ services: Service[] }>(
+    "/admin/services",
+    { method: "GET" },
+    () => {
+      try {
+        const stored = localStorage.getItem("aeroduct_admin_services");
+        if (stored) return { services: JSON.parse(stored) };
+      } catch (_) {}
+      return { services: SERVICES };
+    }
+  ).then((res) => res.services || SERVICES);
+}
+
+export async function saveAdminService(svc: Service): Promise<boolean> {
+  return apiRequest<{ success: boolean }>(
+    "/admin/services",
+    {
+      method: "POST",
+      body: JSON.stringify(svc),
+    },
+    async () => {
+      try {
+        const services = await fetchAdminServices();
+        const idx = services.findIndex((s) => s.id === svc.id);
+        if (idx >= 0) {
+          services[idx] = svc;
+        } else {
+          services.push(svc);
+        }
+        localStorage.setItem("aeroduct_admin_services", JSON.stringify(services));
+      } catch (_) {}
+      return { success: true };
+    }
+  ).then(() => true);
+}
+
+export async function deleteAdminService(id: string): Promise<boolean> {
+  return apiRequest<{ success: boolean }>(
+    `/admin/services/${id}`,
+    { method: "DELETE" },
+    async () => {
+      try {
+        const services = (await fetchAdminServices()).filter((s) => s.id !== id);
+        localStorage.setItem("aeroduct_admin_services", JSON.stringify(services));
+      } catch (_) {}
+      return { success: true };
+    }
+  ).then(() => true);
+}
+
+export async function fetchAdminFAQs(): Promise<AdminFAQ[]> {
+  return apiRequest<{ faqs: AdminFAQ[] }>("/admin/faqs", { method: "GET" }, () => {
+    try {
+      const stored = localStorage.getItem("aeroduct_admin_faqs");
+      if (stored) return { faqs: JSON.parse(stored) };
+    } catch (_) {}
+    return {
+      faqs: [
+        {
+          id: "faq-1",
+          question: "How often should I have my ducts cleaned?",
+          answer: "The EPA recommends duct cleaning every 3–5 years for most residential properties.",
+        },
+        {
+          id: "faq-2",
+          question: "How long does the service take?",
+          answer: "Most homes are completed within our guaranteed 2-hour arrival window.",
+        },
+        {
+          id: "faq-3",
+          question: "Is the pricing really flat-rate? No add-ons?",
+          answer: "Yes. The price you see on the pricing page is the price you pay. We don't charge per vent.",
+        },
+      ],
+    };
+  }).then((res) => res.faqs || []);
+}
+
+export async function saveAdminFAQ(faq: AdminFAQ): Promise<boolean> {
+  return apiRequest<{ success: boolean }>(
+    "/admin/faqs",
+    {
+      method: "POST",
+      body: JSON.stringify(faq),
+    },
+    async () => {
+      try {
+        const faqs = await fetchAdminFAQs();
+        const idx = faqs.findIndex((f) => f.id === faq.id);
+        if (idx >= 0) {
+          faqs[idx] = faq;
+        } else {
+          faqs.push(faq);
+        }
+        localStorage.setItem("aeroduct_admin_faqs", JSON.stringify(faqs));
+      } catch (_) {}
+      return { success: true };
+    }
+  ).then(() => true);
+}
+
+export async function deleteAdminFAQ(id: string): Promise<boolean> {
+  return apiRequest<{ success: boolean }>(
+    `/admin/faqs/${id}`,
+    { method: "DELETE" },
+    async () => {
+      try {
+        const faqs = (await fetchAdminFAQs()).filter((f) => f.id !== id);
+        localStorage.setItem("aeroduct_admin_faqs", JSON.stringify(faqs));
+      } catch (_) {}
+      return { success: true };
+    }
+  ).then(() => true);
+}
+

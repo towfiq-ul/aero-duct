@@ -15,6 +15,7 @@ import TechDashboard from "./pages/technician/Dashboard";
 import JobDetail from "./pages/technician/JobDetail";
 import Checklist from "./pages/technician/Checklist";
 import CityLanding from "./pages/CityLanding";
+import AdminDashboard from "./pages/admin/AdminDashboard";
 import NotFound from "./pages/NotFound";
 import ErrorBoundary from "./components/ErrorBoundary";
 import OfflineBanner from "./components/OfflineBanner";
@@ -50,6 +51,9 @@ function App() {
             <Route path="/technician/job/:id" element={<JobDetail />} />
             <Route path="/technician/checklist/:bookingId" element={<Checklist />} />
             
+            {/* Admin Management Panel */}
+            <Route path="/admin" element={<AdminDashboard />} />
+
             {/* SEO Landing Pages */}
             <Route path="/:city/duct-cleaning" element={<CityLanding />} />
 

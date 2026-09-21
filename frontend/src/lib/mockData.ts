@@ -4,6 +4,9 @@ export type ServiceArea = {
   id: string;
   name: string;
   feeMultiplier: number;
+  description?: string;
+  active?: boolean;
+  zipCodes?: string[];
 };
 
 export type Service = {
@@ -12,7 +15,9 @@ export type Service = {
   price: string;
   description: string;
   isPackage?: boolean;
-  category: 'residential' | 'commercial' | 'package';
+  category: 'residential' | 'commercial' | 'package' | 'addon';
+  duration?: string;
+  features?: string[];
 };
 
 export const SERVICE_AREAS: ServiceArea[] = [

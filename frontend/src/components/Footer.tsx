@@ -97,6 +97,14 @@ export default function Footer() {
                   Flat-Rate Calculator
                 </Link>
               </li>
+              <li>
+                <Link
+                  to="/admin"
+                  className="text-[13px] text-slate-500 dark:text-slate-400 hover:text-[#203060] dark:hover:text-white transition-colors"
+                >
+                  Admin Portal
+                </Link>
+              </li>
               {[
                 { id: "about",        label: "About AeroDuct" },
                 { id: "how-it-works", label: "NADCA 4-Step Process" },

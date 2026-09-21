@@ -90,4 +90,110 @@ describe("lib/api", () => {
     expect(res.success).toBe(true);
     expect(res.passportId).toMatch(/^AD-\d+$/);
   });
+
+  describe("Admin APIs (offline / fallback)", () => {
+    it("fetches and updates admin configuration", async () => {
+      vi.spyOn(globalThis, "fetch").mockRejectedValue(new Error("Network Error"));
+      const { fetchAdminConfig, updateAdminConfig } = await import("../lib/api");
+
+      const config = await fetchAdminConfig();
+      expect(config).toBeDefined();
+      expect(config.contactEmail).toBeDefined();
+      expect(config.stripeEnabled).toBe(true);
+
+      const ok = await updateAdminConfig({
+        ...config,
+        contactEmail: "admin-updated@aeroduct.com",
+      });
+      expect(ok).toBe(true);
+
+      const updated = await fetchAdminConfig();
+      expect(updated.contactEmail).toBe("admin-updated@aeroduct.com");
+    });
+
+    it("performs CRUD operations on admin service areas", async () => {
+      vi.spyOn(globalThis, "fetch").mockRejectedValue(new Error("Network Error"));
+      const {
+        fetchAdminServiceAreas,
+        saveAdminServiceArea,
+        deleteAdminServiceArea,
+      } = await import("../lib/api");
+
+      const initialAreas = await fetchAdminServiceAreas();
+      expect(initialAreas.length).toBeGreaterThan(0);
+
+      const newArea = {
+        id: "test-zone",
+        name: "Test Suburb",
+        description: "Test Zone Description",
+        feeMultiplier: 1.25,
+        active: true,
+        zipCodes: ["60001", "60002"],
+      };
+
+      await saveAdminServiceArea(newArea);
+      const afterSave = await fetchAdminServiceAreas();
+      const found = afterSave.find((a) => a.id === "test-zone");
+      expect(found).toBeDefined();
+      expect(found?.feeMultiplier).toBe(1.25);
+
+      await deleteAdminServiceArea("test-zone");
+      const afterDelete = await fetchAdminServiceAreas();
+      expect(afterDelete.find((a) => a.id === "test-zone")).toBeUndefined();
+    });
+
+    it("performs CRUD operations on admin services and faqs", async () => {
+      vi.spyOn(globalThis, "fetch").mockRejectedValue(new Error("Network Error"));
+      const {
+        fetchAdminServices,
+        saveAdminService,
+        deleteAdminService,
+        fetchAdminFAQs,
+        saveAdminFAQ,
+        deleteAdminFAQ,
+      } = await import("../lib/api");
+
+      // Services
+      const services = await fetchAdminServices();
+      expect(services.length).toBeGreaterThan(0);
+
+      const newSvc = {
+        id: "test-blower-clean",
+        name: "Blower Wheel Restoration",
+        category: "residential" as const,
+        price: "$175",
+        duration: "1 Hour",
+        description: "Deep motor cleaning",
+        features: ["Motor disassembly", "Blade sanitation"],
+        isPackage: false,
+      };
+
+      await saveAdminService(newSvc);
+      let updatedSvcs = await fetchAdminServices();
+      expect(updatedSvcs.find((s) => s.id === "test-blower-clean")).toBeDefined();
+
+      await deleteAdminService("test-blower-clean");
+      updatedSvcs = await fetchAdminServices();
+      expect(updatedSvcs.find((s) => s.id === "test-blower-clean")).toBeUndefined();
+
+      // FAQs
+      const faqs = await fetchAdminFAQs();
+      expect(faqs.length).toBeGreaterThan(0);
+
+      const newFaq = {
+        id: "faq-test-1",
+        question: "Is your sanitizer EPA registered?",
+        answer: "Yes, 100% botanical EPA registered hospital disinfectant.",
+      };
+
+      await saveAdminFAQ(newFaq);
+      let updatedFaqs = await fetchAdminFAQs();
+      expect(updatedFaqs.find((f) => f.id === "faq-test-1")).toBeDefined();
+
+      await deleteAdminFAQ("faq-test-1");
+      updatedFaqs = await fetchAdminFAQs();
+      expect(updatedFaqs.find((f) => f.id === "faq-test-1")).toBeUndefined();
+    });
+  });
 });
+
