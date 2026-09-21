@@ -1,15 +1,31 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import NavBar from "@/components/NavBar";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/Button";
-import { SERVICE_AREAS, SERVICES } from "@/lib/mockData";
+import {
+  fetchServices,
+  fetchServiceAreas,
+  type Service,
+  type ServiceArea,
+} from "@/lib/api";
+import { SERVICE_AREAS as DEFAULT_AREAS, SERVICES as DEFAULT_SERVICES } from "@/lib/mockData";
 
 export default function QuotePage() {
   const [submitted, setSubmitted] = useState(false);
+  const [areas, setAreas] = useState<ServiceArea[]>(DEFAULT_AREAS);
+  const [services, setServices] = useState<Service[]>(DEFAULT_SERVICES);
+
+  useEffect(() => {
+    fetchServiceAreas().then((data) => {
+      if (data && data.length > 0) setAreas(data);
+    });
+    fetchServices().then((data) => {
+      if (data && data.length > 0) setServices(data);
+    });
+  }, []);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // mock submit
     setSubmitted(true);
   };
 
@@ -94,7 +110,7 @@ export default function QuotePage() {
                       id="serviceArea"
                       className="w-full px-4 py-3 rounded-md border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/50 focus:bg-white dark:focus:bg-slate-900 focus:ring-2 focus:ring-[#203060] focus:border-transparent outline-none transition-all dark:text-white"
                     >
-                      {SERVICE_AREAS.map(area => (
+                      {areas.map((area) => (
                         <option key={area.id} value={area.id}>{area.name}</option>
                       ))}
                     </select>
@@ -106,7 +122,7 @@ export default function QuotePage() {
                       className="w-full px-4 py-3 rounded-md border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/50 focus:bg-white dark:focus:bg-slate-900 focus:ring-2 focus:ring-[#203060] focus:border-transparent outline-none transition-all dark:text-white"
                     >
                       <option value="">Select a service</option>
-                      {SERVICES.map(svc => (
+                      {services.map((svc) => (
                         <option key={svc.id} value={svc.id}>{svc.name}</option>
                       ))}
                     </select>

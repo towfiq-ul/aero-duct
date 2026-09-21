@@ -1,9 +1,12 @@
 import { useState } from "react";
 import { useParams, Link } from "react-router-dom";
+import { submitChecklist } from "@/lib/api";
 
 export default function Checklist() {
   const { bookingId } = useParams<{ bookingId: string }>();
   const [completed, setCompleted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [passportId, setPassportId] = useState<string>(`PASS-${bookingId || "8912"}`);
 
   const [items, setItems] = useState([
     { id: "c1", label: "Initial Borescope Camera Survey (Recorded Before Condition)", checked: false },
@@ -27,9 +30,21 @@ export default function Checklist() {
 
   const allChecked = items.every((it) => it.checked);
 
-  const handleFinish = (e: React.FormEvent) => {
+  const handleFinish = async (e: React.FormEvent) => {
     e.preventDefault();
-    setCompleted(true);
+    setSubmitting(true);
+    try {
+      const res = await submitChecklist(bookingId || "8912", {
+        cfmReading,
+        notes: techNotes,
+      });
+      if (res.passportId) {
+        setPassportId(res.passportId);
+      }
+      setCompleted(true);
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -64,7 +79,7 @@ export default function Checklist() {
 
             <div className="flex flex-col sm:flex-row justify-center gap-3">
               <Link
-                to={`/passport/PASS-${bookingId || "8912"}`}
+                to={`/passport/${passportId}`}
                 className="px-5 py-2.5 text-xs font-bold bg-emerald-600 hover:bg-emerald-500 text-white rounded-md transition-colors"
               >
                 View Customer Digital Passport →
@@ -157,14 +172,14 @@ export default function Checklist() {
 
             <button
               type="submit"
-              disabled={!allChecked}
+              disabled={!allChecked || submitting}
               className={`w-full py-3 rounded-lg text-xs font-bold transition-colors ${
-                allChecked
+                allChecked && !submitting
                   ? "bg-emerald-600 hover:bg-emerald-500 text-white cursor-pointer"
                   : "bg-slate-700 text-slate-400 cursor-not-allowed opacity-60"
               }`}
             >
-              {allChecked ? "Complete Service & Issue Digital Passport" : "Complete All Checklist Steps Above"}
+              {submitting ? "Submitting & Generating Passport..." : allChecked ? "✓ Certify & Issue Air Quality Passport" : "Complete All Checklist Steps Above"}
             </button>
           </form>
         )}

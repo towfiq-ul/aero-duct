@@ -195,5 +195,43 @@ describe("lib/api", () => {
       expect(updatedFaqs.find((f) => f.id === "faq-test-1")).toBeUndefined();
     });
   });
+
+  describe("Authentication and Technician APIs", () => {
+    it("handles login, signup, and reset password gracefully on fallback", async () => {
+      vi.spyOn(globalThis, "fetch").mockRejectedValue(new Error("Network Error"));
+      const { loginUser, signupUser, resetPasswordUser } = await import("../lib/api");
+
+      const loginRes = await loginUser("tech@aeroduct.com", "password123");
+      expect(loginRes.token).toBeDefined();
+      expect(loginRes.user.email).toBe("tech@aeroduct.com");
+
+      const signupRes = await signupUser({
+        name: "Test User",
+        email: "new@example.com",
+        phone: "555-1234",
+        password: "securepassword",
+      });
+      expect(signupRes.token).toBeDefined();
+      expect(signupRes.user.firstName).toBe("Test");
+      expect(signupRes.user.lastName).toBe("User");
+
+      const resetRes = await resetPasswordUser("dummy-token", "newpassword123");
+      expect(resetRes.success).toBe(true);
+    });
+
+    it("fetches available slots and technician dispatch on fallback", async () => {
+      vi.spyOn(globalThis, "fetch").mockRejectedValue(new Error("Network Error"));
+      const { fetchAvailableSlots, fetchTechnicianDispatch } = await import("../lib/api");
+
+      const slots = await fetchAvailableSlots("2026-10-01", "chicago");
+      expect(slots.length).toBeGreaterThan(0);
+      expect(slots[0].time).toBeDefined();
+
+      const jobs = await fetchTechnicianDispatch("tech-1");
+      expect(Array.isArray(jobs)).toBe(true);
+      expect(jobs.length).toBeGreaterThan(0);
+      expect(jobs[0].id).toBeDefined();
+    });
+  });
 });
 

@@ -1,11 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { fetchAvailableSlots, type AvailableSlot } from "@/lib/api";
 
-export interface Slot {
-  id: string;
-  time: string;
-  period: "Morning" | "Afternoon" | "Evening";
-  available: boolean;
-}
+export type Slot = AvailableSlot;
 
 export interface SlotPickerProps {
   selectedDate?: string;
@@ -42,6 +38,19 @@ export const SlotPicker: React.FC<SlotPickerProps> = ({
 
   const [activeDate, setActiveDate] = useState(initialDate || dates[0].iso);
   const [activeSlotId, setActiveSlotId] = useState<string | undefined>(initialSlotId || "slot-1");
+  const [slots, setSlots] = useState<Slot[]>(DEFAULT_SLOTS);
+
+  useEffect(() => {
+    let mounted = true;
+    fetchAvailableSlots(activeDate).then((liveSlots) => {
+      if (mounted && liveSlots.length > 0) {
+        setSlots(liveSlots);
+      }
+    });
+    return () => {
+      mounted = false;
+    };
+  }, [activeDate]);
 
   const handleSlotClick = (slot: Slot) => {
     if (!slot.available) return;
@@ -83,7 +92,7 @@ export const SlotPicker: React.FC<SlotPickerProps> = ({
           Guaranteed 2-Hour Arrival Window
         </label>
         <div className="space-y-2">
-          {DEFAULT_SLOTS.map((slot) => {
+          {slots.map((slot) => {
             const isSelected = activeSlotId === slot.id;
             return (
               <div

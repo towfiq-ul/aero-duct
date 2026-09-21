@@ -3,12 +3,30 @@ import NavBar from "@/components/NavBar";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/Button";
 import { PriceBreakdown } from "@/components/PriceBreakdown";
-import { SERVICE_AREAS, SERVICES, FAQ_LIST } from "@/lib/mockData";
+import {
+  fetchServices,
+  fetchServiceAreas,
+  calculatePriceAsync,
+  type Service,
+  type ServiceArea,
+} from "@/lib/api";
+import { FAQ_LIST, SERVICE_AREAS as DEFAULT_AREAS, SERVICES as DEFAULT_SERVICES } from "@/lib/mockData";
 
 export default function Pricing() {
+  const [areas, setAreas] = useState<ServiceArea[]>(DEFAULT_AREAS);
+  const [services, setServices] = useState<Service[]>(DEFAULT_SERVICES);
   const [activeArea, setActiveArea] = useState<string>("chicago");
   const [selectedServices, setSelectedServices] = useState<Set<string>>(new Set(["res-air-duct"]));
   const [faqOpen, setFaqOpen] = useState<number | null>(null);
+
+  useEffect(() => {
+    fetchServiceAreas().then((data) => {
+      if (data && data.length > 0) setAreas(data);
+    });
+    fetchServices().then((data) => {
+      if (data && data.length > 0) setServices(data);
+    });
+  }, []);
 
   const toggleService = (id: string) => {
     const next = new Set(selectedServices);
@@ -20,37 +38,47 @@ export default function Pricing() {
     setSelectedServices(next);
   };
 
-  const selectedAreaObj = SERVICE_AREAS.find((a) => a.id === activeArea) || SERVICE_AREAS[0];
+  const selectedAreaObj = areas.find((a) => a.id === activeArea) || areas[0] || DEFAULT_AREAS[0];
 
   // Calculate pricing
   const [subtotal, setSubtotal] = useState(0);
+  const [tax, setTax] = useState(0);
+  const [total, setTotal] = useState(0);
   const [hasCustomQuote, setHasCustomQuote] = useState(false);
 
   useEffect(() => {
-    let total = 0;
-    let custom = false;
-    selectedServices.forEach((id) => {
-      const svc = SERVICES.find((s) => s.id === id);
-      if (svc) {
-        // Extract number from price string (e.g. "$299" -> 299)
-        const match = svc.price.match(/\d+/);
-        if (match) {
-          total += parseInt(match[0], 10);
-        } else {
-          custom = true;
+    const serviceIds = Array.from(selectedServices);
+    calculatePriceAsync(activeArea, serviceIds).then((result) => {
+      setSubtotal(result.subtotal);
+      setTax(result.tax);
+      setTotal(result.total);
+    }).catch(() => {
+      // Local fallback calculation
+      let sum = 0;
+      let custom = false;
+      serviceIds.forEach((id) => {
+        const svc = services.find((s) => s.id === id);
+        if (svc) {
+          const match = svc.price.match(/\d+/);
+          if (match) {
+            sum += parseInt(match[0], 10);
+          } else {
+            custom = true;
+          }
         }
-      }
+      });
+      const sub = sum * (selectedAreaObj?.feeMultiplier || 1.0);
+      const t = sub * 0.08;
+      setSubtotal(sub);
+      setTax(t);
+      setTotal(sub + t);
+      setHasCustomQuote(custom);
     });
-    setSubtotal(total * selectedAreaObj.feeMultiplier);
-    setHasCustomQuote(custom);
-  }, [selectedServices, activeArea, selectedAreaObj]);
+  }, [selectedServices, activeArea, selectedAreaObj, services]);
 
-  const tax = subtotal * 0.08; // Flat 8% tax for IL
-  const total = subtotal + tax;
-
-  const resServices = SERVICES.filter(s => s.category === 'residential');
-  const comServices = SERVICES.filter(s => s.category === 'commercial');
-  const packages = SERVICES.filter(s => s.category === 'package');
+  const resServices = services.filter((s) => s.category === "residential");
+  const comServices = services.filter((s) => s.category === "commercial");
+  const packages = services.filter((s) => s.category === "package");
 
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-950 flex flex-col font-sans transition-colors duration-200">
@@ -81,8 +109,10 @@ export default function Pricing() {
                 onChange={(e) => setActiveArea(e.target.value)}
                 className="w-full sm:w-64 px-4 py-3 rounded-md border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 focus:bg-white dark:focus:bg-slate-900 focus:ring-2 focus:ring-[#203060] focus:border-transparent outline-none transition-all font-medium text-slate-700 dark:text-slate-200"
               >
-                {SERVICE_AREAS.map(area => (
-                  <option key={area.id} value={area.id}>{area.name}</option>
+                {areas.map((area) => (
+                  <option key={area.id} value={area.id}>
+                    {area.name}
+                  </option>
                 ))}
               </select>
             </div>

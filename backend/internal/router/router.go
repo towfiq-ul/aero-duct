@@ -54,7 +54,13 @@ func New() *gin.Engine {
 		geo := v1.Group("/geo")
 		{
 			geo.GET("/detect", handler.DetectGeo)
+			geo.GET("/areas", handler.GetAdminServiceAreas)
 		}
+
+		// Public Catalog & Content (Services, FAQs, Config)
+		v1.GET("/services", handler.GetAdminServices)
+		v1.GET("/faqs", handler.GetAdminFAQs)
+		v1.GET("/config", handler.GetAdminSettings)
 
 		// Passport (Digital Duct Health Passport™)
 		passport := v1.Group("/passport")

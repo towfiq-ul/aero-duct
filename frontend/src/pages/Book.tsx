@@ -1,14 +1,25 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import NavBar from "@/components/NavBar";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/Button";
-import { SERVICE_AREAS, SERVICES } from "@/lib/mockData";
-import { createBooking } from "@/lib/api";
+import { SERVICE_AREAS as DEFAULT_AREAS, SERVICES as DEFAULT_SERVICES } from "@/lib/mockData";
+import {
+  createBooking,
+  fetchServices,
+  fetchServiceAreas,
+  fetchAvailableSlots,
+  type Service,
+  type ServiceArea,
+  type AvailableSlot,
+} from "@/lib/api";
 
 export default function Book() {
   const [step, setStep] = useState<1 | 2 | 3>(1);
   const [confirmed, setConfirmed] = useState(false);
+
+  const [areas, setAreas] = useState<ServiceArea[]>(DEFAULT_AREAS);
+  const [services, setServices] = useState<Service[]>(DEFAULT_SERVICES);
 
   // Form state
   const [contact, setContact] = useState({
@@ -17,29 +28,54 @@ export default function Book() {
     email: "",
     phone: "",
     address: "",
-    serviceArea: SERVICE_AREAS[0]?.id || "chicago",
+    serviceArea: DEFAULT_AREAS[0]?.id || "chicago",
   });
 
   const [booking, setBooking] = useState({
-    serviceId: SERVICES[0]?.id || "res-air-duct",
+    serviceId: DEFAULT_SERVICES[0]?.id || "res-air-duct",
     date: new Date(Date.now() + 86400000).toISOString().split("T")[0],
-    slotTime: "09:00 AM - 11:00 AM",
+    slotTime: "08:00 AM - 10:00 AM",
     notes: "",
   });
 
-  const timeSlots = [
-    { time: "08:00 AM - 10:00 AM", available: true },
-    { time: "10:00 AM - 12:00 PM", available: true },
-    { time: "01:00 PM - 03:00 PM", available: true },
-    { time: "03:00 PM - 05:00 PM", available: false },
-    { time: "05:00 PM - 07:00 PM", available: true },
-  ];
+  const [timeSlots, setTimeSlots] = useState<AvailableSlot[]>([
+    { id: "slot-1", time: "08:00 AM - 10:00 AM", available: true },
+    { id: "slot-2", time: "10:00 AM - 12:00 PM", available: true },
+    { id: "slot-3", time: "01:00 PM - 03:00 PM", available: true },
+    { id: "slot-4", time: "03:00 PM - 05:00 PM", available: false },
+    { id: "slot-5", time: "05:00 PM - 07:00 PM", available: true },
+  ]);
+
+  useEffect(() => {
+    fetchServiceAreas().then((data) => {
+      if (data && data.length > 0) setAreas(data);
+    });
+    fetchServices().then((data) => {
+      if (data && data.length > 0) setServices(data);
+    });
+  }, []);
+
+  useEffect(() => {
+    let mounted = true;
+    fetchAvailableSlots(booking.date).then((data) => {
+      if (mounted && data.length > 0) {
+        setTimeSlots(data);
+        const firstAvail = data.find((s) => s.available);
+        if (firstAvail && !data.some((s) => s.time === booking.slotTime && s.available)) {
+          setBooking((prev) => ({ ...prev, slotTime: firstAvail.time }));
+        }
+      }
+    });
+    return () => {
+      mounted = false;
+    };
+  }, [booking.date]);
 
   const [bookingRef, setBookingRef] = useState(`AERO-${Math.floor(100000 + Math.random() * 900000)}`);
   const [submitting, setSubmitting] = useState(false);
 
-  const selectedService = SERVICES.find((s) => s.id === booking.serviceId) || SERVICES[0];
-  const selectedArea = SERVICE_AREAS.find((a) => a.id === contact.serviceArea) || SERVICE_AREAS[0];
+  const selectedService = services.find((s) => s.id === booking.serviceId) || services[0] || DEFAULT_SERVICES[0];
+  const selectedArea = areas.find((a) => a.id === contact.serviceArea) || areas[0] || DEFAULT_AREAS[0];
 
   const handleNext = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -245,7 +281,7 @@ export default function Book() {
                         onChange={(e) => setContact({ ...contact, serviceArea: e.target.value })}
                         className="w-full px-3 py-2 text-sm rounded-md border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-900 dark:text-white focus:ring-2 focus:ring-[#203060] focus:outline-none"
                       >
-                        {SERVICE_AREAS.map((a) => (
+                        {areas.map((a) => (
                           <option key={a.id} value={a.id}>
                             {a.name}
                           </option>
@@ -268,7 +304,7 @@ export default function Book() {
                       onChange={(e) => setBooking({ ...booking, serviceId: e.target.value })}
                       className="w-full px-3 py-2 text-sm rounded-md border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-900 dark:text-white focus:ring-2 focus:ring-[#203060] focus:outline-none"
                     >
-                      {SERVICES.map((s) => (
+                      {services.map((s) => (
                         <option key={s.id} value={s.id}>
                           {s.name} — {s.price} ({s.category})
                         </option>

@@ -168,11 +168,27 @@ export function calculatePrice(
 // ── Asynchronous Live API Methods ───────────────────────────────────
 
 export async function fetchServiceAreas(): Promise<ServiceArea[]> {
-  return apiRequest<ServiceArea[]>("/geo/areas", { method: "GET" }, () => getAllServiceAreas());
+  return apiRequest<ServiceArea[] | { serviceAreas: ServiceArea[] }>(
+    "/geo/areas",
+    { method: "GET" },
+    () => getAllServiceAreas()
+  ).then((res) => {
+    if (Array.isArray(res)) return res;
+    if (res && Array.isArray((res as any).serviceAreas)) return (res as any).serviceAreas;
+    return getAllServiceAreas();
+  });
 }
 
 export async function fetchServices(): Promise<Service[]> {
-  return apiRequest<Service[]>("/services", { method: "GET" }, () => getServices());
+  return apiRequest<Service[] | { services: Service[] }>(
+    "/services",
+    { method: "GET" },
+    () => getServices()
+  ).then((res) => {
+    if (Array.isArray(res)) return res;
+    if (res && Array.isArray((res as any).services)) return (res as any).services;
+    return getServices();
+  });
 }
 
 export async function calculatePriceAsync(
@@ -189,8 +205,56 @@ export async function calculatePriceAsync(
   );
 }
 
+// ── Time Slots Binding ──────────────────────────────────────────────
+
+export interface AvailableSlot {
+  id: string;
+  time: string;
+  startTime?: string;
+  endTime?: string;
+  period?: "Morning" | "Afternoon" | "Evening";
+  available: boolean;
+}
+
+export async function fetchAvailableSlots(
+  date?: string,
+  market: string = "chicago"
+): Promise<AvailableSlot[]> {
+  const query = new URLSearchParams();
+  if (date) query.set("date", date);
+  query.set("market", market);
+
+  return apiRequest<{ slots: any[] }>(
+    `/bookings/slots?${query.toString()}`,
+    { method: "GET" },
+    () => {
+      return {
+        slots: [
+          { id: "slot-1", time: "08:00 AM - 10:00 AM", period: "Morning", available: true },
+          { id: "slot-2", time: "10:00 AM - 12:00 PM", period: "Morning", available: true },
+          { id: "slot-3", time: "01:00 PM - 03:00 PM", period: "Afternoon", available: true },
+          { id: "slot-4", time: "03:00 PM - 05:00 PM", period: "Afternoon", available: false },
+          { id: "slot-5", time: "05:00 PM - 07:00 PM", period: "Evening", available: true },
+        ],
+      };
+    }
+  ).then((res) => {
+    if (!res || !Array.isArray(res.slots)) return [];
+    return res.slots.map((s: any) => ({
+      id: s.id || s.time,
+      time: s.time || `${s.startTime || "08:00 AM"} - ${s.endTime || "10:00 AM"}`,
+      startTime: s.startTime,
+      endTime: s.endTime,
+      period: s.period || (s.startTime?.includes("AM") ? "Morning" : "Afternoon"),
+      available: s.available !== undefined ? s.available : true,
+    }));
+  });
+}
+
+// ── Booking Creation & Lookup ───────────────────────────────────────
+
 export async function createBooking(payload: BookingPayload): Promise<BookingResult> {
-  return apiRequest<BookingResult>(
+  return apiRequest<any>(
     "/bookings",
     {
       method: "POST",
@@ -211,11 +275,22 @@ export async function createBooking(payload: BookingPayload): Promise<BookingRes
       } catch (_) {}
       return result;
     }
-  );
+  ).then((res) => {
+    if (res && res.booking && res.booking.id) {
+      return {
+        id: res.booking.id,
+        referenceNumber: res.booking.referenceNumber || res.booking.id,
+        status: res.booking.status || "confirmed",
+        createdAt: res.booking.createdAt || new Date().toISOString(),
+        booking: payload,
+      };
+    }
+    return res as BookingResult;
+  });
 }
 
 export async function fetchBooking(id: string): Promise<BookingResult | null> {
-  return apiRequest<BookingResult | null>(
+  return apiRequest<any>(
     `/bookings/${id}`,
     { method: "GET" },
     () => {
@@ -225,7 +300,221 @@ export async function fetchBooking(id: string): Promise<BookingResult | null> {
       } catch (_) {}
       return null;
     }
+  ).then((res) => {
+    if (!res) return null;
+    if (res.booking && res.booking.id) {
+      return {
+        id: res.booking.id,
+        referenceNumber: res.booking.referenceNumber || res.booking.id,
+        status: res.booking.status || "confirmed",
+        createdAt: res.booking.createdAt || new Date().toISOString(),
+        booking: res.booking,
+      };
+    }
+    return res;
+  });
+}
+
+// ── Authentication Binding ──────────────────────────────────────────
+
+export interface AuthUser {
+  id: string;
+  email: string;
+  firstName: string;
+  lastName: string;
+  phone?: string;
+  role: string;
+  market?: string;
+}
+
+export interface AuthResponse {
+  token: string;
+  user: AuthUser;
+}
+
+export async function loginUser(email: string, password: string): Promise<AuthResponse> {
+  return apiRequest<AuthResponse>(
+    "/auth/login",
+    {
+      method: "POST",
+      body: JSON.stringify({ email, password }),
+    },
+    () => {
+      return {
+        token: "demo-jwt-aeroduct-token",
+        user: {
+          id: "usr-demo",
+          email,
+          firstName: "Demo",
+          lastName: "Customer",
+          role: "customer",
+          market: "chicago",
+        },
+      };
+    }
+  ).then((res) => {
+    if (res && res.token) {
+      localStorage.setItem("aeroduct_auth_token", res.token);
+      localStorage.setItem("aeroduct_auth_user", JSON.stringify(res.user));
+    }
+    return res;
+  });
+}
+
+export async function signupUser(payload: {
+  name?: string;
+  firstName?: string;
+  lastName?: string;
+  email: string;
+  password: string;
+  phone?: string;
+  market?: string;
+}): Promise<AuthResponse> {
+  // Parse single name input if provided
+  let first = payload.firstName || "";
+  let last = payload.lastName || "";
+  if (payload.name && !first) {
+    const parts = payload.name.trim().split(" ");
+    first = parts[0] || "Valued";
+    last = parts.slice(1).join(" ") || "Customer";
+  }
+  if (!first) first = "Customer";
+
+  const requestBody = {
+    firstName: first,
+    lastName: last,
+    email: payload.email,
+    password: payload.password,
+    phone: payload.phone || "(312) 555-0100",
+    market: payload.market || "chicago",
+  };
+
+  return apiRequest<AuthResponse>(
+    "/auth/signup",
+    {
+      method: "POST",
+      body: JSON.stringify(requestBody),
+    },
+    () => {
+      return {
+        token: "demo-jwt-aeroduct-token",
+        user: {
+          id: `usr-${Date.now()}`,
+          email: payload.email,
+          firstName: first,
+          lastName: last,
+          phone: requestBody.phone,
+          role: "customer",
+          market: requestBody.market,
+        },
+      };
+    }
+  ).then((res) => {
+    if (res && res.token) {
+      localStorage.setItem("aeroduct_auth_token", res.token);
+      localStorage.setItem("aeroduct_auth_user", JSON.stringify(res.user));
+    }
+    return res;
+  });
+}
+
+export async function resetPasswordUser(
+  token: string,
+  newPassword: string
+): Promise<{ success: boolean; message: string }> {
+  return apiRequest<{ success: boolean; message: string }>(
+    "/auth/reset-password",
+    {
+      method: "POST",
+      body: JSON.stringify({ token, newPassword }),
+    },
+    () => ({ success: true, message: "Password updated successfully" })
   );
+}
+
+export function getCurrentUser(): AuthUser | null {
+  try {
+    const raw = localStorage.getItem("aeroduct_auth_user");
+    return raw ? JSON.parse(raw) : null;
+  } catch {
+    return null;
+  }
+}
+
+export function logoutUser(): void {
+  localStorage.removeItem("aeroduct_auth_token");
+  localStorage.removeItem("aeroduct_auth_user");
+}
+
+// ── Technician Dispatch Binding ─────────────────────────────────────
+
+export interface DispatchJob {
+  id: string;
+  clientName: string;
+  serviceAddress: string;
+  timeSlot: string;
+  packageType: string;
+  targetCfm: number;
+  status: "pending" | "in_progress" | "completed";
+}
+
+export async function fetchTechnicianDispatch(techId: string = "tech-1"): Promise<DispatchJob[]> {
+  return apiRequest<{ jobs: any[] }>(
+    `/technician/dispatch/${techId}`,
+    { method: "GET" },
+    () => {
+      return {
+        jobs: [
+          {
+            id: "8912",
+            clientName: "David Miller",
+            serviceAddress: "1420 N Lake Shore Dr, Chicago IL",
+            timeSlot: "08:00 AM – 10:00 AM",
+            packageType: "Whole-Home HEPA Decontamination",
+            targetCfm: 1200,
+            status: "in_progress",
+          },
+          {
+            id: "8913",
+            clientName: "Sarah Jenkins",
+            serviceAddress: "845 W Belden Ave, Chicago IL",
+            timeSlot: "11:00 AM – 01:00 PM",
+            packageType: "Standard Airway Extraction + Dryer Vent",
+            targetCfm: 950,
+            status: "pending",
+          },
+          {
+            id: "8914",
+            clientName: "Oak Park Medical Group",
+            serviceAddress: "1010 Lake St, Oak Park IL",
+            timeSlot: "02:00 PM – 04:00 PM",
+            packageType: "Commercial Multi-Zone Compliance Audit",
+            targetCfm: 2400,
+            status: "pending",
+          },
+        ],
+      };
+    }
+  ).then((res) => {
+    if (!res || !Array.isArray(res.jobs)) return [];
+    return res.jobs.map((j: any) => ({
+      id: j.id || j.referenceNumber || "job",
+      clientName:
+        j.clientName ||
+        (j.customer ? `${j.customer.firstName} ${j.customer.lastName}` : "Client"),
+      serviceAddress:
+        j.serviceAddress ||
+        (j.address ? `${j.address.line1}, ${j.address.city}` : "Service Address"),
+      timeSlot:
+        j.timeSlot ||
+        (j.timeSlot && j.timeSlot.startTime
+          ? `${j.timeSlot.startTime} – ${j.timeSlot.endTime}`
+          : "08:00 AM – 10:00 AM"),
+      packageType: j.packageType || j.tier || j.serviceCategory || "HEPA Decontamination",
+      targetCfm: j.targetCfm || 1200,
+      status: (j.status as any) || "pending",
+    }));
+  });
 }
 
 export async function fetchPassport(id: string): Promise<PassportRecord> {

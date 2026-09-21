@@ -8,22 +8,13 @@ import {
   requestNotificationPermission,
   sendLocalNotification,
 } from "../../lib/notifications";
-
-interface DispatchJob {
-  id: string;
-  clientName: string;
-  serviceAddress: string;
-  timeSlot: string;
-  packageType: string;
-  targetCfm: number;
-  status: "pending" | "in_progress" | "completed";
-}
+import { fetchTechnicianDispatch, type DispatchJob } from "../../lib/api";
 
 export default function TechDashboard() {
   const [permission, setPermission] = useState<string>("default");
   const [notificationSent, setNotificationSent] = useState(false);
 
-  const jobs: DispatchJob[] = [
+  const [jobs, setJobs] = useState<DispatchJob[]>([
     {
       id: "8912",
       clientName: "David Miller",
@@ -51,7 +42,15 @@ export default function TechDashboard() {
       targetCfm: 2400,
       status: "pending",
     },
-  ];
+  ]);
+
+  useEffect(() => {
+    fetchTechnicianDispatch("tech-1").then((liveJobs) => {
+      if (liveJobs && liveJobs.length > 0) {
+        setJobs(liveJobs);
+      }
+    });
+  }, []);
 
   useEffect(() => {
     if (isPushSupported()) {

@@ -123,19 +123,11 @@ build-be-local: ## Build backend binary for local architecture
 	@echo "  $(GREEN)✅ Local binary created at backend/bin/aeroduct-api$(RESET)"
 
 # ── Database ──────────────────────────────────────────────────────
-.PHONY: db-migrate
-db-migrate: ## Run Prisma migrations
-	@echo "$(GREEN)▶ Running database migrations...$(RESET)"
-	cd backend/prisma && DATABASE_URL="file:./dev.db" pnpm migrate:dev --name init 2>/dev/null || true
-
-.PHONY: db-seed
-db-seed: ## Seed database
-	@echo "$(GREEN)▶ Seeding database...$(RESET)"
-	cd backend/prisma && DATABASE_URL="file:./dev.db" pnpm seed 2>/dev/null || true
-
-.PHONY: db-studio
-db-studio: ## Open Prisma Studio
-	cd backend/prisma && DATABASE_URL="file:./dev.db" pnpm studio
+.PHONY: db-reset
+db-reset: ## Reset local SQLite database (Go auto-bootstraps schema on launch)
+	@echo "$(YELLOW)▶ Resetting local SQLite database...$(RESET)"
+	rm -f backend/dev.db backend/dev.db-wal backend/dev.db-shm
+	@echo "  $(GREEN)✅ Local SQLite database reset. Database will auto-bootstrap on next API launch.$(RESET)"
 
 # ── Quality & Maintenance ─────────────────────────────────────────
 .PHONY: lint

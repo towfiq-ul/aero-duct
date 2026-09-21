@@ -4,25 +4,37 @@ import NavBar from "@/components/NavBar";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/Button";
 
+import { resetPasswordUser } from "@/lib/api";
+
 export default function ResetPassword() {
   const { token } = useParams<{ token: string }>();
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (password.length < 8) {
-      setError("Password must be at least 8 characters long.");
+    if (password.length < 6) {
+      setError("Password must be at least 6 characters long.");
       return;
     }
     if (password !== confirmPassword) {
       setError("Passwords do not match.");
       return;
     }
+
+    setLoading(true);
     setError(null);
-    setSubmitted(true);
+    try {
+      await resetPasswordUser(token || "demo-token", password);
+      setSubmitted(true);
+    } catch (err: any) {
+      setError(err?.message || "Failed to update password.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -90,8 +102,8 @@ export default function ResetPassword() {
                     className="w-full px-4 py-2 rounded-md border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-[#203060]"
                   />
                 </div>
-                <Button type="submit" className="w-full justify-center">
-                  Update Password
+                <Button type="submit" disabled={loading} className="w-full justify-center">
+                  {loading ? "Updating..." : "Update Password"}
                 </Button>
               </form>
 
