@@ -72,15 +72,22 @@
 - **PWA manifest** – `public/manifest.json` exists (AeroDuct Technician, standalone mode)
 - **Vitest config** – `vitest.config.ts` configured with jsdom + react plugin
 
+- **`lib/api.ts`** – Typed API client with live backend integration (`VITE_API_URL`) and graceful fallback for static hosting/offline ✅
+- **Push notifications** – Web Push listeners in `public/sw.js`, `lib/notifications.ts` helper, and technician dispatch alert controls in `technician/Dashboard.tsx` ✅
+- **`components/ErrorBoundary`** – Route-level error boundary with brand error UI and retry fallback ✅
+- **`components/LoadingSkeleton`** – Configurable animated loading skeleton for text, circular, rectangular, and card views ✅
+- **`components/OfflineBanner`** – Live online/offline status detection banner for PWA offline operation ✅
+- **`pages/NotFound`** – 404 error page with brand header and navigation CTAs ✅
+
 ### Frontend — Testing
-- **Unit Tests (Vitest)** – 9 test suites / 19 tests passing (Button, Badge, PriceBreakdown, Input, TierCard, SlotPicker, Select, Modal, useTheme, useScrollTo) ✅
+- **Unit Tests (Vitest)** – 14 test suites / 40 tests passing (Button, Badge, PriceBreakdown, Input, TierCard, SlotPicker, Select, Modal, useTheme, useScrollTo, api, notifications, ErrorBoundary, LoadingSkeleton, OfflineBanner) ✅
 - **Playwright E2E** – Flow tests covering homepage, pricing calculator, 3-step booking flow, and digital airway passport ✅
 
 ### Frontend — Payment UI
 - **Stripe + Bank Transfer buttons** – Present on Pricing page sticky checkout card
 
 ### Frontend — SEO & PWA
-- **Service Worker** – `public/sw.js` with offline caching, stale-while-revalidate strategy, registered in `main.tsx` ✅
+- **Service Worker** – `public/sw.js` with offline caching, stale-while-revalidate strategy, Web Push handler, registered in `main.tsx` ✅
 - **JSON-LD Schema** – `schema.org/HVACBusiness` structured data in `index.html` with geo coordinates and service areas ✅
 - **Sitemap & Robots** – `public/sitemap.xml` covering all routes and SEO cities, `public/robots.txt` ✅
 
@@ -98,18 +105,9 @@
 - **`GET /api/v1/technician/dispatch/:id`** – Returns empty; needs daily job list from DB
 - **`POST /api/v1/technician/checklist/:bookingId`** – Returns stub; needs validation + DB write
 
-### Frontend — Wiring
-- **`lib/api.ts`** – All functions still use mock data; each has a `// TODO` comment; no real `fetch()` calls to Go backend yet
-
-
 ---
 
 ## ❌ Not Yet Started
-
-
-
-### Frontend — Missing Features
-- **Push notifications** – Scaffolding for Web Push / Firebase / OneSignal technician job alerts
 
 
 ### Backend (Go)

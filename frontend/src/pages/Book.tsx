@@ -4,6 +4,7 @@ import NavBar from "@/components/NavBar";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/Button";
 import { SERVICE_AREAS, SERVICES } from "@/lib/mockData";
+import { createBooking } from "@/lib/api";
 
 export default function Book() {
   const [step, setStep] = useState<1 | 2 | 3>(1);
@@ -34,16 +35,37 @@ export default function Book() {
     { time: "05:00 PM - 07:00 PM", available: true },
   ];
 
+  const [bookingRef, setBookingRef] = useState(`AERO-${Math.floor(100000 + Math.random() * 900000)}`);
+  const [submitting, setSubmitting] = useState(false);
+
   const selectedService = SERVICES.find((s) => s.id === booking.serviceId) || SERVICES[0];
   const selectedArea = SERVICE_AREAS.find((a) => a.id === contact.serviceArea) || SERVICE_AREAS[0];
 
-  const handleNext = (e: React.FormEvent) => {
+  const handleNext = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (step < 3) setStep((prev) => (prev + 1) as 2 | 3);
-    else setConfirmed(true);
+    if (step < 3) {
+      setStep((prev) => (prev + 1) as 2 | 3);
+    } else {
+      setSubmitting(true);
+      try {
+        const res = await createBooking({
+          customerName: `${contact.firstName} ${contact.lastName}`,
+          email: contact.email,
+          phone: contact.phone,
+          address: contact.address,
+          serviceAreaId: contact.serviceArea,
+          selectedPackage: booking.serviceId,
+          preferredDate: booking.date,
+          arrivalWindow: booking.slotTime,
+          accessNotes: booking.notes,
+        });
+        setBookingRef(res.referenceNumber);
+        setConfirmed(true);
+      } finally {
+        setSubmitting(false);
+      }
+    }
   };
-
-  const bookingRef = `AERO-${Math.floor(100000 + Math.random() * 900000)}`;
 
   return (
     <div className="min-h-screen flex flex-col bg-slate-50 dark:bg-[#0a0f1e] transition-colors duration-200">
@@ -367,8 +389,8 @@ export default function Book() {
                   <div />
                 )}
 
-                <Button type="submit" size="md">
-                  {step === 3 ? "Confirm & Book Service" : "Continue →"}
+                <Button type="submit" size="md" disabled={submitting}>
+                  {step === 3 ? (submitting ? "Processing..." : "Confirm & Book Service") : "Continue →"}
                 </Button>
               </div>
             </form>
