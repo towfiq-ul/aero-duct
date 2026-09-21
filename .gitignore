@@ -14,6 +14,11 @@ out/
 # Go binaries
 apps/api/bin/
 apps/api/tmp/
+backend/bin/
+backend/tmp/
+*.db
+*.db-shm
+*.db-wal
 
 # Environment files
 .env

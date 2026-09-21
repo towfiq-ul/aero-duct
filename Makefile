@@ -1,5 +1,6 @@
 .DEFAULT_GOAL := help
 SHELL         := /bin/bash
+export PATH   := $(shell go env GOPATH 2>/dev/null)/bin:$(PATH)
 
 BOLD  := $(shell tput bold 2>/dev/null || echo "")
 GREEN := $(shell tput setaf 2 2>/dev/null || echo "")
@@ -58,6 +59,7 @@ dev: ## Run both backend and frontend concurrently
 .PHONY: backend
 backend: ## Run backend with Air hot-reload
 	@echo "$(GREEN)▶ Starting Go API with Air hot-reload...$(RESET)"
+	@which air > /dev/null 2>&1 || (echo "Installing air..." && go install github.com/air-verse/air@latest)
 	cd backend && air -c .air.toml
 
 .PHONY: backend-run
