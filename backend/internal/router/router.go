@@ -22,6 +22,14 @@ func New() *gin.Engine {
 	// API v1
 	v1 := r.Group("/api/v1")
 	{
+		// Auth
+		auth := v1.Group("/auth")
+		{
+			auth.POST("/login", handler.Login)
+			auth.POST("/signup", handler.Signup)
+			auth.POST("/reset-password", handler.ResetPassword)
+		}
+
 		// Pricing
 		pricing := v1.Group("/pricing")
 		{
@@ -34,6 +42,12 @@ func New() *gin.Engine {
 			bookings.GET("/slots", handler.GetAvailableSlots)
 			bookings.POST("", handler.CreateBooking)
 			bookings.GET("/:id", handler.GetBooking)
+		}
+
+		// Payments
+		payments := v1.Group("/payments")
+		{
+			payments.POST("/intent", handler.CreatePaymentIntent)
 		}
 
 		// Geo
