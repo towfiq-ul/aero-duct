@@ -1,5 +1,12 @@
 # Project Instructions
 
+## ⛔ Git Push Prohibition (STRICT POLICY)
+**NEVER EXECUTE `git push` UNDER ANY CIRCUMSTANCES.**
+- The agent is strictly prohibited from proposing or executing `git push` (or any variant such as `git push origin`, `git push --force`, `git push --tags`).
+- Local git operations (`git add`, `git commit`, `git status`, `git diff`) are allowed when requested.
+- Remote pushing is reserved exclusively for the user.
+- When changes are committed locally, inform the user and let them run `git push` manually.
+
 ## "check requirement"
 If the user says **"check requirement"**, it means to execute the following sequence of actions:
 1. Check `PRD.txt` and update `PLAN.md` accordingly.
